@@ -23,14 +23,13 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(40) NOT NULL,
   `username` varchar(40) NOT NULL,
   `password` varchar(15) NOT NULL,
   `company` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`email`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +38,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'gg@zju.edu.cn','cindy','123456','zzz'),(2,'00@qq.com','ysc','123456','zzz'),(3,'wq@163.com','gg','123','zzz');
+INSERT INTO `user` VALUES ('gg@zju.edu.cn','cindy','123456','zzz'),('gggg@162.com','qwdqg','123','jinzhita'),('wq@163.com','gg','123','zzz');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,10 +50,9 @@ DROP TABLE IF EXISTS `usertask`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usertask` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(40) NOT NULL,
+  `email` varchar(40) NOT NULL,
   `task` varchar(40) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`task`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -64,6 +62,7 @@ CREATE TABLE `usertask` (
 
 LOCK TABLES `usertask` WRITE;
 /*!40000 ALTER TABLE `usertask` DISABLE KEYS */;
+INSERT INTO `usertask` VALUES ('wq@163.com','1002');
 /*!40000 ALTER TABLE `usertask` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -76,4 +75,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-06 10:14:24
+-- Dump completed on 2020-07-06 23:55:16
