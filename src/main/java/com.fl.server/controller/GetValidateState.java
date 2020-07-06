@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GetValidateState {
-    @GetMapping("/getValidateState ")
+    @GetMapping("/getValidateState")
     @ResponseBody
     public ValidateState GetValidateStateFunc(@RequestBody Index index) {
         ValidateState validateState = new ValidateState();

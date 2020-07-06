@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 public class GetTrainState {
-    @GetMapping("/getTrainState ")
+    @GetMapping("/getTrainState")
     @ResponseBody
     public TrainState GetTrainStateFunc(@RequestBody Index index) {
         TrainState trainState = new TrainState();
