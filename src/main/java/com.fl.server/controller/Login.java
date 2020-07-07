@@ -1,10 +1,7 @@
 package com.fl.server.controller;
 
 import com.fl.server.object.MD5;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.fl.server.object.User;
 import com.fl.server.object.Message;
 
@@ -13,10 +10,12 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 public class Login{
-    @GetMapping("/login")
+    @PostMapping("/login")
     @ResponseBody
     public Message LoginCheck(@RequestBody User user) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Message message = new Message();
+        System.out.println(user.getUsername());
+        System.out.println(user.getEmail());
 
         // get the hash password
         String hashPassword = MD5.EncoderByMd5(user.getPassword());
