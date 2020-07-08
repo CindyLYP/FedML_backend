@@ -12,7 +12,7 @@
         <id column="train_id" jdbcType="VARCHAR" property="trainId"/>
         <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
         <result column="model_type" jdbcType="VARCHAR" property="modelType"/>
-        <result column="param_dim" jdbcType="INT" property="paramDim"/>
+        <result column="param_dim"  property="paramDim"/>
     </resultMap>
     <resultMap id="TaskMap" type="com.fl.server.object.Task">
         <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
