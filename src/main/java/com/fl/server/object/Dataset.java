@@ -1,16 +1,16 @@
 package com.fl.server.object;
 
 public class Dataset {
-    String taskID;
+    String taskId;
     String datasetId;
     String features;
 
-    public String getTaskID() {
-        return taskID;
+    public String getTaskId() {
+        return taskId;
     }
 
-    public void setTaskID(String taskID) {
-        this.taskID = taskID;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     public String getDatasetId() {

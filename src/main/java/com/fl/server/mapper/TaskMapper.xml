@@ -2,26 +2,44 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+<mapper namespace="com.fl.server.mapper.TaskMapper">
+    <resultMap id="DatasetMap" type="com.fl.server.object.Dataset">
+        <id column="dataset_id" jdbcType="VARCHAR" property="datasetId"/>
+        <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
+        <result column="features" jdbcType="VARCHAR" property="features"/>
+    </resultMap>
+    <resultMap id="TrainMap" type="com.fl.server.object.Train">
+        <id column="train_id" jdbcType="VARCHAR" property="trainId"/>
+        <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
+        <result column="model_type" jdbcType="VARCHAR" property="modelType"/>
+        <result column="param_dim" jdbcType="INT" property="paramDim"/>
+    </resultMap>
+    <resultMap id="TaskMap" type="com.fl.server.object.Task">
+        <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="description" jdbcType="VARCHAR" property="desc"/>
+    </resultMap>
+
     <insert id="createTaskByEmail">
-        insert into usertask (email,task_id,description) values (#{email},#{taskId},#{desc});
+        insert into usertask (email,task_id,description) values (#{task.email},#{task.taskId},#{task.desc});
     </insert>
     <insert id="createTrainByTask">
-        insert into tasktrain (task_id,train_id,model_type,param_dim) values (#{taskId},#{trainId},#{modelType},#{paramDim});
+        insert into tasktrain (task_id,train_id,model_type,param_dim) values (#{train.taskId},#{train.trainId},#{train.modelType},#{train.paramDim});
     </insert>
     <insert id="createDatasetByTask">
-        insert into taskdataset (task_id,dataset_id,feature) values (#{taskId},#{datasetId},#{feature});
+        insert into taskdataset (task_id,dataset_id,feature) values (#{dataset.taskId},#{dataset.datasetId},#{dataset.features});
     </insert>
 
-    <select id="selectTaskByEmail" resultType="com.fl.server.object.Task">
+    <select id="selectTaskByEmail" resultMap="TaskMap" resultType="com.fl.server.object.Task">
         select * from usertask where email=#{email};
     </select>
-    <select id="selectTrainByTask" resultType="com.fl.server.object.Train">
+    <select id="selectTrainByTask" resultMap="TrainMap" resultType="com.fl.server.object.Train">
         select * from tasktrain where task_id=#{taskId};
     </select>
-    <select id="selectDatasetByTask" resultType="com.fl.server.object.Dataset">
+    <select id="selectDatasetByTask" resultMap="DatasetMap" resultType="com.fl.server.object.Dataset">
         select * from taskdataset where task_id=#{taskId};
     </select>
+
     <delete id="deleteTask">
         delete from usertask where task_id=#{taksId};
     </delete>
@@ -29,7 +47,7 @@
         delete from tasktrain where train_id=#{trainId};
     </delete>
     <delete id="deleteDataset">
-        delete from taskDataset where dataset_id=#{datasetId};
+        delete from taskdataset where dataset_id=#{datasetId};
     </delete>
 
 </mapper>
