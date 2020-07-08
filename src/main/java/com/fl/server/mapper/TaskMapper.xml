@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper>
+    <insert id="createTaskByEmail">
+        insert into usertask (email,task_id,description) values (#{email},#{taskId},#{desc});
+    </insert>
+    <insert id="createTrainByTask">
+        insert into tasktrain (task_id,train_id,model_type,param_dim) values (#{taskId},#{trainId},#{modelType},#{paramDim});
+    </insert>
+    <insert id="createDatasetByTask">
+        insert into taskdataset (task_id,dataset_id,feature) values (#{taskId},#{datasetId},#{feature});
+    </insert>
+
+    <select id="selectTaskByEmail" resultType="com.fl.server.object.Task">
+        select * from usertask where email=#{email};
+    </select>
+    <select id="selectTrainByTask" resultType="com.fl.server.object.Train">
+        select * from tasktrain where task_id=#{taskId};
+    </select>
+    <select id="selectDatasetByTask" resultType="com.fl.server.object.Dataset">
+        select * from taskdataset where task_id=#{taskId};
+    </select>
+    <delete id="deleteTask">
+        delete from usertask where task_id=#{taksId};
+    </delete>
+    <delete id="deleteTrain">
+        delete from tasktrain where train_id=#{trainId};
+    </delete>
+    <delete id="deleteDataset">
+        delete from taskDataset where dataset_id=#{datasetId};
+    </delete>
+
+</mapper>

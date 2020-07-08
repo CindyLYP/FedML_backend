@@ -1,16 +1,24 @@
 package com.fl.server.object;
 
 public class Task {
-    private String index;
+    private String email;
+    private String taskId;
     private String desc;
-    private String type ;
 
-    public String getIndex() {
-        return index;
+    public String getEmail() {
+        return email;
     }
 
-    public void setIndex(String index) {
-        this.index = index;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     public String getDesc() {
@@ -19,13 +27,5 @@ public class Task {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }
