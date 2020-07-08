@@ -3,7 +3,7 @@ package com.fl.server.object;
 public class Dataset {
     String taskId;
     String datasetId;
-    String features;
+    String filteringRules;
 
     public String getTaskId() {
         return taskId;
@@ -21,11 +21,11 @@ public class Dataset {
         this.datasetId = datasetId;
     }
 
-    public String getFeatures() {
-        return features;
+    public String getFilteringRules() {
+        return filteringRules;
     }
 
-    public void setFeatures(String features) {
-        this.features = features;
+    public void setFilteringRules(String filteringRules) {
+        this.filteringRules = filteringRules;
     }
 }

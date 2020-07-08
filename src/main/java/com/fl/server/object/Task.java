@@ -5,6 +5,16 @@ public class Task {
     private String taskId;
     private String desc;
 
+    public String getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(String features) {
+        this.features = features;
+    }
+
+    private String features;
+
     public String getEmail() {
         return email;
     }

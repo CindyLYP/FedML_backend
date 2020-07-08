@@ -6,7 +6,7 @@
     <resultMap id="DatasetMap" type="com.fl.server.object.Dataset">
         <id column="dataset_id" jdbcType="VARCHAR" property="datasetId"/>
         <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
-        <result column="features" jdbcType="VARCHAR" property="features"/>
+        <result column="filtering_rules" jdbcType="VARCHAR" property="filteringRules"/>
     </resultMap>
     <resultMap id="TrainMap" type="com.fl.server.object.Train">
         <id column="train_id" jdbcType="VARCHAR" property="trainId"/>
@@ -27,7 +27,7 @@
         insert into tasktrain (task_id,train_id,model_type,param_dim) values (#{train.taskId},#{train.trainId},#{train.modelType},#{train.paramDim});
     </insert>
     <insert id="createDatasetByTask">
-        insert into taskdataset (task_id,dataset_id,feature) values (#{dataset.taskId},#{dataset.datasetId},#{dataset.features});
+        insert into taskdataset (task_id,dataset_id,filtering_rules) values (#{dataset.taskId},#{dataset.datasetId},#{dataset.filteringRules});
     </insert>
 
     <select id="selectTaskByEmail" resultMap="TaskMap" resultType="com.fl.server.object.Task">
@@ -49,5 +49,9 @@
     <delete id="deleteDataset">
         delete from taskdataset where dataset_id=#{datasetId};
     </delete>
+
+    <update id="addSelectedFeaturesToTask">
+        update usertask set features=#{features} where task_id=#{taskId};
+    </update>
 
 </mapper>

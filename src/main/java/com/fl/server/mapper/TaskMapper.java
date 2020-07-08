@@ -21,5 +21,6 @@ public interface TaskMapper {
     Boolean deleteTrain(@Param("trainId") String trainId);
     Boolean deleteDataset(@Param("datasetId") String datasetId);
 
+    Boolean addSelectedFeaturesToTask(@Param("taskId") String taskId,@Param("features") String features);
 
 }
