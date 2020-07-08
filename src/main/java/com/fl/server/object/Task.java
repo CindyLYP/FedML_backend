@@ -4,6 +4,7 @@ public class Task {
     private String email;
     private String taskId;
     private String desc;
+    private String features;
 
     public String getFeatures() {
         return features;
@@ -12,8 +13,6 @@ public class Task {
     public void setFeatures(String features) {
         this.features = features;
     }
-
-    private String features;
 
     public String getEmail() {
         return email;

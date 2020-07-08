@@ -18,6 +18,7 @@
         <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="description" jdbcType="VARCHAR" property="desc"/>
+        <result column="features" jdbcType="VARCHAR" property="features"/>
     </resultMap>
 
     <insert id="createTaskByEmail">
