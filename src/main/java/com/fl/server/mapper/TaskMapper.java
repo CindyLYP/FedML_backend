@@ -4,10 +4,12 @@ package com.fl.server.mapper;
 import com.fl.server.object.Dataset;
 import com.fl.server.object.Task;
 import com.fl.server.object.Train;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 
+@Mapper
 public interface TaskMapper {
     Boolean createTaskByEmail(@Param("task") Task task);
     Boolean createTrainByTask(@Param("train") Train train);
@@ -21,5 +23,5 @@ public interface TaskMapper {
     Boolean deleteTrain(@Param("trainId") String trainId);
     Boolean deleteDataset(@Param("datasetId") String datasetId);
 
-
+    Boolean insert(Task task);
 }

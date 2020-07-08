@@ -16,13 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-public class Login{
+public class UserControl {
     @Autowired
     private UserMapper userMapper;
 
     @PostMapping("/login")
     @ResponseBody
-    public HashMap<String, Object> LoginCheck(
+    public HashMap<String, Object> UserLogin(
             @RequestParam("email") String email,
             @RequestParam("password") String password
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -33,7 +33,6 @@ public class Login{
 
         // get the usr information
         User user = userMapper.selectByEmail(email);
-
         // return message
         if (user == null){
             message.setState(false);
@@ -47,12 +46,35 @@ public class Login{
             message.setState(true);
             message.setMessage("user login successfully!");
         }
-        HashMap<String, Object> hashMap = new HashMap<String, Object>();
-
         String token = MD5.EncoderByMd5((new Date()).toString());
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("data", message);
         hashMap.put("token", token);
         return hashMap;
+    }
+
+
+    @PostMapping("/register")
+    @ResponseBody
+    public Message UserRegisterCheck(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("company") String company
+    ) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        User user = new User();
+        user.setPassword(MD5.EncoderByMd5(password));
+        user.setEmail(email);
+        user.setUsername(email);
+        user.setCompany(company);
+
+        // add to the db
+        Boolean status = userMapper.insert(user);
+
+        // return message
+        Message message = new Message();
+        message.setState(status);
+        message.setMessage(status? "register successfully" : "something is wrong here");
+        return message;
     }
 }
 //    @PostMapping("/GetTrainState")
@@ -125,9 +147,3 @@ public class Login{
 //    ) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 //    }
 //
-//    @PostMapping("/launchTask")
-//    @ResponseBody
-//    public <taskID, state> TaskLaunch(
-//            @RequestParam("describe") String email,
-//    ) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-//    }
