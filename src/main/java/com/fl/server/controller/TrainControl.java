@@ -7,6 +7,7 @@ import com.fl.server.object.Train;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -106,14 +107,23 @@ public class TrainControl {
         message.setState(status);
         message.setMessage(status? "get train batch info successfully" : "something is wrong here");
 
+        ArrayList<Double> recent_loss = new ArrayList<Double>();
+        recent_loss.add(0.11);
+        recent_loss.add(0.12);
+        recent_loss.add(0.13);
+
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("message", message);
         hashMap.put("n_rounds", 10);
-        hashMap.put("recent_loss", 0.11);
+        hashMap.put("recent_loss", recent_loss);
 
-        HashMap<String, Double> recent_metrics = new HashMap<String, Double>();
-        recent_metrics.put("auc", 0.5);
-        recent_metrics.put("ks", 0.2);
+        ArrayList<HashMap<String, Double>> recent_metrics = new ArrayList<HashMap<String, Double>>();
+        for(Double rl:recent_loss){
+            HashMap<String, Double> recent_metric = new HashMap<String, Double>();
+            recent_metric.put("auc", 0.5);
+            recent_metric.put("ks", 0.2);
+            recent_metrics.add(recent_metric);
+        }
 
         hashMap.put("recent_metrics", recent_metrics);
 
