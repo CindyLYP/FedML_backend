@@ -4,14 +4,12 @@ import com.fl.server.mapper.TaskMapper;
 import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins="*",maxAge = 3600)
 public class TaskControl {
     @Autowired
     private TaskMapper taskMapper;

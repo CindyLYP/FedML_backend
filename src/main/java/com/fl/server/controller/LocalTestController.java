@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 
 @Controller
+@CrossOrigin(origins="*",maxAge = 3600)
 public class LocalTestController {
 
     @Autowired

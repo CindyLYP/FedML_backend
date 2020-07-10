@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="*",maxAge = 3600)
 public class UserControl {
     @Autowired
     private UserMapper userMapper;
