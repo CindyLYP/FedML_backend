@@ -7,12 +7,13 @@
         <id column="dataset_id" jdbcType="VARCHAR" property="datasetId"/>
         <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
         <result column="filtering_rules" jdbcType="VARCHAR" property="filteringRules"/>
+        <result column="frac" property="frac"/>
     </resultMap>
     <resultMap id="TrainMap" type="com.fl.server.object.Train">
         <id column="train_id" jdbcType="VARCHAR" property="trainId"/>
         <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
         <result column="model_type" jdbcType="VARCHAR" property="modelType"/>
-        <result column="param_dim"  property="paramDim"/>
+        <result column="param_dim" jdbcType="VARCHAR" property="paramDim"/>
     </resultMap>
     <resultMap id="TaskMap" type="com.fl.server.object.Task">
         <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
@@ -28,7 +29,7 @@
         insert into tasktrain (task_id,train_id,model_type,param_dim) values (#{train.taskId},#{train.trainId},#{train.modelType},#{train.paramDim});
     </insert>
     <insert id="createDatasetByTask">
-        insert into taskdataset (task_id,dataset_id,filtering_rules) values (#{dataset.taskId},#{dataset.datasetId},#{dataset.filteringRules});
+        insert into taskdataset (task_id,dataset_id,filtering_rules,frac) values (#{dataset.taskId},#{dataset.datasetId},#{dataset.filteringRules},#{dataset.frac});
     </insert>
 
     <select id="selectTaskByEmail" resultMap="TaskMap" resultType="com.fl.server.object.Task">

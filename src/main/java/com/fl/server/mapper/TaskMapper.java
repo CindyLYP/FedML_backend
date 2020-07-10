@@ -15,7 +15,7 @@ public interface TaskMapper {
     Boolean createTrainByTask(@Param("train") Train train);
     Boolean createDatasetByTask(@Param("dataset") Dataset dataset);
 
-    Task selectTaskByEmail(@Param("email") String email);
+    ArrayList<Task> selectTaskByEmail(@Param("email") String email);
     ArrayList<Train> selectTrainByTask(@Param("taskId") String taskId);
     ArrayList<Dataset> selectDatasetByTask(@Param("taskId") String taskId);
 
