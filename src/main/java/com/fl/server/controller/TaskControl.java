@@ -54,7 +54,7 @@ public class TaskControl {
         System.out.println(selectsString);
 
         Boolean status = taskMapper.addSelectedFeaturesToTask(taskID, selectsString.toString());
-
+        System.out.println(status);
         // return message
         Message message = new Message();
         message.setState(status);
