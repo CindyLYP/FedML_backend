@@ -4,7 +4,7 @@ public class Train {
     String taskId;
     String trainId;
     String modelType;
-    int paramDim;
+    String paramDim;
 
     public String getTaskId() {
         return taskId;
@@ -30,11 +30,11 @@ public class Train {
         this.modelType = modelType;
     }
 
-    public int getParamDim() {
+    public String getParamDim() {
         return paramDim;
     }
 
-    public void setParamDim(int paramDim) {
+    public void setParamDim(String paramDim) {
         this.paramDim = paramDim;
     }
 }

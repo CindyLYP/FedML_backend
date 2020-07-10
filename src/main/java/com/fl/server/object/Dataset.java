@@ -4,13 +4,13 @@ public class Dataset {
     String taskId;
     String datasetId;
     String filteringRules;
-    Float frac;
+    Double frac;
 
-    public Float getFrac() {
+    public Double getFrac() {
         return frac;
     }
 
-    public void setFrac(Float frac) {
+    public void setFrac(Double frac) {
         this.frac = frac;
     }
 
