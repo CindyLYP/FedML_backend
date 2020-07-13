@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fl.server.mapper.DataSourceMapper">
+    <resultMap id="FeatureMap" type="com.fl.server.object.Features">
+        <result column="features" property="features"/>
+        <result column="owner" property="owner"/>
+        <result column="feat_type" property="featType"/>
+    </resultMap>
+    <resultMap id="ClientsMap" type="com.fl.server.object.Clients">
+        <result column="name" property="clientName"/>
+        <result column="address" property="address"/>
+        <result column="http_port" property="httpPort"/>
+        <result column="computation_port" property="computationPort"/>
+    </resultMap>
+    <select id="selectAllFeatures" resultMap="FeatureMap" resultType="com.fl.server.object.Features">
+        select * from risk_management;
+    </select>
+    <select id="selectAllClients" resultMap="ClientsMap" resultType="com.fl.server.object.Clients">
+        select * from clients;
+    </select>
+</mapper>
