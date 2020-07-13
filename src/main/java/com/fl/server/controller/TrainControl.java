@@ -25,14 +25,15 @@ public class TrainControl {
         @RequestParam("modelName") String modelName,
         @RequestParam("parameters") String parameters
         ) {
-        Train train = new Train();
-        train.setModelType(modelName);
-        train.setParamDim(parameters);
-        train.setTrainId("Train_" + taskID + "_"  + (new Date()).toString());
-        train.setTaskId(taskID);
-
-        // add to the db
-        Boolean status = taskMapper.createTrainByTask(train);
+//        Train train = new Train();
+//        train.setModelType(modelName);
+//        train.setParamDim(parameters);
+//        train.setTrainId("test_"+taskID);
+//        train.setTaskId(taskID);
+//
+//        // add to the db
+//        Boolean status = taskMapper.createTrainByTask(train);
+        Boolean status = true;
 
         // return message
         Message message = new Message();
@@ -41,7 +42,8 @@ public class TrainControl {
 
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("message", message);
-        hashMap.put("trainID", train.getTrainId());
+//        hashMap.put("trainID", train.getTrainId());
+        hashMap.put("trainID", 111);
         return hashMap;
 
     }
@@ -51,7 +53,8 @@ public class TrainControl {
     public Message TrainDelete(
         @RequestParam("trainID") String trainID
     ) {
-        boolean status = taskMapper.deleteTrain(trainID);
+//        boolean status = taskMapper.deleteTrain(trainID);
+        boolean status = true;
 
         // return message
         Message message = new Message();
