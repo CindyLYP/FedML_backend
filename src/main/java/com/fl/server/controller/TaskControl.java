@@ -1,7 +1,7 @@
 package com.fl.server.controller;
 
+import com.fl.server.mapper.DataSourceMapper;
 import com.fl.server.mapper.TaskMapper;
-import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +13,28 @@ import java.util.*;
 public class TaskControl {
     @Autowired
     private TaskMapper taskMapper;
+    private DataSourceMapper dataSourceMapper;
+
+    @PostMapping("/dataSourceReq")
+    @ResponseBody
+    public HashMap<String, Object> DataSourceReq(
+    ) {
+        // add to the db
+        ArrayList<Feature> featuresList = dataSourceMapper.selectAllFeatures();
+
+        // return message
+        Boolean status = true;
+        Message message = new Message();
+        message.setState(status);
+        message.setMessage(status? "data source request successfully" : "something is wrong here");
+
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("message", message);
+        hashMap.put("features", featuresList);
+        return hashMap;
+    }
+
+
 
     @PostMapping("/launchTask")
     @ResponseBody

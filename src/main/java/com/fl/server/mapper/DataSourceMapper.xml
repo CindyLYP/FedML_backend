@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fl.server.mapper.DataSourceMapper">
-    <resultMap id="FeatureMap" type="com.fl.server.object.Features">
+    <resultMap id="FeatureMap" type="com.fl.server.object.Feature">
         <result column="features" property="features"/>
         <result column="owner" property="owner"/>
         <result column="feat_type" property="featType"/>
@@ -14,7 +14,7 @@
         <result column="http_port" property="httpPort"/>
         <result column="computation_port" property="computationPort"/>
     </resultMap>
-    <select id="selectAllFeatures" resultMap="FeatureMap" resultType="com.fl.server.object.Features">
+    <select id="selectAllFeatures" resultMap="FeatureMap" resultType="com.fl.server.object.Feature">
         select * from risk_management;
     </select>
     <select id="selectAllClients" resultMap="ClientsMap" resultType="com.fl.server.object.Clients">

@@ -43,7 +43,7 @@ public class TrainControl {
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("message", message);
 //        hashMap.put("trainID", train.getTrainId());
-        hashMap.put("trainID", 111);
+        hashMap.put("trainID", "0713" + taskID);
         return hashMap;
 
     }

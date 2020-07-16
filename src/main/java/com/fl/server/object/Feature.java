@@ -1,16 +1,16 @@
 package com.fl.server.object;
 
-public class Features {
-    private String features;
+public class Feature {
+    private String feature;
     private String owner;
     private String featType;
 
-    public String getFeatures() {
-        return features;
+    public String getFeature() {
+        return feature;
     }
 
-    public void setFeatures(String features) {
-        this.features = features;
+    public void setFeature(String features) {
+        this.feature = features;
     }
 
     public String getOwner() {
