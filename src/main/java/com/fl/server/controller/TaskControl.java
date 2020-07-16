@@ -20,7 +20,7 @@ public class TaskControl {
     public HashMap<String, Object> DataSourceReq(
     ) {
         // add to the db
-        ArrayList<Feature> featuresList = dataSourceMapper.selectAllFeatures();
+        ArrayList<Client> clientsList = dataSourceMapper.selectAllClients();
 
         // return message
         Boolean status = true;
@@ -30,7 +30,40 @@ public class TaskControl {
 
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("message", message);
-        hashMap.put("features", featuresList);
+        hashMap.put("clients", clientsList);
+        return hashMap;
+    }
+
+
+    @PostMapping("/dataFeatReq")
+    @ResponseBody
+    public HashMap<String, Object> DataFeatsReq(
+        @RequestParam("clientsList")  ArrayList<Client> clientsList
+    ) {
+        // add to the db
+        ArrayList<Feature> featuresList = dataSourceMapper.selectAllFeatures();
+
+
+        // generate the req
+        ArrayList<Feature> resFeaturesList = new ArrayList<Feature>();
+
+        for(Client client:clientsList){
+            for(Feature feature:featuresList){
+                if(client.getClientName().equals(feature.getOwner())){
+                    resFeaturesList.add(feature);
+                }
+            }
+        }
+
+        // return message
+        Boolean status = true;
+        Message message = new Message();
+        message.setState(status);
+        message.setMessage(status? "data features request successfully" : "something is wrong here");
+
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("message", message);
+        hashMap.put("resFeaturesList", resFeaturesList);
         return hashMap;
     }
 

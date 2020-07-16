@@ -8,7 +8,7 @@
         <result column="owner" property="owner"/>
         <result column="feat_type" property="featType"/>
     </resultMap>
-    <resultMap id="ClientsMap" type="com.fl.server.object.Clients">
+    <resultMap id="ClientsMap" type="com.fl.server.object.Client">
         <result column="name" property="clientName"/>
         <result column="address" property="address"/>
         <result column="http_port" property="httpPort"/>
@@ -17,7 +17,7 @@
     <select id="selectAllFeatures" resultMap="FeatureMap" resultType="com.fl.server.object.Feature">
         select * from risk_management;
     </select>
-    <select id="selectAllClients" resultMap="ClientsMap" resultType="com.fl.server.object.Clients">
+    <select id="selectAllClients" resultMap="ClientsMap" resultType="com.fl.server.object.Client">
         select * from clients;
     </select>
 </mapper>

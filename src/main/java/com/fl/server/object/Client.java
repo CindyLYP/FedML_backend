@@ -1,6 +1,6 @@
 package com.fl.server.object;
 
-public class Clients {
+public class Client {
     private String clientName;
     private String address;
     private int httpPort;
