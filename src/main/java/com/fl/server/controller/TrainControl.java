@@ -110,10 +110,13 @@ public class TrainControl {
         message.setState(status);
         message.setMessage(status? "get train batch info successfully" : "something is wrong here");
 
-        ArrayList<Double> recent_loss = new ArrayList<Double>();
-        recent_loss.add(0.11);
-        recent_loss.add(0.12);
-        recent_loss.add(0.13);
+        ArrayList<HashMap<String, Double>> recent_loss = new ArrayList<HashMap<String, Double>>();
+        for(Double i = 1; x < 4; i = i+1) {
+            HashMap<String, Double> hashMap = new HashMap<String, Double>();
+            hashMap.put("index", i);
+            hashMap.put("value", i*0.1+1);
+            recent_loss.add(hashMap);
+        }
 
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("message", message);
@@ -121,8 +124,9 @@ public class TrainControl {
         hashMap.put("recent_loss", recent_loss);
 
         ArrayList<HashMap<String, Double>> recent_metrics = new ArrayList<HashMap<String, Double>>();
-        for(Double rl:recent_loss){
+        for(Double i = 1; x < 4; i = i+1){
             HashMap<String, Double> recent_metric = new HashMap<String, Double>();
+            recent_metric.put("index", i);
             recent_metric.put("auc", 0.5);
             recent_metric.put("ks", 0.2);
             recent_metrics.add(recent_metric);
