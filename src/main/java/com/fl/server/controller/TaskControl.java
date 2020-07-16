@@ -22,6 +22,12 @@ public class TaskControl {
         // add to the db
         ArrayList<Client> clientsList = dataSourceMapper.selectAllClients();
 
+        // generate the req
+        ArrayList<String> resClientsList = new ArrayList<String>();
+        for(Client client:clientsList){
+            resClientsList.add(client.getClientName());
+        }
+
         // return message
         Boolean status = true;
         Message message = new Message();
@@ -30,7 +36,7 @@ public class TaskControl {
 
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("message", message);
-        hashMap.put("clients", clientsList);
+        hashMap.put("clients", resClientsList);
         return hashMap;
     }
 
@@ -38,7 +44,7 @@ public class TaskControl {
     @PostMapping("/dataFeatReq")
     @ResponseBody
     public HashMap<String, Object> DataFeatsReq(
-        @RequestParam("clientsList")  ArrayList<Client> clientsList
+        @RequestParam("clientsList")  ArrayList<String> clientsList
     ) {
         // add to the db
         ArrayList<Feature> featuresList = dataSourceMapper.selectAllFeatures();
@@ -47,9 +53,9 @@ public class TaskControl {
         // generate the req
         ArrayList<Feature> resFeaturesList = new ArrayList<Feature>();
 
-        for(Client client:clientsList){
+        for(String client:clientsList){
             for(Feature feature:featuresList){
-                if(client.getClientName().equals(feature.getOwner())){
+                if(client.equals(feature.getOwner())){
                     resFeaturesList.add(feature);
                 }
             }
