@@ -1,9 +1,11 @@
 package com.fl.server.controller;
 
 
+import com.fl.server.mapper.DataSourceMapper;
 import com.fl.server.mapper.TaskMapper;
 import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.Dataset;
+import com.fl.server.object.Feature;
 import com.fl.server.object.Task;
 import com.fl.server.object.User;
 
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 public class LocalTestController {
 
     @Autowired
-     private UserMapper userMapper;
+     private DataSourceMapper dataSourceMapper;
 
     @Autowired
     private TaskMapper taskMapper;
@@ -33,17 +35,12 @@ public class LocalTestController {
         String name = ResponseUser.getUsername();
         String pwd = ResponseUser.getPassword();
         System.out.println("receive json from frontend");
+        ArrayList<Feature> d = dataSourceMapper.selectAllFeatures();
 
-        ResponseUser.setCompany("jztb");
-        ResponseUser.setEmail("ysc@xjtu.edu.cn");
-        Task task = new Task();
-        task.setEmail("hello");
-        task.setTaskId("2001");
-        task.setDesc("hello world");
-        taskMapper.createTaskByEmail(task);
-        ArrayList<Dataset> d = taskMapper.selectDatasetByTask("1003");
-        for (int i=0;i<d.size();i++)
-        System.out.println(d.get(i).getDatasetId());
+        for (Feature x :d){
+
+            System.out.println(x.getFeature());
+        }
         return 1;
     }
 }

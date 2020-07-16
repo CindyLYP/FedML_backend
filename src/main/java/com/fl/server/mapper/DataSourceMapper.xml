@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fl.server.mapper.DataSourceMapper">
     <resultMap id="FeatureMap" type="com.fl.server.object.Feature">
-        <result column="features" property="features"/>
+        <result column="features" property="feature"/>
         <result column="owner" property="owner"/>
         <result column="feat_type" property="featType"/>
     </resultMap>
