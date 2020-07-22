@@ -42,7 +42,7 @@ public class TrainControl {
 
         // Boolean status = taskComm.TestTrainLaunch();
         boolean status = taskComm.TrainLaunch();
-
+        status = taskComm.TrainStart();
         // return message
         Message message = new Message();
         message.setState(status);

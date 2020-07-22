@@ -65,8 +65,8 @@ public class TaskComm {
         HashMap<String, Object> feature_client = GenerateHMSO();
         feature_client.put("addr", "127.0.0.1");
         feature_client.put("http_port", port);
-        feature_client.put("computation_port", datafile);
-        feature_client.put("data_file", port+1);
+        feature_client.put("computation_port", port+1);
+        feature_client.put("data_file", datafile);
         feature_client.put("dim", dim);
         return feature_client;
     }
@@ -74,7 +74,7 @@ public class TaskComm {
     private HashMap<String, Object> LoadData(){
         HashMap<String, Object> task_request = new HashMap<String, Object>();
 
-        task_request.put("task_name", "test");
+        task_request.put("task_name", "test4");
         task_request.put("model_name", "shared_nn");
 
         // load config
@@ -121,43 +121,68 @@ public class TaskComm {
         return true;
     }
 
-    public boolean TestTrainLaunch(){
-        String urlTaskLaunch = "http://192.168.1.105:8888/loginReq";
-        //System.out.println(urlTaskLaunch);
-
-        HashMap<String, Object> req = new HashMap<String, Object>();
-        req.put("username", "123");
-        req.put("password", "123");
-        //System.out.println("req generated");
-
-        JSONObject jsonObj = new JSONObject(req);
-        //System.out.println(jsonObj.toString());
-        String content = jsonObj.toString();
+    public boolean TrainStart(){
+        String urlTaskLaunch = "http://192.168.1.111:8380/startTask";
+        System.out.println(urlTaskLaunch);
 
         try {
-
             RestTemplate restTemplate = new RestTemplate();
+//            HashMap<String, Object> req = new HashMap<String, Object>();
+//            req.put("task_name", "test2");
 
-            //String jsonString = "{\"username\":\"123\",\"password\":\"123\"}";
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            //HttpEntity<String> strEntity = new HttpEntity<String>(jsonString, headers);
-            //System.out.println(strEntity.toString());
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            //HttpEntity<HashMap<String, Object>> request = new HttpEntity<>(req, headers);
 
-            MultiValueMap<String, Object> map= new LinkedMultiValueMap<>();
-            map.add("username", "123");
-            map.add("password", "123");
-            HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(map, headers);
-
-            ResponseEntity<String> response = restTemplate.postForEntity(urlTaskLaunch, request, String.class);
+            //System.out.println(request.toString());
+            ResponseEntity<String> response = restTemplate.getForEntity(urlTaskLaunch + "?task_name=test4", String.class);
             System.out.println(response.getBody());
 
         }catch (HttpClientErrorException e){
-            e.printStackTrace();
             System.out.println("http post fail!");
             return false;
         }
 
         return true;
     }
+
+//    public boolean TestTrainLaunch(){
+//        String urlTaskLaunch = "http://192.168.1.105:8888/loginReq";
+//        //System.out.println(urlTaskLaunch);
+//
+//        HashMap<String, Object> req = new HashMap<String, Object>();
+//        req.put("username", "123");
+//        req.put("password", "123");
+//        //System.out.println("req generated");
+//
+//        JSONObject jsonObj = new JSONObject(req);
+//        //System.out.println(jsonObj.toString());
+//        String content = jsonObj.toString();
+//
+//        try {
+//
+//            RestTemplate restTemplate = new RestTemplate();
+//
+//            //String jsonString = "{\"username\":\"123\",\"password\":\"123\"}";
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//            //HttpEntity<String> strEntity = new HttpEntity<String>(jsonString, headers);
+//            //System.out.println(strEntity.toString());
+//
+//            MultiValueMap<String, Object> map= new LinkedMultiValueMap<>();
+//            map.add("username", "123");
+//            map.add("password", "123");
+//            HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(map, headers);
+//
+//            ResponseEntity<String> response = restTemplate.postForEntity(urlTaskLaunch, request, String.class);
+//            System.out.println(response.getBody());
+//
+//        }catch (HttpClientErrorException e){
+//            e.printStackTrace();
+//            System.out.println("http post fail!");
+//            return false;
+//        }
+//
+//        return true;
+//    }
 }
