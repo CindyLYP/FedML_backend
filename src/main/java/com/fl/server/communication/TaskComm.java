@@ -74,7 +74,7 @@ public class TaskComm {
     private HashMap<String, Object> LoadData(){
         HashMap<String, Object> task_request = new HashMap<String, Object>();
 
-        task_request.put("task_name", "test4");
+        task_request.put("task_name", "test5");
         task_request.put("model_name", "shared_nn");
 
         // load config
@@ -127,15 +127,11 @@ public class TaskComm {
 
         try {
             RestTemplate restTemplate = new RestTemplate();
-//            HashMap<String, Object> req = new HashMap<String, Object>();
-//            req.put("task_name", "test2");
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            //HttpEntity<HashMap<String, Object>> request = new HttpEntity<>(req, headers);
+            HashMap<String, Object> req = new HashMap<String, Object>();
+            req.put("task_name", "test5");
 
             //System.out.println(request.toString());
-            ResponseEntity<String> response = restTemplate.getForEntity(urlTaskLaunch + "?task_name=test4", String.class);
+            ResponseEntity<String> response = restTemplate.getForEntity(urlTaskLaunch + "?task_name={task_name}", String.class, req);
             System.out.println(response.getBody());
 
         }catch (HttpClientErrorException e){
