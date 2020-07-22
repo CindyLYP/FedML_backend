@@ -13,6 +13,8 @@ import java.util.*;
 public class TaskControl {
     @Autowired
     private TaskMapper taskMapper;
+
+    @Autowired
     private DataSourceMapper dataSourceMapper;
 
     @PostMapping("/dataSourceReq")

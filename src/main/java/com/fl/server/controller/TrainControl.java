@@ -1,12 +1,13 @@
 package com.fl.server.controller;
 
+import com.fl.server.communication.TaskComm;
 import com.fl.server.mapper.TaskMapper;
 import com.fl.server.object.Message;
 import com.fl.server.object.Task;
 import com.fl.server.object.Train;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import com.fl.server.communication.TaskComm;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +17,9 @@ import java.util.HashMap;
 public class TrainControl {
     @Autowired
     private TaskMapper taskMapper;
+
+
+    private TaskComm taskComm = new TaskComm();
 
     @PostMapping("/trainLaunch")
     @ResponseBody
@@ -33,7 +37,11 @@ public class TrainControl {
 //
 //        // add to the db
 //        Boolean status = taskMapper.createTrainByTask(train);
-        Boolean status = true;
+        System.out.println(taskID);
+        System.out.println(modelName);
+
+        // Boolean status = taskComm.TestTrainLaunch();
+        boolean status = taskComm.TrainLaunch();
 
         // return message
         Message message = new Message();

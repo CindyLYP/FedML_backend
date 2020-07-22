@@ -21,19 +21,18 @@ public class UserControl {
     @Autowired
     private UserMapper userMapper;
 
-    @PostMapping("/login")
+    @PostMapping("/loginReq")
     @ResponseBody
     public HashMap<String, Object> UserLogin(
-            @RequestParam("email") String email,
+            @RequestParam("username") String username,
             @RequestParam("password") String password
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-
         Message message = new Message();
         // get the hash password
         String hashPassword = MD5.EncoderByMd5(password);
 
         // get the usr information
-        User user = userMapper.selectByEmail(email);
+        User user = userMapper.selectByEmail(username);
         // return message
         if (user == null){
             message.setState(false);
@@ -48,24 +47,26 @@ public class UserControl {
             message.setMessage("user login successfully!");
         }
         String token = MD5.EncoderByMd5((new Date()).toString());
+
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
-        hashMap.put("data", message);
+        hashMap.put("message", message);
         hashMap.put("token", token);
         return hashMap;
     }
 
 
-    @PostMapping("/register")
+    @PostMapping("/userReg")
     @ResponseBody
     public Message UserRegisterCheck(
-            @RequestParam("email") String email,
+            @RequestParam("username") String username,
             @RequestParam("password") String password,
-            @RequestParam("company") String company
+            @RequestParam("company") String company,
+            @RequestParam("classify") String classify
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         User user = new User();
         user.setPassword(MD5.EncoderByMd5(password));
-        user.setEmail(email);
-        user.setUsername(email);
+        user.setEmail(username);
+        user.setUsername(username);
         user.setCompany(company);
 
         // add to the db
