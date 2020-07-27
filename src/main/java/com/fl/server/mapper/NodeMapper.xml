@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fl.server.mapper.NodeMapper">
+    <resultMap id="Node" type="com.fl.server.pojo.Node">
+        <id column="id"  property="id"/>
+        <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
+        <result column="ip_address" jdbcType="VARCHAR" property="ipAddress"/>
+        <result column="port" jdbcType="VARCHAR" property="port"/>
+        <result column="csv_path" jdbcType="VARCHAR" property="csvPath"/>
+        <result column="logo"  property="logo"/>
+    </resultMap>
+    <select id="getAllNode" resultMap="Node" resultType="com.fl.server.pojo.Node">
+        select * from node;
+    </select>
+    <insert id="insert">
+        insert into node (node_name,ip_address,port,csv_path,logo) values (#{node.nodeName},#{node.ipAddress},#{node.port},#{node.csvPath},#{node.logo})
+    </insert>
+    <update id="update">
+        update node set node_name=#{node.nodeName},ip_address=#{node.ipAddress},port=#{node.port},csv_path=#{node.csvPath},logo=#{node.logo} where id=#{node.id};
+    </update>
+    <delete id="delete">
+        delete from node where node_name=#{nodeName};
+    </delete>
+</mapper>

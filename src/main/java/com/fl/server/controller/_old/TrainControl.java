@@ -1,7 +1,7 @@
 package com.fl.server.controller._old;
 
 import com.fl.server.communication.TaskComm;
-import com.fl.server.mapper.TaskMapper;
+import com.fl.server.mapper.old.TaskMapper;
 import com.fl.server.object.tools.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

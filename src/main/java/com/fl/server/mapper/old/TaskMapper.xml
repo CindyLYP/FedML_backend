@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fl.server.mapper.TaskMapper">
+<mapper namespace="com.fl.server.mapper.old.TaskMapper">
     <resultMap id="DatasetMap" type="com.fl.server.object.old.Dataset">
         <id column="dataset_id" jdbcType="VARCHAR" property="datasetId"/>
         <result column="task_id" jdbcType="VARCHAR" property="taskId"/>

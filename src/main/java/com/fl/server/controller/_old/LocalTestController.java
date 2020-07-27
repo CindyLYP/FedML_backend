@@ -1,8 +1,8 @@
 package com.fl.server.controller._old;
 
 
-import com.fl.server.mapper.DataSourceMapper;
-import com.fl.server.mapper.TaskMapper;
+import com.fl.server.mapper.old.DataSourceMapper;
+import com.fl.server.mapper.old.TaskMapper;
 import com.fl.server.object.old.Feature;
 import com.fl.server.object.old.User;
 

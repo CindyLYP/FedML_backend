@@ -1,6 +1,6 @@
 package com.fl.server.controller._old;
 
-import com.fl.server.mapper.UserMapper;
+import com.fl.server.mapper.old.UserMapper;
 import com.fl.server.object.old.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
