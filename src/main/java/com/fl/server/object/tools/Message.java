@@ -19,4 +19,9 @@ public class Message {
     public void setState(boolean state) {
         this.state = state;
     }
+
+    public void set(boolean state, String message) {
+        this.state = state;
+        this.message = message;
+    }
 }
