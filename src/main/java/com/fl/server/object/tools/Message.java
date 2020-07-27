@@ -1,4 +1,4 @@
-package com.fl.server.object.old;
+package com.fl.server.object.tools;
 
 public class Message {
     private String message;

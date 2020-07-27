@@ -5,7 +5,7 @@ import com.fl.server.object.old.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.fl.server.object.old.User;
-import com.fl.server.object.old.Message;
+import com.fl.server.object.tools.Message;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;

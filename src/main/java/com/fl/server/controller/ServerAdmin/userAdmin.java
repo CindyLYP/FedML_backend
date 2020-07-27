@@ -1,6 +1,5 @@
 package com.fl.server.controller.ServerAdmin;
 
-import com.fl.server.object.NodeRef.NodeInfo;
 import com.fl.server.object.tools.Message;
 import com.fl.server.object.tools.TypeFactor;
 import org.springframework.web.bind.annotation.*;
@@ -8,37 +7,40 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-// 平台管理-节点管理页
+// 平台管理-用户管理页
 @RestController
 @CrossOrigin(origins="*",maxAge = 3600)
-public class nodeAdmin {
+public class userAdmin {
     //@Autowired
     //private UserMapper userMapper;
 
-    // 节点查询
-    @PostMapping("/nodeReq")
+    // 查询用户
+    @PostMapping("/userReq")
     @ResponseBody
     public HashMap<String, Object> NodeReq(
+            @RequestParam("askUserType") String askUserType,
+            @RequestParam("askUserAccount") String askUserAccount,
+
             @RequestParam("operator") String operator
     ) {
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
 
-
         try {
             // 处理数据库逻辑
-            // boolean status = ReqNodes
-
-            int nodesNum = 10;
-            output.put("nodesNum", nodesNum);
-
-            ArrayList<Object> nodes = TypeFactor.GenerateALO();
-            for(int i = 0; i < nodesNum; i+=1){
-                HashMap<String, Object> node = TypeFactor.GenerateHMSO();
+            if (askUserType.equals("") && askUserAccount.equals("")){
 
             }
+            else if(!askUserType.equals("")){
+
+            }
+            else{
+
+            }
+            // boolean status = ReqNodes
+
+
 
 
             message.setState(true);
@@ -55,15 +57,15 @@ public class nodeAdmin {
     }
 
 
-    // 创建节点
-    @PostMapping("/nodeCreate")
+    // 创建用户
+    @PostMapping("/userCreate")
     @ResponseBody
     public HashMap<String, Object> NodeCreate(
-            @RequestParam("nodeName") String nodeName,
-            @RequestParam("ipAddress") String ipAddress,
-            @RequestParam("port") String port,
-            @RequestParam("CSV_path") String CSV_path,
-            @RequestParam("logo") String logo,
+            @RequestParam("userName") String userName,
+            @RequestParam("userAccount") String userAccount,
+            @RequestParam("password") String password,
+            @RequestParam("userType") String userType,
+            @RequestParam("institution") String institution,
 
             @RequestParam("operator") String operator
     ) {
@@ -90,15 +92,15 @@ public class nodeAdmin {
     }
 
 
-    // 修改节点
-    @PostMapping("/nodeModify")
+    // 修改用户
+    @PostMapping("/userModify")
     @ResponseBody
     public HashMap<String, Object> NodeModify(
-            @RequestParam("nodeName") String nodeName,
-            @RequestParam("ipAddress") String ipAddress,
-            @RequestParam("port") String port,
-            @RequestParam("CSV_path") String CSV_path,
-            @RequestParam("logo") String logo,
+            @RequestParam("userName") String userName,
+            @RequestParam("userAccount") String userAccount,
+            @RequestParam("password") String password,
+            @RequestParam("userType") String userType,
+            @RequestParam("institution") String institution,
 
             @RequestParam("operator") String operator
     ) {
@@ -124,11 +126,11 @@ public class nodeAdmin {
         return output;
     }
 
-    // 删除节点
-    @PostMapping("/nodeDelete")
+    // 删除用户
+    @PostMapping("/userDelete")
     @ResponseBody
     public HashMap<String, Object> NodeDelete(
-            @RequestParam("nodeName") String nodeName,
+            @RequestParam("userAccount") String userAccount,
 
             @RequestParam("operator") String operator
     ) {
