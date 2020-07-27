@@ -1,0 +1,25 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fl.server.mapper.DataDictMapper">
+    <resultMap id="Dict" type="com.fl.server.pojo.Scene">
+        <id column="id"  property="id"/>
+        <result column="provider_id" property="providerId"/>
+        <result column="attr_name" jdbcType="VARCHAR" property="attrName"/>
+        <result column="cn_name" jdbcType="VARCHAR" property="cnName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="data_type" jdbcType="VARCHAR" property="dataType"/>
+        <result column="attr_class" jdbcType="VARCHAR" property="attrClass"/>
+        <result column="provider" jdbcType="VARCHAR" property="provider"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+    </resultMap>
+    <select id="getAllDataDict" resultMap="Dict" resultType="com.fl.server.pojo.DataDict">
+        select * from data_dict;
+    </select>
+    <select id="selectByProvider" resultMap="Dict" resultType="com.fl.server.pojo.DataDict">
+        select * from data_dict where provider=#{provider};
+    </select>
+    <select id="selectLabelByProvider" resultMap="Dict" resultType="com.fl.server.pojo.DataDict">
+        select * from data_dict where provider=#{provider} and attr_class="标签";
+    </select>
+</mapper>
