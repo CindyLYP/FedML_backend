@@ -1,19 +1,16 @@
-package com.fl.server.controller;
+package com.fl.server.controller._old;
 
 import com.fl.server.mapper.UserMapper;
-import com.fl.server.object.MD5;
-import org.apache.coyote.Response;
+import com.fl.server.object.old.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.fl.server.object.User;
-import com.fl.server.object.Message;
+import com.fl.server.object.old.User;
+import com.fl.server.object.old.Message;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins="*",maxAge = 3600)

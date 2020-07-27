@@ -1,9 +1,9 @@
 package com.fl.server.mapper;
 
 
-import com.fl.server.object.Dataset;
-import com.fl.server.object.Task;
-import com.fl.server.object.Train;
+import com.fl.server.object.old.Dataset;
+import com.fl.server.object.old.Task;
+import com.fl.server.object.old.Train;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

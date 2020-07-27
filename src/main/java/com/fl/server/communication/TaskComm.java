@@ -1,15 +1,9 @@
 package com.fl.server.communication;
 
-import com.fl.server.object.Message;
-import org.assertj.core.util.Maps;
-import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -98,7 +92,7 @@ public class TaskComm {
     }
 
     public boolean TrainLaunch(){
-        String urlTaskLaunch = "http://192.168.1.111:8380/createTask";
+        String urlTaskLaunch = "http://127.0.0.1:8380/createTask";
         System.out.println(urlTaskLaunch);
 
         try {
@@ -122,7 +116,7 @@ public class TaskComm {
     }
 
     public boolean TrainStart(){
-        String urlTaskLaunch = "http://192.168.1.111:8380/startTask";
+        String urlTaskLaunch = "http://127.0.0.1:8380/startTask";
         System.out.println(urlTaskLaunch);
 
         try {

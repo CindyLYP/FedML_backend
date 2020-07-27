@@ -1,4 +1,4 @@
-package com.fl.server.object;
+package com.fl.server.object.old;
 
 public class ValidateState {
     private String trainIndex;

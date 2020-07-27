@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fl.server.mapper.UserMapper">
-    <select id="selectByEmail" resultType="com.fl.server.object.User">
+    <select id="selectByEmail" resultType="com.fl.server.object.old.User">
         select * from user where email=#{email};
     </select>
 

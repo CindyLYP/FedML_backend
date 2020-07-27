@@ -1,7 +1,7 @@
 package com.fl.server.mapper;
 
 
-import com.fl.server.object.User;
+import com.fl.server.object.old.User;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {

@@ -3,21 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fl.server.mapper.DataSourceMapper">
-    <resultMap id="FeatureMap" type="com.fl.server.object.Feature">
+    <resultMap id="FeatureMap" type="com.fl.server.object.old.Feature">
         <result column="features" property="feature"/>
         <result column="owner" property="owner"/>
         <result column="feat_type" property="featType"/>
     </resultMap>
-    <resultMap id="ClientsMap" type="com.fl.server.object.Client">
+    <resultMap id="ClientsMap" type="com.fl.server.object.old.Client">
         <result column="name" property="clientName"/>
         <result column="address" property="address"/>
         <result column="http_port" property="httpPort"/>
         <result column="computation_port" property="computationPort"/>
     </resultMap>
-    <select id="selectAllFeatures" resultMap="FeatureMap" resultType="com.fl.server.object.Feature">
+    <select id="selectAllFeatures" resultMap="FeatureMap" resultType="com.fl.server.object.old.Feature">
         select * from risk_management;
     </select>
-    <select id="selectAllClients" resultMap="ClientsMap" resultType="com.fl.server.object.Client">
+    <select id="selectAllClients" resultMap="ClientsMap" resultType="com.fl.server.object.old.Client">
         select * from clients;
     </select>
 </mapper>

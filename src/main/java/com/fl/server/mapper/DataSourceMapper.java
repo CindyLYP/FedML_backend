@@ -1,7 +1,7 @@
 package com.fl.server.mapper;
 
-import com.fl.server.object.Client;
-import com.fl.server.object.Feature;
+import com.fl.server.object.old.Client;
+import com.fl.server.object.old.Feature;
 
 import java.util.ArrayList;
 
