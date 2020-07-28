@@ -1,0 +1,34 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fl.server.mapper.TaskMapper">
+    <resultMap id="Task" type="com.fl.server.pojo.Task">
+        <id column="id"  property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="scene_id" property="sceneId"/>
+        <result column="dataset_id" property="datasetId"/>
+        <result column="task_name" property="taskName"/>
+        <result column="model_name" property="modelName"/>
+        <result column="parameters" property="parameters"/>
+        <result column="metrics" property="metrics"/>
+        <result column="train_info" property="trainInfo"/>
+        <result column="task_status" property="taskStatus"/>
+    </resultMap>
+    <select id="selectByUserAndScene" resultMap="Task" resultType="com.fl.server.pojo.Task">
+        select * from task where user_id=#{userId} and scene_id=#{sceneId};
+    </select>
+    <select id="selectByTaskName" resultMap="Task" resultType="com.fl.server.pojo.Task">
+        select * from task where task_name=#{taskName};
+    </select>
+    <insert id="insert">
+        insert into task (user_id,scene_id,dataset_id,task_name,model_name,parameters,metrics,train_info,task_status) values
+        (#{task.userId},#{task.sceneId},#{task.datasetId},#{task.taskName},#{task.modelName},#{task.parameters},#{task.metrics},#{task.train_info},#{task.taks_status});
+    </insert>
+    <update id="update">
+        update task set (user_id=#{task.userId},dataset_id=#{task.sceneId},dataset_id=#{task.datasetId},task_name=#{task.taskName},model_name=#{task.modelName},parameters=#{task.parameters},metrics=#{task.metrics},train_info=#{task.train_info},task_status=#{task.taks_status})
+        where id=#{task.id};
+    </update>
+    <delete id="delete">
+        delete from task where task_name=#{taskName};
+    </delete>
+</mapper>

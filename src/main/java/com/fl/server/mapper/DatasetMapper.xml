@@ -1,0 +1,31 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fl.server.mapper.DatasetMapper">
+    <resultMap id="Dataset" type="com.fl.server.pojo.Dataset">
+        <id column="id"  property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="scene_id" property="sceneId"/>
+        <result column="attr_info" property="attrInfo"/>
+        <result column="dataset_name" property="datasetName"/>
+        <result column="aligned_num" property="alignedNum"/>
+        <result column="timestamp" property="timestamp"/>
+    </resultMap>
+    <select id="getAllDataset" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
+        select * from dataset;
+    </select>
+    <select id="selectByDatasetName" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
+        select * from dataset where dataset_name=#{name};
+    </select>
+    <insert id="insert">
+        insert into dataset (user_id,scene_id,attr_info,dataset_name,aligned_num,timestamp) values
+        (#{dsb.userId},#{dsb.sceneId},#{dsb.attrInfo},#{dsb.datasetName},#{dsb.alignedNum},#{dsb.timestamp});
+    </insert>
+    <update id="update">
+        update dataset set (user_id=#{dsb.userId},scene_id=#{dsb.sceneId},attr_info=#{dsb.attrInfo},dataset_name=#{dsb.datasetName},aligned_num=#{dsb.alignedNum},timestamp=#{dsb.timestamp})
+        where id=#{dsb.id};
+    </update>
+    <delete id="delete">
+        delete from dataset where dataset_name=#{name};
+    </delete>
+</mapper>

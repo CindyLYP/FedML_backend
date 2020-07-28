@@ -6,7 +6,16 @@ public class Node {
     private String ipAddress;
     private String port;
     private String csvPath;
-    private byte[] logo;
+    private String logo;
+    private String nodeStatus;
+
+    public String getNodeStatus() {
+        return nodeStatus;
+    }
+
+    public void setNodeStatus(String nodeStatus) {
+        this.nodeStatus = nodeStatus;
+    }
 
     public int getId() {
         return id;
@@ -48,11 +57,11 @@ public class Node {
         this.csvPath = csvPath;
     }
 
-    public byte[] getLogo() {
+    public String getLogo() {
         return logo;
     }
 
-    public void setLogo(byte[] logo) {
+    public void setLogo(String logo) {
         this.logo = logo;
     }
 }

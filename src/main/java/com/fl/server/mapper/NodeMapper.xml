@@ -10,15 +10,16 @@
         <result column="port" jdbcType="VARCHAR" property="port"/>
         <result column="csv_path" jdbcType="VARCHAR" property="csvPath"/>
         <result column="logo"  property="logo"/>
+        <result column="node_status" property="nodeStatus"/>
     </resultMap>
     <select id="getAllNode" resultMap="Node" resultType="com.fl.server.pojo.Node">
         select * from node;
     </select>
     <insert id="insert">
-        insert into node (node_name,ip_address,port,csv_path,logo) values (#{node.nodeName},#{node.ipAddress},#{node.port},#{node.csvPath},#{node.logo})
+        insert into node (node_name,ip_address,port,csv_path,logo,ndoe_status) values (#{node.nodeName},#{node.ipAddress},#{node.port},#{node.csvPath},#{node.logo},#{node.nodeStatus})
     </insert>
     <update id="update">
-        update node set node_name=#{node.nodeName},ip_address=#{node.ipAddress},port=#{node.port},csv_path=#{node.csvPath},logo=#{node.logo} where id=#{node.id};
+        update node set node_name=#{node.nodeName},ip_address=#{node.ipAddress},port=#{node.port},csv_path=#{node.csvPath},logo=#{node.logo},node_status=#{node.nodeStatus} where id=#{node.id};
     </update>
     <delete id="delete">
         delete from node where node_name=#{nodeName};
