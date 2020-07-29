@@ -1,7 +1,13 @@
 package com.fl.server.controller.NodeAdmin;
 
+import com.fl.server.mapper.SceneMapper;
+import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.tools.Message;
 import com.fl.server.object.tools.TypeFactor;
+import com.fl.server.pojo.Node;
+import com.fl.server.pojo.Scene;
+import com.fl.server.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,8 +17,10 @@ import java.util.HashMap;
 @RestController
 @CrossOrigin(origins="*",maxAge = 3600)
 public class SenceAdmin {
-    //@Autowired
-    //private UserMapper userMapper;
+    @Autowired
+    private SceneMapper sceneMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     // 查询场景
     @PostMapping("/sceneReq")
@@ -22,17 +30,24 @@ public class SenceAdmin {
 
             @RequestParam("operator") String operator
     ) {
+
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
 
 
         try {
-            // 处理数据库逻辑
-            // boolean status = ReqNodes
-            if (specific){
+            // 获取用户
+            User user = userMapper.selectByAccount(operator).get(0);
 
+            // 处理数据库逻辑
+            ArrayList<Scene> reqScenes;
+            if (specific){
+                reqScenes = sceneMapper.selectByInstitution(user.getInstitution());
             }else {
+                reqScenes = sceneMapper.getAllScene();
+            }
+            for (Scene scene: reqScenes){
 
             }
 
