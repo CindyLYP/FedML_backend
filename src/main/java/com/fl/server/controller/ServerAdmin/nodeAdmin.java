@@ -41,11 +41,12 @@ public class nodeAdmin {
                 node.put("nodeName", reqNode.getNodeName());
                 node.put("ipAddress", reqNode.getIpAddress());
                 node.put("port", reqNode.getPort());
-                // node.put("status", reqNode.get);         // 缺少获取节点状态
+                node.put("status", reqNode.getNodeStatus());
                 node.put("logo", reqNode.getLogo());
 
                 nodes.add(node);
             }
+            output.put("nodes", nodes);
             message.set(true, "节点查询成功");
         }catch (Exception e){
             System.out.println(e.toString());
@@ -55,7 +56,6 @@ public class nodeAdmin {
         }
         return output;
     }
-
 
     // 创建节点
     @PostMapping("/nodeCreate")
@@ -74,18 +74,18 @@ public class nodeAdmin {
         Message message = new Message();
 
         try {
-            //
+            // 查询是否名字已经存在
+            ArrayList<Node> reqNodes = nodeMapper.findNode(nodeName);
+            if (reqNodes.size() == 0){
+                Node node = new Node(nodeName, ipAddress, port, CSV_path, logo, true);
+                if (! nodeMapper.insert(node)){
+                    throw new Exception("抛出异常");
+                }
 
-            Node node = new Node();
-            node.setNodeName(nodeName);
-            node.setIpAddress(ipAddress);
-            node.setPort(port);
-            node.setIpAddress(ipAddress);
-            node.setCsvPath(CSV_path);
-            // node.setLogo(logo);
-
-            nodeMapper.insert(node);
-            message.set(true, "节点创建成功");
+                message.set(true, "节点创建成功");
+            }else{
+                message.set(false, "节点名称已存在");
+            }
         }catch (Exception e){
             System.out.println(e.toString());
             message.set(false, "服务器运行异常");
@@ -101,6 +101,7 @@ public class nodeAdmin {
     @PostMapping("/nodeModify")
     @ResponseBody
     public HashMap<String, Object> NodeModify(
+            @RequestParam("old_nodeName") String old_nodeName,
             @RequestParam("nodeName") String nodeName,
             @RequestParam("ipAddress") String ipAddress,
             @RequestParam("port") String port,
@@ -113,20 +114,18 @@ public class nodeAdmin {
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
 
-
         try {
-            Node node = new Node();
-            node.setNodeName(nodeName);
-            node.setIpAddress(ipAddress);
-            node.setPort(port);
-            node.setIpAddress(ipAddress);
-            node.setCsvPath(CSV_path);
-            // node.setLogo(logo);
-
-            nodeMapper.update(node);
-
-            message.setState(true);
-            message.setMessage("节点修改成功");
+            // 查询是否名字已经存在
+            ArrayList<Node> reqNodes = nodeMapper.findNode(nodeName);
+            if (reqNodes.size() == 0 || ((reqNodes.size() == 1)&& reqNodes.get(0).getNodeName().equals(nodeName))){
+                Node node = new Node(nodeName, ipAddress, port, CSV_path, logo, true);
+                if (! nodeMapper.update(node, old_nodeName)){
+                    throw new Exception("抛出异常");
+                }
+                message.set(true, "节点修改成功");
+            }else{
+                message.set(false, "节点名称已存在");
+            }
         }catch (Exception e){
             System.out.println(e.toString());
             message.set(false, "服务器运行异常");
@@ -150,14 +149,13 @@ public class nodeAdmin {
         Message message = new Message();
 
         try {
-            boolean status = nodeMapper.delete(nodeName);
-            message.setState(status);
-            message.setMessage("节点删除成功");
+            if (! nodeMapper.delete(nodeName)){
+                throw new Exception("抛出异常");
+            }
+            message.set(true, "节点删除成功");
         }catch (Exception e){
             System.out.println(e.toString());
-
-            message.setState(false);
-            message.setMessage("服务器运行异常");
+            message.set(false, "服务器运行异常");
         }
         finally {
             output.put("message", message);
