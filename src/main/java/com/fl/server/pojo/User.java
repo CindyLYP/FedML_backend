@@ -3,6 +3,7 @@ package com.fl.server.pojo;
 public class User {
     private int id;
     private String userAccount;
+    private String username;
     private String password;
     private String userType;
     private String institution;
@@ -22,6 +23,14 @@ public class User {
 
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

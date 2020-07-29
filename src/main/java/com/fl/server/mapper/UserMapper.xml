@@ -7,6 +7,7 @@
         <id column="id" property="id"/>
         <result column="user_account" jdbcType="VARCHAR" property="userAccount"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="user_type" jdbcType="VARCHAR" property="userType"/>
         <result column="institution" jdbcType="VARCHAR" property="institution"/>
         <result column="survival"  property="survival"/>
@@ -22,10 +23,10 @@
     </select>
 
     <insert id="insert">
-        insert into user (user_account,password,user_type,institution,survival) values (#{user.userAccount},#{user.password},#{user.userType},#{user.institution},#{user.survival})
+        insert into user (user_account,password,user_type,institution,survival,username) values (#{user.userAccount},#{user.password},#{user.userType},#{user.institution},#{user.survival},#{user.username})
     </insert>
     <update id="update">
-        update user set password=#{user.password},user_type=#{user.userType},institution=#{user.institution},survival=#{user.survival} where user_account=#{user.userAccount};
+        update user set password=#{user.password},user_type=#{user.userType},institution=#{user.institution},survival=#{user.survival},username=#{user.username} where user_account=#{user.userAccount};
     </update>
     <delete id="delete">
         delete from user where user_account=#{userAccount};
