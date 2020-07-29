@@ -93,6 +93,7 @@ public class Dataset {
     public void setProviderList(ArrayList<String> providerList) {
         this.providerList = providerList;
     }
+
     public void StringToDict(){
         this.attrIdList = new ArrayList<>();
         this.attrNameList = new ArrayList<>();
@@ -104,10 +105,11 @@ public class Dataset {
             this.providerList.add(str[2]);
         }
     }
+
     public void dictToString(){
         int i=0;
         this.attrInfo="";
-        for(;i<this.attrIdList.size()-1;i++){
+        for(; i < (this.attrIdList.size() - 1); i++){
             this.attrInfo += String.valueOf(this.attrIdList.get(i))+"|"+
                     this.attrNameList.get(i)+"|"+this.providerList.get(i)+"#";
         }

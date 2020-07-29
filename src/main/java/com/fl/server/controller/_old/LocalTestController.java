@@ -2,8 +2,6 @@ package com.fl.server.controller._old;
 
 
 import com.fl.server.mapper.NodeMapper;
-import com.fl.server.mapper.old.DataSourceMapper;
-import com.fl.server.mapper.old.TaskMapper;
 import com.fl.server.object.old.Feature;
 import com.fl.server.object.old.User;
 
@@ -21,12 +19,7 @@ import java.util.ArrayList;
 public class LocalTestController {
 
     @Autowired
-     private DataSourceMapper dataSourceMapper;
-
-    @Autowired
-    private TaskMapper taskMapper;
-    @Autowired
-    private NodeMapper;
+    private NodeMapper nodeMapper;
 
     @CrossOrigin
     @PostMapping(value = "api/login")
@@ -35,12 +28,6 @@ public class LocalTestController {
         String name = ResponseUser.getUsername();
         String pwd = ResponseUser.getPassword();
         System.out.println("receive json from frontend");
-        ArrayList<Feature> d = dataSourceMapper.selectAllFeatures();
-
-        for (Feature x :d){
-
-            System.out.println(x.getFeature());
-        }
         return 1;
     }
 }

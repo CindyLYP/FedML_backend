@@ -7,7 +7,8 @@ import java.util.ArrayList;
 
 public interface NodeMapper {
     ArrayList<Node> getAllNode();
+    ArrayList<Node> findNode(@Param("nodeName") String nodeName);
     boolean insert(@Param("node") Node node);
-    boolean update(@Param("node") Node node);
+    boolean update(@Param("node") Node node, String old_nodeName);
     boolean delete(@Param("nodeName") String nodeName);
 }

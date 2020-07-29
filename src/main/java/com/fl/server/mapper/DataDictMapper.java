@@ -9,5 +9,4 @@ public interface DataDictMapper {
     ArrayList<DataDict> getAllDataDict();
     ArrayList<DataDict> selectByProvider(@Param("provider") String provider);
     ArrayList<DataDict> selectLabelByProvider(@Param("provider") String provider);
-
 }

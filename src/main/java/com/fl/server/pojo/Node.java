@@ -7,13 +7,24 @@ public class Node {
     private String port;
     private String csvPath;
     private String logo;
-    private String nodeStatus;
+    private boolean nodeStatus;
 
-    public String getNodeStatus() {
+    public Node(){}
+
+    public Node(String nodeName, String ipAddress, String port, String csvPath, String logo, boolean nodeStatus) {
+        this.nodeName = nodeName;
+        this.ipAddress = ipAddress;
+        this.port = port;
+        this.csvPath = csvPath;
+        this.logo = logo;
+        this.nodeStatus = nodeStatus;
+    }
+
+    public boolean getNodeStatus() {
         return nodeStatus;
     }
 
-    public void setNodeStatus(String nodeStatus) {
+    public void setNodeStatus(boolean nodeStatus) {
         this.nodeStatus = nodeStatus;
     }
 

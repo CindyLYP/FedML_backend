@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fl.server.mapper.UtilsMapper">
+    <select id="DatasetNameToId" >
+        select id from dataset where dataset_name=#{name};
+    </select>
+    <select id="IdToDatasetName" >
+        select dataset_name from dataset where id=#{id};
+    </select>
+
+    <select id="TaskNameToId" >
+        select id from task where task_name=#{name};
+    </select>
+    <select id="IdToTaskName" >
+        select task_name from task where id=#{id};
+    </select>
+
+    <select id="SceneNameToId" >
+        select id from scene where scene_name=#{name};
+    </select>
+    <select id="IdToSceneName" >
+        select scene_name from scene where id=#{id};
+    </select>
+
+    <select id="NodeNameToId" >
+        select id from node where node_name=#{name};
+    </select>
+    <select id="IdToNodeName" >
+        select node_name from node where id=#{id};
+    </select>
+
+    <select id="UserAccountToId" >
+        select id from user where user_account=#{name};
+    </select>
+    <select id="IdToUserAccount" >
+        select user_account from user where id=#{id};
+    </select>
+</mapper>

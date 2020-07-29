@@ -1,7 +1,12 @@
 package com.fl.server.controller.ServerAdmin;
 
+import com.fl.server.mapper.NodeMapper;
+import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.tools.Message;
 import com.fl.server.object.tools.TypeFactor;
+import com.fl.server.pojo.Node;
+import com.fl.server.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,8 +16,8 @@ import java.util.HashMap;
 @RestController
 @CrossOrigin(origins="*",maxAge = 3600)
 public class userAdmin {
-    //@Autowired
-    //private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     // 查询用户
     @PostMapping("/userReq")
@@ -27,29 +32,37 @@ public class userAdmin {
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
 
+        ArrayList<User> reqUsers;
         try {
-            // 处理数据库逻辑
-            if (askUserType.equals("") && askUserAccount.equals("")){
-
+            /* 处理数据库逻辑 */
+            if ("".equals(askUserType) && "".equals(askUserAccount)){
+                reqUsers = userMapper.getAllUser();
             }
-            else if(!askUserType.equals("")){
-
+            else if(! "".equals(askUserType)){
+                reqUsers = userMapper.selectByAccount(askUserType);
             }
             else{
-
+                reqUsers = userMapper.selectByAccount(askUserAccount);
             }
-            // boolean status = ReqNodes
 
+            int usersNum = reqUsers.size();
+            output.put("usersNum", usersNum);
 
+            ArrayList<Object> users = TypeFactor.GenerateALO();
+            for(User reqUser: reqUsers){
+                HashMap<String, Object> user = TypeFactor.GenerateHMSO();
+                user.put("userName", reqUser.getUsername());
+                user.put("userAccount", reqUser.getUserAccount());
+                user.put("userType", reqUser.getUserType());
+                user.put("institution", reqUser.getInstitution());
 
-
-            message.setState(true);
-            message.setMessage("operation has been done");
+                users.add(user);
+            }
+            output.put("users", users);
+            message.set(true, "用户查询成功");
         }catch (Exception e){
             System.out.println(e.toString());
-
-            message.setState(false);
-            message.setMessage("服务器运行异常");
+            message.set(false, "服务器运行异常");
         }finally {
             output.put("message", message);
         }
@@ -73,17 +86,20 @@ public class userAdmin {
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
 
-
         try {
-
-
-            message.setState(true);
-            message.setMessage("operation has been done");
+            ArrayList<User> reqUsers = userMapper.selectByAccount(userAccount);
+            if (reqUsers.size() == 0){
+                User user = new User(userAccount, userName, password, userType, institution, true);
+                if (! userMapper.insert(user)){
+                    throw new Exception("抛出异常");
+                }
+            }else{
+                message.set(false, "用户账户已存在");
+            }
+            message.set(true, "用户创建成功");
         }catch (Exception e){
             System.out.println(e.toString());
-
-            message.setState(false);
-            message.setMessage("服务器运行异常");
+            message.set(false, "服务器运行异常");
         }
         finally {
             output.put("message", message);
@@ -108,17 +124,16 @@ public class userAdmin {
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
 
-
         try {
+            User user = new User(userAccount, userName, password, userType, institution, true);
+            if (! userMapper.update(user)){
+                throw new Exception("抛出异常");
+            }
+            message.set(true, "用户修改成功");
 
-
-            message.setState(true);
-            message.setMessage("operation has been done");
         }catch (Exception e){
             System.out.println(e.toString());
-
-            message.setState(false);
-            message.setMessage("服务器运行异常");
+            message.set(false, "服务器运行异常");
         }
         finally {
             output.put("message", message);
@@ -138,17 +153,14 @@ public class userAdmin {
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
 
-
         try {
-
-
-            message.setState(true);
-            message.setMessage("operation has been done");
+            if (! userMapper.delete(userAccount)){
+                throw new Exception("抛出异常");
+            }
+            message.set(true, "用户删除成功");
         }catch (Exception e){
             System.out.println(e.toString());
-
-            message.setState(false);
-            message.setMessage("服务器运行异常");
+            message.set(false, "服务器运行异常");
         }
         finally {
             output.put("message", message);

@@ -7,7 +7,18 @@ public class User {
     private String password;
     private String userType;
     private String institution;
-    private String survival;
+    private boolean survival;
+
+    public User(){}
+
+    public User(String userAccount, String username, String password, String userType, String institution, boolean survival) {
+        this.userAccount = userAccount;
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+        this.institution = institution;
+        this.survival = survival;
+    }
 
     public int getId() {
         return id;
@@ -57,11 +68,11 @@ public class User {
         this.institution = institution;
     }
 
-    public String getSurvival() {
+    public boolean getSurvival() {
         return survival;
     }
 
-    public void setSurvival(String survival) {
+    public void setSurvival(boolean survival) {
         this.survival = survival;
     }
 }
