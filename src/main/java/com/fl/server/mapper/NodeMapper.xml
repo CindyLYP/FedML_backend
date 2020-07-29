@@ -9,7 +9,7 @@
         <result column="ip_address" jdbcType="VARCHAR" property="ipAddress"/>
         <result column="port" jdbcType="VARCHAR" property="port"/>
         <result column="csv_path" jdbcType="VARCHAR" property="csvPath"/>
-        <result column="logo"  property="logo"/>
+        <result column="logo" jdbcType="VARCHAR" property="logo"/>
         <result column="node_status" property="nodeStatus"/>
     </resultMap>
     <select id="getAllNode" resultMap="Node" resultType="com.fl.server.pojo.Node">

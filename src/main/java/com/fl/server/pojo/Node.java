@@ -2,13 +2,14 @@ package com.fl.server.pojo;
 
 public class Node {
     private int id;
-
     private String nodeName;
     private String ipAddress;
     private String port;
     private String csvPath;
     private String logo;
     private boolean nodeStatus;
+
+    public Node(){}
 
     public Node(String nodeName, String ipAddress, String port, String csvPath, String logo, boolean nodeStatus) {
         this.nodeName = nodeName;

@@ -2,6 +2,14 @@ package com.fl.server.pojo;
 
 public class User {
     private int id;
+    private String userAccount;
+    private String username;
+    private String password;
+    private String userType;
+    private String institution;
+    private boolean survival;
+
+    public User(){}
 
     public User(String userAccount, String username, String password, String userType, String institution, boolean survival) {
         this.userAccount = userAccount;
@@ -11,13 +19,6 @@ public class User {
         this.institution = institution;
         this.survival = survival;
     }
-
-    private String userAccount;
-    private String username;
-    private String password;
-    private String userType;
-    private String institution;
-    private boolean survival;
 
     public int getId() {
         return id;

@@ -16,6 +16,9 @@ public class Task {
     private ArrayList<String> metricNameList;
     private ArrayList<Double> metricValueList;
 
+    public Task(){}
+
+
     public int getId() {
         return id;
     }

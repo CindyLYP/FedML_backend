@@ -31,7 +31,9 @@ public class nodeAdmin {
 
         try {
             // 处理数据库逻辑
+            System.out.println("non error");
             ArrayList<Node> reqNodes = nodeMapper.getAllNode();
+            System.out.println("non error");
             int nodesNum = reqNodes.size();
             output.put("nodesNum", nodesNum);
 
@@ -42,6 +44,7 @@ public class nodeAdmin {
                 node.put("ipAddress", reqNode.getIpAddress());
                 node.put("port", reqNode.getPort());
                 node.put("status", reqNode.getNodeStatus());
+
                 node.put("logo", reqNode.getLogo());
 
                 nodes.add(node);
