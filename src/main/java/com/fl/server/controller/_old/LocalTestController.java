@@ -1,6 +1,7 @@
 package com.fl.server.controller._old;
 
 
+import com.fl.server.mapper.NodeMapper;
 import com.fl.server.mapper.old.DataSourceMapper;
 import com.fl.server.mapper.old.TaskMapper;
 import com.fl.server.object.old.Feature;
@@ -24,6 +25,8 @@ public class LocalTestController {
 
     @Autowired
     private TaskMapper taskMapper;
+    @Autowired
+    private NodeMapper;
 
     @CrossOrigin
     @PostMapping(value = "api/login")
