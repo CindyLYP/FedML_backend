@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public interface DatasetMapper {
     ArrayList<Dataset> getAllDataset();
     Dataset selectByDatasetName(@Param("name") String name);
+    ArrayList<Dataset> selectByUserId(@Param("id") int id);
     boolean insert(@Param("dsb") Dataset dsb);
     boolean delete(@Param("name") String name);
     boolean update(@Param("dsb") Dataset dsb);
