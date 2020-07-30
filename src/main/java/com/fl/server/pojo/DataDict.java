@@ -2,6 +2,19 @@ package com.fl.server.pojo;
 
 public class DataDict {
     private int id;
+
+    public DataDict(){}
+    public DataDict(int providerId, String attrName, String cnName, String description, String dataType, String attrClass, String provider, String area) {
+        this.providerId = providerId;
+        this.attrName = attrName;
+        this.cnName = cnName;
+        this.description = description;
+        this.dataType = dataType;
+        this.attrClass = attrClass;
+        this.provider = provider;
+        this.area = area;
+    }
+
     private int providerId;
     private String attrName;
     private String cnName;

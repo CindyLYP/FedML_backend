@@ -1,16 +1,22 @@
 package com.fl.server.controller.NodeAdmin;
 
+import com.fl.server.mapper.NodeMapper;
 import com.fl.server.mapper.SceneMapper;
 import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.tools.Message;
 import com.fl.server.object.tools.TypeFactory;
+import com.fl.server.pojo.Node;
 import com.fl.server.pojo.Scene;
 import com.fl.server.pojo.User;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 // 节点管理-场景设置页
 @RestController
@@ -20,6 +26,8 @@ public class SenceAdmin {
     private SceneMapper sceneMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NodeMapper nodeMapper;
 
     // 查询场景
     @PostMapping("/sceneReq")
@@ -49,16 +57,20 @@ public class SenceAdmin {
             output.put("scenesNum", scenesNum);
             ArrayList<Object> scenes = TypeFactory.GenerateALO();
             for (Scene reqScene: reqScenes){
-                HashMap<String, Object> node = TypeFactory.GenerateHMSO();
-                node.put("sceneName", reqScene.getSceneName());
-                node.put("institution", reqScene.getInstitution());
-                node.put("target", reqScene.getTarget());
+                HashMap<String, Object> scene = TypeFactory.GenerateHMSO();
+                scene.put("sceneName", reqScene.getSceneName());
+                scene.put("institution", reqScene.getInstitution());
+                scene.put("target", reqScene.getTarget());
 
                 reqScene.StringToDict();
-                node.put("describe", reqScene.getDescriptionList());
+                scene.put("describe", reqScene.getDescriptionList());
 
-                scenes.add(node);
+                Node node = nodeMapper.findNode(reqScene.getInstitution()).get(0);
+                scene.put("logo", node.getLogo());
+
+                scenes.add(scene);
             }
+            output.put("scenes", scenes);
             message.set(true, "场景查询成功");
         }catch (Exception e){
             System.out.println(e.toString());
@@ -77,7 +89,7 @@ public class SenceAdmin {
     public HashMap<String, Object> SceneCreate(
             @RequestParam("sceneName") String sceneName,
             @RequestParam("target") String target,
-            @RequestParam("describe") ArrayList<HashMap<String, String>> describe,
+            @RequestParam("describe") String describeStr,
             @RequestParam("operator") String operator
     ) {
         System.out.println("----- SceneCreate");
@@ -92,6 +104,18 @@ public class SenceAdmin {
             ArrayList<Scene> reqScenes = sceneMapper.selectBySceneName(sceneName);
 
             if (reqScenes.size() == 0){
+                System.out.println("gogogo----" + describeStr);
+                // describeStr = "[{\"value\":\"1\", \"label\":\"2\"}]";
+                ArrayList<HashMap<String, String>> describe = new ArrayList<HashMap<String, String>>();
+                JSONArray jsonArray = new JSONArray(describeStr);
+                for (int i = 0; i < jsonArray.length(); i++)    {
+                    HashMap<String, String> pair = new  HashMap<String, String>();
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    pair.put("value", json.getString("value"));
+                    pair.put("label", json.getString("label"));
+                    describe.add(pair);
+                }
+
                 Scene scene = new Scene(user.getInstitution(), sceneName, target, describe);
                 scene.dictToString();
                 if (! sceneMapper.insert(scene)){
@@ -111,13 +135,12 @@ public class SenceAdmin {
         return output;
     }
 
-
     // 修改场景
     @PostMapping("/sceneModify")
     @ResponseBody
     public HashMap<String, Object> SceneModify(
             @RequestParam("sceneName") String sceneName,
-            @RequestParam("sceneName") String old_sceneName,
+            @RequestParam("old_sceneName") String old_sceneName,
             @RequestParam("target") String target,
             @RequestParam("describe") ArrayList<HashMap<String, String>> describe,
 
