@@ -22,4 +22,13 @@
     <select id="selectLabelByProvider" resultMap="Dict" resultType="com.fl.server.pojo.DataDict">
         select * from data_dict where provider=#{provider} and attr_class="标签";
     </select>
+
+    <insert id="insert">
+        insert into data_dict (provider_id,attr_name,cn_name,description,data_type,attr_class,provider,area)
+        values (#{dict.providerId},#{dict.attrName},#{dict.cnName},#{dict.description},#{dict.dataType},#{dict.attrClass},#{dict.provider},#{dict.area})
+    </insert>
+    <update id="update">
+        update data_dict set provider_id=#{dict.providerId},attr_name=#{dict.attrName},cn_name=#{dict.cnName},description=#{dict.description},data_type=#{dict.dataType},attr_class=#{dict.attrClass},provider=#{dict.provider},area=#{dict.area}
+        where id=#{id}
+    </update>
 </mapper>
