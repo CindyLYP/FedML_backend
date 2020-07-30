@@ -77,7 +77,7 @@ public class SenceAdmin {
     public HashMap<String, Object> SceneCreate(
             @RequestParam("sceneName") String sceneName,
             @RequestParam("target") String target,
-            @RequestParam("describe") ArrayList<HashMap<String, Object>> describe,
+            @RequestParam("describe") ArrayList<HashMap<String, String>> describe,
             @RequestParam("operator") String operator
     ) {
         System.out.println("----- SceneCreate");
@@ -119,7 +119,7 @@ public class SenceAdmin {
             @RequestParam("sceneName") String sceneName,
             @RequestParam("sceneName") String old_sceneName,
             @RequestParam("target") String target,
-            @RequestParam("describe") ArrayList<HashMap<String, Object>> describe,
+            @RequestParam("describe") ArrayList<HashMap<String, String>> describe,
 
             @RequestParam("operator") String operator
     ) {
