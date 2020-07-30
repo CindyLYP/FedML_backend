@@ -12,4 +12,5 @@ public interface DataDictMapper {
     boolean insert(@Param("dict") DataDict dict);
     boolean update(@Param("dict") DataDict dict);
     boolean delete(@Param("id") int id);
+    boolean deleteByProvider(@Param("provider") String provider);
 }

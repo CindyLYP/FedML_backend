@@ -31,4 +31,10 @@
         update data_dict set provider_id=#{dict.providerId},attr_name=#{dict.attrName},cn_name=#{dict.cnName},description=#{dict.description},data_type=#{dict.dataType},attr_class=#{dict.attrClass},provider=#{dict.provider},area=#{dict.area}
         where id=#{id}
     </update>
+    <delete id="deleteByProvider">
+        delete from data_dict where provider=#{provider};
+    </delete>
+    <delete id="delete">
+        delete from data_dict where id=#{id};
+    </delete>
 </mapper>
