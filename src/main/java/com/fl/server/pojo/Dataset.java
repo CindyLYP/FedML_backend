@@ -1,6 +1,8 @@
 package com.fl.server.pojo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Dataset {
     private int id;
@@ -10,9 +12,7 @@ public class Dataset {
     private String datasetName;
     private int alignedNum;
     private String timestamp;
-    private ArrayList<Integer> attrIdList;
-    private ArrayList<String> attrNameList;
-    private ArrayList<String> providerList;
+    private ArrayList<HashMap<String,Object>> dict;
 
     public int getId() {
         return id;
@@ -70,51 +70,34 @@ public class Dataset {
         this.timestamp = timestamp;
     }
 
-    public ArrayList<Integer> getAttrIdList() {
-        return attrIdList;
+    public ArrayList<HashMap<String, Object>> getDict() {
+        return dict;
     }
 
-    public void setAttrIdList(ArrayList<Integer> attrIdList) {
-        this.attrIdList = attrIdList;
-    }
-
-    public ArrayList<String> getAttrNameList() {
-        return attrNameList;
-    }
-
-    public void setAttrNameList(ArrayList<String> attrNameList) {
-        this.attrNameList = attrNameList;
-    }
-
-    public ArrayList<String> getProviderList() {
-        return providerList;
-    }
-
-    public void setProviderList(ArrayList<String> providerList) {
-        this.providerList = providerList;
+    public void setDict(ArrayList<HashMap<String, Object>> dict) {
+        this.dict = dict;
     }
 
     public void StringToDict(){
-        this.attrIdList = new ArrayList<>();
-        this.attrNameList = new ArrayList<>();
-        this.providerList = new ArrayList<>();
-        for (String attr :this.attrInfo.split("#")){
-            String[] str = attr.split("|");
-            this.attrIdList.add(Integer.parseInt(str[0]));
-            this.attrNameList.add(str[1]);
-            this.providerList.add(str[2]);
+        this.dict = new ArrayList<>();
+        for(String items:this.attrInfo.split("#")){
+            String[] item = items.split("\\|");
+            HashMap<String,Object> node = new HashMap<>();
+            node.put("provider",item[0]);
+            node.put("attributes", Arrays.copyOfRange(item,1,item.length));
+            this.dict.add(node);
         }
     }
 
     public void dictToString(){
-        int i=0;
         this.attrInfo="";
-        for(; i < (this.attrIdList.size() - 1); i++){
-            this.attrInfo += String.valueOf(this.attrIdList.get(i))+"|"+
-                    this.attrNameList.get(i)+"|"+this.providerList.get(i)+"#";
+        for (HashMap<String,Object> node:this.dict){
+            this.attrInfo += node.get("provider");
+            for(String attr:(String[])node.get("attributes")){
+                this.attrInfo += "|"+attr;
+            }
+            this.attrInfo +="#";
         }
-        i = this.attrIdList.size()-1;
-        this.attrInfo += String.valueOf(this.attrIdList.get(i))+"|"+
-                this.attrNameList.get(i)+"|"+this.providerList.get(i);
+        this.attrInfo = this.attrInfo.substring(0,this.attrInfo.length()-1);
     }
 }

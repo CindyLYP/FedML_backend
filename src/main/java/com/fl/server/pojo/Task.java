@@ -1,6 +1,8 @@
 package com.fl.server.pojo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Task {
     private int id;
@@ -13,8 +15,8 @@ public class Task {
     private String metrics;
     private String trainInfo;
     private String taskStatus;
-    private ArrayList<String> metricNameList;
-    private ArrayList<Double> metricValueList;
+    private ArrayList<HashMap<String,Double>> metricList;
+
 
     public Task(){}
 
@@ -99,39 +101,23 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
-    public ArrayList<String> getMetricNameList() {
-        return metricNameList;
-    }
-
-    public void setMetricNameList(ArrayList<String> metricNameList) {
-        this.metricNameList = metricNameList;
-    }
-
-    public ArrayList<Double> getMetricValueList() {
-        return metricValueList;
-    }
-
-    public void setMetricValueList(ArrayList<Double> metricValueList) {
-        this.metricValueList = metricValueList;
-    }
     public void StringToMetric(){
-        this.metricNameList = new ArrayList<>();
-        this.metricValueList = new ArrayList<>();
-        for(String metric:this.metrics.split("#")){
-            String[] str = metric.split("|");
-            this.metricNameList.add(str[0]);
-            this.metricValueList.add(Double.parseDouble(str[1]));
+        this.metricList = new ArrayList<>();
+        for(String items:this.metrics.split("#")){
+            String[] item = items.split("\\|");
+            HashMap<String,Double> node = new HashMap<>();
+            node.put("name",Double.parseDouble(item[0]));
+            node.put("value",Double.parseDouble(item[1]));
+            this.metricList.add(node);
         }
     }
 
     public void MetricToString(){
-        int i=0;
         this.metrics="";
-        for(;i<this.metricValueList.size()-1;i++){
-            this.metrics += this.metricNameList.get(i)+"|"+String.valueOf(this.metricValueList.get(i))+"#";
+        for (HashMap<String,Double> node:this.metricList){
+            this.metrics += String.valueOf(node.get("name"))+"|"+String.valueOf(node.get("value"))+"#";
         }
-        i = this.metricValueList.size()-1;
-        this.metrics += this.metricNameList.get(i)+"|"+String.valueOf(this.metricValueList.get(i));
+        this.metrics = this.metrics.substring(0,this.metrics.length()-1);
     }
 
 }
