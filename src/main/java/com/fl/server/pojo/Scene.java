@@ -11,22 +11,22 @@ public class Scene {
     private String sceneName;
     private String target;
     private String description;
-    private ArrayList<HashMap<String, Object>> descriptionList;
+    private ArrayList<HashMap<String, String>> descriptionList;
 
     public Scene(){}
 
-    public Scene(String institution, String sceneName, String target, ArrayList<HashMap<String, Object>> descriptionList) {
+    public Scene(String institution, String sceneName, String target, ArrayList<HashMap<String, String>> descriptionList) {
         this.institution = institution;
         this.sceneName = sceneName;
         this.target = target;
         this.descriptionList = descriptionList;
     }
 
-    public ArrayList<HashMap<String, Object>> getDescriptionList() {
+    public ArrayList<HashMap<String, String>> getDescriptionList() {
         return descriptionList;
     }
 
-    public void setDescriptionList(ArrayList<HashMap<String, Object>> descriptionList) {
+    public void setDescriptionList(ArrayList<HashMap<String, String>> descriptionList) {
         this.descriptionList = descriptionList;
     }
 
@@ -71,11 +71,11 @@ public class Scene {
     }
 
     public void StringToDict(){
-        this.descriptionList = new ArrayList<HashMap<String, Object>>();
+        this.descriptionList = new ArrayList<HashMap<String, String>>();
         for (String attr :this.description.split("#")){
             String[] str = attr.split(":");
 
-            HashMap<String, Object> pair = TypeFactory.GenerateHMSO();
+            HashMap<String, String> pair = TypeFactory.GenerateHMSS();
             pair.put("value", str[0]);
             pair.put("label", str[1]);
 
@@ -87,7 +87,7 @@ public class Scene {
         this.description = "";
 
         StringBuilder description = new StringBuilder();
-        for (HashMap<String, Object> pair: this.descriptionList){
+        for (HashMap<String, String> pair: this.descriptionList){
             description.append(pair.get("value")).append(":").append(pair.get("label")).append("#");
         }
         description.deleteCharAt(description.length()-1);
