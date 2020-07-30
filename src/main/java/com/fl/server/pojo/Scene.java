@@ -1,6 +1,9 @@
 package com.fl.server.pojo;
 
+import com.fl.server.object.tools.TypeFactor;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Scene {
     private int id;
@@ -8,8 +11,7 @@ public class Scene {
     private String sceneName;
     private String target;
     private String description;
-    private ArrayList<Integer> valueList;
-    private ArrayList<String> keyList;
+    private ArrayList<HashMap<String, Object>> descriptionList;
 
     public Scene(){}
 
@@ -18,6 +20,14 @@ public class Scene {
         this.sceneName = sceneName;
         this.target = target;
         this.description = description;
+    }
+
+    public ArrayList<HashMap<String, Object>> getDescriptionList() {
+        return descriptionList;
+    }
+
+    public void setDescriptionList(ArrayList<HashMap<String, Object>> descriptionList) {
+        this.descriptionList = descriptionList;
     }
 
     public int getId() {
@@ -60,42 +70,28 @@ public class Scene {
         this.description = description;
     }
 
-    public ArrayList<Integer> getValueList() {
-        return valueList;
-    }
-
-    public void setValueList(ArrayList<Integer> valueList) {
-        this.valueList = valueList;
-    }
-
-    public ArrayList<String> getKeyList() {
-        return keyList;
-    }
-
-    public void setKeyList(ArrayList<String> keyList) {
-        this.keyList = keyList;
-    }
-
     public void StringToDict(){
-        this.keyList = new ArrayList<>();
-        this.valueList = new ArrayList<>();
+        this.descriptionList = new ArrayList<HashMap<String, Object>>();
         for (String attr :this.description.split("#")){
             String[] str = attr.split(":");
-            this.valueList.add(Integer.parseInt(str[0]));
-            this.keyList.add(str[1]);
+
+            HashMap<String, Object> pair = TypeFactor.GenerateHMSO();
+            pair.put("value", str[0]);
+            pair.put("label", str[1]);
+
+            this.descriptionList.add(pair);
         }
     }
 
     public void dictToString(){
-        int i=0;
-        this.description="";
-        for(; i < (this.keyList.size() - 1); i++){
-            this.description += String.valueOf(this.valueList.get(i))+":"+
-                    this.keyList.get(i)+"#";
+        this.description = "";
+
+        StringBuilder description = new StringBuilder();
+        for (HashMap<String, Object> pair: this.descriptionList){
+            description.append(pair.get("value")).append(":").append(pair.get("label")).append("#");
         }
-        i = this.keyList.size()-1;
-        this.description += String.valueOf(this.valueList.get(i))+":"+
-                this.keyList.get(i);
+        description.deleteCharAt(description.length()-1);
+        this.description = description.toString();
     }
 
 }

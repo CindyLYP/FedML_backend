@@ -54,6 +54,9 @@ public class SenceAdmin {
                 node.put("sceneName", reqScene.getSceneName());
                 node.put("institution", reqScene.getInstitution());
                 node.put("target", reqScene.getTarget());
+
+                ArrayList<Object> describe = TypeFactor.GenerateALO();
+                reqScene.StringToDict();
                 node.put("describe", reqScene.getDescription());
 
                 scenes.add(node);
