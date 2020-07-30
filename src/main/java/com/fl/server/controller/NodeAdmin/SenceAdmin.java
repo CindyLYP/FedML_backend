@@ -142,7 +142,7 @@ public class SenceAdmin {
             @RequestParam("sceneName") String sceneName,
             @RequestParam("old_sceneName") String old_sceneName,
             @RequestParam("target") String target,
-            @RequestParam("describe") ArrayList<HashMap<String, String>> describe,
+            @RequestParam("describe") String describeStr,
 
             @RequestParam("operator") String operator
     ) {
@@ -157,10 +157,20 @@ public class SenceAdmin {
             User user = userMapper.selectByAccount(operator).get(0);
             // 查询是否名字已经存在
             ArrayList<Scene> reqScenes = sceneMapper.selectBySceneName(sceneName);
+
             if (reqScenes.size() == 0 || sceneName.equals(old_sceneName)) {
+                ArrayList<HashMap<String, String>> describe = new ArrayList<HashMap<String, String>>();
+                JSONArray jsonArray = new JSONArray(describeStr);
+                for (int i = 0; i < jsonArray.length(); i++)    {
+                    HashMap<String, String> pair = new  HashMap<String, String>();
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    pair.put("value", json.getString("value"));
+                    pair.put("label", json.getString("label"));
+                    describe.add(pair);
+                }
                 Scene scene = new Scene(user.getInstitution(), sceneName, target, describe);
                 scene.dictToString();
-                if (! sceneMapper.update(scene)){
+                if (! sceneMapper.update(scene, old_sceneName)){
                     throw new Exception("抛出异常");
                 }
                 message.set(true, "场景修改成功");
@@ -169,9 +179,7 @@ public class SenceAdmin {
             }
         }catch (Exception e){
             System.out.println(e.toString());
-
-            message.setState(false);
-            message.setMessage("服务器运行异常");
+            message.set(false, "服务器运行异常");
         }
         finally {
             output.put("message", message);

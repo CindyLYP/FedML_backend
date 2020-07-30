@@ -2,11 +2,13 @@ package com.fl.server.controller.NodeAdmin;
 
 import com.fl.server.mapper.DataDictMapper;
 import com.fl.server.mapper.UserMapper;
+import com.fl.server.mapper.UtilsMapper;
 import com.fl.server.object.tools.Message;
 import com.fl.server.object.tools.TypeFactory;
 import com.fl.server.pojo.DataDict;
 import com.fl.server.pojo.Scene;
 import com.fl.server.pojo.User;
+import lombok.experimental.UtilityClass;
 import org.hibernate.id.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,8 @@ public class DictAdmin {
     private DataDictMapper dataDictMapper;
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private UtilsMapper utilsMapper;
     // 查询数据字典
     @PostMapping("/attributeReq")
     @ResponseBody
@@ -36,6 +39,7 @@ public class DictAdmin {
 
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- AttributeReq");
         // 填充结果
         HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
@@ -86,6 +90,7 @@ public class DictAdmin {
             @RequestParam("csv") MultipartFile csv,
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- AttributeUpdate");
         // 填充结果
         HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
@@ -95,10 +100,10 @@ public class DictAdmin {
                 message.set(false, "文件上传失败");
             }
             else {
-                String fileName = csv.getOriginalFilename();
-                File dest = new File("./tmp/" + fileName);
-                csv.transferTo(dest);
-                message.set(true, "文件上传成功");
+                // String fileName = csv.getOriginalFilename();
+                // File dest = new File("./tmp/" + fileName);
+                // csv.transferTo(dest);
+                // message.set(true, "文件上传成功");
 
                 Reader reader = null;
                 reader = new InputStreamReader(csv.getInputStream(), "utf-8");
@@ -106,13 +111,22 @@ public class DictAdmin {
                 String line;
                 while ((line = br.readLine()) != null) {
                     if(!"".equals(line)){
+                        System.out.println(line);
                         String[] values = line.split(",");
+                        System.out.println(values[5]);
+                        System.out.println(utilsMapper.NodeNameToId(values[5]));
+
+                        DataDict dataDict = new DataDict(utilsMapper.NodeNameToId(values[5]), values[0], values[1], values[2],
+                                values[3], values[4], values[5], "待查");
+                        if(dataDictMapper.insert(dataDict)){
+                            throw new Exception("抛出异常");
+                        }
                     }
                 }
                 reader.close();
             }
 
-            message.setState(true);
+            message.set(true, "数据字典上传成功");
 
         }catch (Exception e){
             System.out.println(e.toString());
