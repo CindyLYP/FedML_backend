@@ -3,7 +3,7 @@ package com.fl.server.controller;
 import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.old.MD5;
 import com.fl.server.object.tools.Message;
-import com.fl.server.object.tools.TypeFactor;
+import com.fl.server.object.tools.TypeFactory;
 import com.fl.server.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +29,7 @@ public class userLogin {
     ) {
 
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {

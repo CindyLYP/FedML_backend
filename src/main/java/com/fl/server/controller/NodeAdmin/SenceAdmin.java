@@ -3,8 +3,7 @@ package com.fl.server.controller.NodeAdmin;
 import com.fl.server.mapper.SceneMapper;
 import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.tools.Message;
-import com.fl.server.object.tools.TypeFactor;
-import com.fl.server.pojo.Node;
+import com.fl.server.object.tools.TypeFactory;
 import com.fl.server.pojo.Scene;
 import com.fl.server.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class SenceAdmin {
     ) {
         System.out.println("----- SceneReq");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {
@@ -48,16 +47,15 @@ public class SenceAdmin {
             }
             int scenesNum = reqScenes.size();
             output.put("scenesNum", scenesNum);
-            ArrayList<Object> scenes = TypeFactor.GenerateALO();
+            ArrayList<Object> scenes = TypeFactory.GenerateALO();
             for (Scene reqScene: reqScenes){
-                HashMap<String, Object> node = TypeFactor.GenerateHMSO();
+                HashMap<String, Object> node = TypeFactory.GenerateHMSO();
                 node.put("sceneName", reqScene.getSceneName());
                 node.put("institution", reqScene.getInstitution());
                 node.put("target", reqScene.getTarget());
 
-                ArrayList<Object> describe = TypeFactor.GenerateALO();
                 reqScene.StringToDict();
-                node.put("describe", reqScene.getDescription());
+                node.put("describe", reqScene.getDescriptionList());
 
                 scenes.add(node);
             }
@@ -79,15 +77,13 @@ public class SenceAdmin {
     public HashMap<String, Object> SceneCreate(
             @RequestParam("sceneName") String sceneName,
             @RequestParam("target") String target,
-            @RequestParam("describe") ArrayList<HashMap<String, String>> describe,
-
+            @RequestParam("describe") ArrayList<HashMap<String, Object>> describe,
             @RequestParam("operator") String operator
     ) {
         System.out.println("----- SceneCreate");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
-
 
         try {
             // 获取用户
@@ -96,7 +92,8 @@ public class SenceAdmin {
             ArrayList<Scene> reqScenes = sceneMapper.selectBySceneName(sceneName);
 
             if (reqScenes.size() == 0){
-                Scene scene = new Scene(user.getInstitution(), sceneName, target, "NONE");
+                Scene scene = new Scene(user.getInstitution(), sceneName, target, describe);
+                scene.dictToString();
                 if (! sceneMapper.insert(scene)){
                     throw new Exception("抛出异常");
                 }
@@ -122,13 +119,13 @@ public class SenceAdmin {
             @RequestParam("sceneName") String sceneName,
             @RequestParam("sceneName") String old_sceneName,
             @RequestParam("target") String target,
-            @RequestParam("describe") ArrayList<HashMap<String, String>> describe,
+            @RequestParam("describe") ArrayList<HashMap<String, Object>> describe,
 
             @RequestParam("operator") String operator
     ) {
         System.out.println("----- SceneModify");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 
@@ -138,8 +135,9 @@ public class SenceAdmin {
             // 查询是否名字已经存在
             ArrayList<Scene> reqScenes = sceneMapper.selectBySceneName(sceneName);
             if (reqScenes.size() == 0 || sceneName.equals(old_sceneName)) {
-                Scene scene = new Scene(user.getInstitution(), sceneName, target, "NONE");
-                if (! sceneMapper.insert(scene)){
+                Scene scene = new Scene(user.getInstitution(), sceneName, target, describe);
+                scene.dictToString();
+                if (! sceneMapper.update(scene)){
                     throw new Exception("抛出异常");
                 }
                 message.set(true, "场景修改成功");
@@ -168,13 +166,13 @@ public class SenceAdmin {
     ) {
         System.out.println("----- SceneDelete");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
         try {
             if (! sceneMapper.delete(sceneName)){
                 throw new Exception("抛出异常");
             }
-            message.set(true, "节点删除成功");
+            message.set(true, "场景删除成功");
         }catch (Exception e){
             System.out.println(e.toString());
             message.set(false, "服务器运行异常");

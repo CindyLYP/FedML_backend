@@ -2,16 +2,14 @@ package com.fl.server.controller.ServerAdmin;
 
 import com.fl.server.mapper.NodeMapper;
 import com.fl.server.mapper.UserMapper;
-import com.fl.server.object.old.MD5;
 import com.fl.server.object.tools.Message;
-import com.fl.server.object.tools.TypeFactor;
+import com.fl.server.object.tools.TypeFactory;
 import com.fl.server.pojo.Node;
 import com.fl.server.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 // 平台管理-用户管理页
@@ -20,7 +18,8 @@ import java.util.HashMap;
 public class userAdmin {
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private NodeMapper nodeMapper;
     // 查询用户
     @PostMapping("/userReq")
     @ResponseBody
@@ -32,7 +31,7 @@ public class userAdmin {
     ) {
         System.out.println("----- UserReq");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         ArrayList<User> reqUsers;
@@ -51,9 +50,9 @@ public class userAdmin {
             int usersNum = reqUsers.size();
             output.put("usersNum", usersNum);
 
-            ArrayList<Object> users = TypeFactor.GenerateALO();
+            ArrayList<Object> users = TypeFactory.GenerateALO();
             for(User reqUser: reqUsers){
-                HashMap<String, Object> user = TypeFactor.GenerateHMSO();
+                HashMap<String, Object> user = TypeFactory.GenerateHMSO();
                 user.put("userName", reqUser.getUsername());
                 user.put("userAccount", reqUser.getUserAccount());
                 user.put("userType", reqUser.getUserType());
@@ -87,7 +86,7 @@ public class userAdmin {
     ) {
         System.out.println("----- UserCreate");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
         try {
             ArrayList<User> reqUsers = userMapper.selectByAccount(userAccount);
@@ -125,7 +124,7 @@ public class userAdmin {
     ) {
         System.out.println("----- UserModify");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {
@@ -155,7 +154,7 @@ public class userAdmin {
     ) {
         System.out.println("----- UserDelete");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {
@@ -181,12 +180,20 @@ public class userAdmin {
     ) {
 
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {
             User user = userMapper.selectByAccount(operator).get(0);
-            output.put("institution", user.getInstitution());
+            Node node = nodeMapper.findNode(user.getInstitution()).get(0);
+
+            output.put("nodeName", node.getNodeName());
+            output.put("ipAddress", node.getIpAddress());
+            output.put("port", node.getPort());
+            output.put("status", node.getNodeStatus());
+            output.put("CSV_path", node.getCsvPath());
+            output.put("logo", node.getLogo());
+
             message.set(true, "查询成功");
 
         }catch (Exception e){

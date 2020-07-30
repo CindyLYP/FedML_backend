@@ -1,6 +1,6 @@
 package com.fl.server.pojo;
 
-import com.fl.server.object.tools.TypeFactor;
+import com.fl.server.object.tools.TypeFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +15,11 @@ public class Scene {
 
     public Scene(){}
 
-    public Scene(String institution, String sceneName, String target, String description) {
+    public Scene(String institution, String sceneName, String target, ArrayList<HashMap<String, Object>> descriptionList) {
         this.institution = institution;
         this.sceneName = sceneName;
         this.target = target;
-        this.description = description;
+        this.descriptionList = descriptionList;
     }
 
     public ArrayList<HashMap<String, Object>> getDescriptionList() {
@@ -75,7 +75,7 @@ public class Scene {
         for (String attr :this.description.split("#")){
             String[] str = attr.split(":");
 
-            HashMap<String, Object> pair = TypeFactor.GenerateHMSO();
+            HashMap<String, Object> pair = TypeFactory.GenerateHMSO();
             pair.put("value", str[0]);
             pair.put("label", str[1]);
 

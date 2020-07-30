@@ -1,7 +1,7 @@
 package com.fl.server.controller.Client;
 
 import com.fl.server.object.tools.Message;
-import com.fl.server.object.tools.TypeFactor;
+import com.fl.server.object.tools.TypeFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +21,7 @@ public class ModelTrain {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 
@@ -54,7 +54,7 @@ public class ModelTrain {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 
@@ -83,7 +83,7 @@ public class ModelTrain {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 
@@ -112,7 +112,7 @@ public class ModelTrain {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 
@@ -142,7 +142,7 @@ public class ModelTrain {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 
@@ -172,7 +172,7 @@ public class ModelTrain {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 
@@ -202,7 +202,7 @@ public class ModelTrain {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 

@@ -1,9 +1,8 @@
 package com.fl.server.controller.ServerAdmin;
 
 import com.fl.server.mapper.NodeMapper;
-import com.fl.server.object.NodeRef.NodeInfo;
 import com.fl.server.object.tools.Message;
-import com.fl.server.object.tools.TypeFactor;
+import com.fl.server.object.tools.TypeFactory;
 import com.fl.server.pojo.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class nodeAdmin {
     ) {
         System.out.println("----- NodeReq");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {
@@ -35,9 +34,9 @@ public class nodeAdmin {
             ArrayList<Node> reqNodes = nodeMapper.getAllNode();
             int nodesNum = reqNodes.size();
             output.put("nodesNum", nodesNum);
-            ArrayList<Object> nodes = TypeFactor.GenerateALO();
+            ArrayList<Object> nodes = TypeFactory.GenerateALO();
             for(Node reqNode: reqNodes){
-                HashMap<String, Object> node = TypeFactor.GenerateHMSO();
+                HashMap<String, Object> node = TypeFactory.GenerateHMSO();
                 node.put("nodeName", reqNode.getNodeName());
                 node.put("ipAddress", reqNode.getIpAddress());
                 node.put("port", reqNode.getPort());
@@ -72,7 +71,7 @@ public class nodeAdmin {
     ) {
         System.out.println("----- NodeCreate");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {
@@ -114,7 +113,7 @@ public class nodeAdmin {
     ) {
         System.out.println("----- NodeModify");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {
@@ -150,7 +149,7 @@ public class nodeAdmin {
     ) {
         System.out.println("----- NodeDelete");
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
         try {

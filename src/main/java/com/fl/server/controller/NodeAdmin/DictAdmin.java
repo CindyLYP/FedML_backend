@@ -1,10 +1,9 @@
 package com.fl.server.controller.NodeAdmin;
 
 import com.fl.server.object.tools.Message;
-import com.fl.server.object.tools.TypeFactor;
+import com.fl.server.object.tools.TypeFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 // 节点管理-数据字典页
@@ -23,7 +22,7 @@ public class DictAdmin {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 
@@ -57,7 +56,7 @@ public class DictAdmin {
             @RequestParam("operator") String operator
     ) {
         // 填充结果
-        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
 
 

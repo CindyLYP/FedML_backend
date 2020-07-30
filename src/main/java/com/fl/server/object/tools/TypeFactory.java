@@ -3,7 +3,7 @@ package com.fl.server.object.tools;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public  class TypeFactor {
+public  class TypeFactory {
     public static HashMap<String, Object> GenerateHMSO(){
         return new HashMap<String, Object>();
     }
