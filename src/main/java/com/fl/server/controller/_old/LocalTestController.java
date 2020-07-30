@@ -2,6 +2,7 @@ package com.fl.server.controller._old;
 
 
 import com.fl.server.mapper.NodeMapper;
+import com.fl.server.mapper.UtilsMapper;
 import com.fl.server.object.old.Feature;
 import com.fl.server.object.old.User;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 public class LocalTestController {
 
     @Autowired
-    private NodeMapper nodeMapper;
+    private UtilsMapper utilsMapper;
 
     @CrossOrigin
     @PostMapping(value = "api/login")
@@ -27,6 +28,8 @@ public class LocalTestController {
     public int login(@RequestBody User ResponseUser) {
         String name = ResponseUser.getUsername();
         String pwd = ResponseUser.getPassword();
+        String x = utilsMapper.IdToNodeName(14);
+        System.out.println(x);
         System.out.println("receive json from frontend");
         return 1;
     }

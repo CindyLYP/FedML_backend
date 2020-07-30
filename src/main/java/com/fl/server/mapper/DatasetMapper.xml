@@ -17,6 +17,9 @@
     <select id="selectByDatasetName" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
         select * from dataset where dataset_name=#{name};
     </select>
+    <select id="selectByUserName">
+        select * from dataset where user_id=#{id};
+    </select>
     <insert id="insert">
         insert into dataset (user_id,scene_id,attr_info,dataset_name,aligned_num,timestamp) values
         (#{dsb.userId},#{dsb.sceneId},#{dsb.attrInfo},#{dsb.datasetName},#{dsb.alignedNum},#{dsb.timestamp});
