@@ -2,6 +2,7 @@ package com.fl.server.controller.ServerAdmin;
 
 import com.fl.server.mapper.NodeMapper;
 import com.fl.server.mapper.UserMapper;
+import com.fl.server.object.old.MD5;
 import com.fl.server.object.tools.Message;
 import com.fl.server.object.tools.TypeFactor;
 import com.fl.server.pojo.Node;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 // 平台管理-用户管理页
@@ -22,12 +24,13 @@ public class userAdmin {
     // 查询用户
     @PostMapping("/userReq")
     @ResponseBody
-    public HashMap<String, Object> NodeReq(
+    public HashMap<String, Object> UserReq(
             @RequestParam("askUserType") String askUserType,
             @RequestParam("askUserAccount") String askUserAccount,
 
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- UserReq");
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
@@ -39,7 +42,7 @@ public class userAdmin {
                 reqUsers = userMapper.getAllUser();
             }
             else if(! "".equals(askUserType)){
-                reqUsers = userMapper.selectByAccount(askUserType);
+                reqUsers = userMapper.selectByType(askUserType);
             }
             else{
                 reqUsers = userMapper.selectByAccount(askUserAccount);
@@ -73,7 +76,7 @@ public class userAdmin {
     // 创建用户
     @PostMapping("/userCreate")
     @ResponseBody
-    public HashMap<String, Object> NodeCreate(
+    public HashMap<String, Object> UserCreate(
             @RequestParam("userName") String userName,
             @RequestParam("userAccount") String userAccount,
             @RequestParam("password") String password,
@@ -82,10 +85,10 @@ public class userAdmin {
 
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- UserCreate");
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
-
         try {
             ArrayList<User> reqUsers = userMapper.selectByAccount(userAccount);
             if (reqUsers.size() == 0){
@@ -93,10 +96,10 @@ public class userAdmin {
                 if (! userMapper.insert(user)){
                     throw new Exception("抛出异常");
                 }
+                message.set(true, "用户创建成功");
             }else{
                 message.set(false, "用户账户已存在");
             }
-            message.set(true, "用户创建成功");
         }catch (Exception e){
             System.out.println(e.toString());
             message.set(false, "服务器运行异常");
@@ -111,7 +114,7 @@ public class userAdmin {
     // 修改用户
     @PostMapping("/userModify")
     @ResponseBody
-    public HashMap<String, Object> NodeModify(
+    public HashMap<String, Object> UserModify(
             @RequestParam("userName") String userName,
             @RequestParam("userAccount") String userAccount,
             @RequestParam("password") String password,
@@ -120,6 +123,7 @@ public class userAdmin {
 
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- UserModify");
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
@@ -144,11 +148,12 @@ public class userAdmin {
     // 删除用户
     @PostMapping("/userDelete")
     @ResponseBody
-    public HashMap<String, Object> NodeDelete(
+    public HashMap<String, Object> UserDelete(
             @RequestParam("userAccount") String userAccount,
 
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- UserDelete");
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
@@ -158,6 +163,32 @@ public class userAdmin {
                 throw new Exception("抛出异常");
             }
             message.set(true, "用户删除成功");
+        }catch (Exception e){
+            System.out.println(e.toString());
+            message.set(false, "服务器运行异常");
+        }
+        finally {
+            output.put("message", message);
+        }
+        return output;
+    }
+
+    // 用户信息获取
+    @PostMapping("/operatorInfoReq")
+    @ResponseBody
+    public HashMap<String, Object> UserLogin(
+            @RequestParam("operator") String operator
+    ) {
+
+        // 填充结果
+        HashMap<String, Object> output = TypeFactor.GenerateHMSO();
+        Message message = new Message();
+
+        try {
+            User user = userMapper.selectByAccount(operator).get(0);
+            output.put("institution", user.getInstitution());
+            message.set(true, "查询成功");
+
         }catch (Exception e){
             System.out.println(e.toString());
             message.set(false, "服务器运行异常");

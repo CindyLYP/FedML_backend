@@ -15,6 +15,9 @@
     <select id="selectByInstitution" resultMap="Scene" resultType="com.fl.server.pojo.Scene">
         select * from scene where institution=#{institution};
     </select>
+    <select id="selectBySceneName" resultMap="Scene" resultType="com.fl.server.pojo.Scene">
+        select * from scene where scene_name=#{sceneName};
+    </select>
     <insert id="insert">
         insert into scene (institution,scene_name,target,description) values (#{scene.institution},#{scene.sceneName},#{scene.target},#{scene.description})
     </insert>

@@ -25,18 +25,16 @@ public class nodeAdmin {
     public HashMap<String, Object> NodeReq(
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- NodeReq");
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
 
         try {
             // 处理数据库逻辑
-            System.out.println("non error");
             ArrayList<Node> reqNodes = nodeMapper.getAllNode();
-            System.out.println("non error");
             int nodesNum = reqNodes.size();
             output.put("nodesNum", nodesNum);
-
             ArrayList<Object> nodes = TypeFactor.GenerateALO();
             for(Node reqNode: reqNodes){
                 HashMap<String, Object> node = TypeFactor.GenerateHMSO();
@@ -44,7 +42,7 @@ public class nodeAdmin {
                 node.put("ipAddress", reqNode.getIpAddress());
                 node.put("port", reqNode.getPort());
                 node.put("status", reqNode.getNodeStatus());
-
+                node.put("CSV_path", reqNode.getCsvPath());
                 node.put("logo", reqNode.getLogo());
 
                 nodes.add(node);
@@ -72,6 +70,7 @@ public class nodeAdmin {
 
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- NodeCreate");
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
@@ -113,6 +112,7 @@ public class nodeAdmin {
 
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- NodeModify");
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();
@@ -120,7 +120,8 @@ public class nodeAdmin {
         try {
             // 查询是否名字已经存在
             ArrayList<Node> reqNodes = nodeMapper.findNode(nodeName);
-            if (reqNodes.size() == 0 || ((reqNodes.size() == 1)&& reqNodes.get(0).getNodeName().equals(nodeName))){
+            System.out.println(reqNodes.size());
+            if (reqNodes.size() == 0 || old_nodeName.equals(nodeName)){
                 Node node = new Node(nodeName, ipAddress, port, CSV_path, logo, true);
                 if (! nodeMapper.update(node, old_nodeName)){
                     throw new Exception("抛出异常");
@@ -147,6 +148,7 @@ public class nodeAdmin {
 
             @RequestParam("operator") String operator
     ) {
+        System.out.println("----- NodeDelete");
         // 填充结果
         HashMap<String, Object> output = TypeFactor.GenerateHMSO();
         Message message = new Message();

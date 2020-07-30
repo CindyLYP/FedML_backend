@@ -7,6 +7,15 @@ public class Scene {
     private String target;
     private String description;
 
+    public Scene(){}
+
+    public Scene(String institution, String sceneName, String target, String description) {
+        this.institution = institution;
+        this.sceneName = sceneName;
+        this.target = target;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }
