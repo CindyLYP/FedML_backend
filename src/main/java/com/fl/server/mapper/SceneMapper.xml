@@ -22,7 +22,7 @@
         insert into scene (institution,scene_name,target,description) values (#{scene.institution},#{scene.sceneName},#{scene.target},#{scene.description})
     </insert>
     <update id="update">
-        update scene set institution=#{scene.institution},scene_name=#{scene.sceneName},target=#{scene.target},description=#{scene.description} where node_name=#{old_nodeName};
+        update scene set institution=#{scene.institution},scene_name=#{scene.sceneName},target=#{scene.target},description=#{scene.description} where scene_name=#{old_sceneName};
     </update>
     <delete id="delete">
         delete from scene where scene_name=#{sceneName};

@@ -59,20 +59,20 @@ public class DictAdmin {
             int attributesNum = reqDataDicts.size();
             output.put("attributesNum", attributesNum);
 
-            ArrayList<Object> dataDicts = TypeFactory.GenerateALO();
+            ArrayList<Object> attributes = TypeFactory.GenerateALO();
             for (DataDict reqDataDict: reqDataDicts){
-                HashMap<String, Object> dataDict = TypeFactory.GenerateHMSO();
-                dataDict.put("attrName", reqDataDict.getAttrName());
-                dataDict.put("cnName", reqDataDict.getCnName());
-                dataDict.put("describe", reqDataDict.getDescription());
-                dataDict.put("dataType", reqDataDict.getDataType());
-                dataDict.put("class", reqDataDict.getAttrClass());
-                dataDict.put("provider", reqDataDict.getProvider());
-                dataDict.put("area", reqDataDict.getArea());
+                HashMap<String, Object> attribute = TypeFactory.GenerateHMSO();
+                attribute.put("attrName", reqDataDict.getAttrName());
+                attribute.put("cnName", reqDataDict.getCnName());
+                attribute.put("describe", reqDataDict.getDescription());
+                attribute.put("dataType", reqDataDict.getDataType());
+                attribute.put("class", reqDataDict.getAttrClass());
+                attribute.put("provider", reqDataDict.getProvider());
+                attribute.put("area", reqDataDict.getArea());
 
-                dataDicts.add(dataDict);
+                attributes.add(attribute);
             }
-
+            output.put("attributes", attributes);
             message.set(true, "数据字典查询成功");
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -118,7 +118,7 @@ public class DictAdmin {
 
                         DataDict dataDict = new DataDict(utilsMapper.NodeNameToId(values[5]), values[0], values[1], values[2],
                                 values[3], values[4], values[5], "待查");
-                        if(dataDictMapper.insert(dataDict)){
+                        if(! dataDictMapper.insert(dataDict)){
                             throw new Exception("抛出异常");
                         }
                     }

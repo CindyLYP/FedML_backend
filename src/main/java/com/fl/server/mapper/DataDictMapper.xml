@@ -2,7 +2,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fl.server.mapper.DataDictMapper">
-    <resultMap id="Dict" type="com.fl.server.pojo.Scene">
+    <resultMap id="Dict" type="com.fl.server.pojo.DataDict">
         <id column="id"  property="id"/>
         <result column="provider_id" property="providerId"/>
         <result column="attr_name" jdbcType="VARCHAR" property="attrName"/>
