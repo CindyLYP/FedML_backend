@@ -10,6 +10,7 @@
         <result column="dataset_name" property="datasetName"/>
         <result column="aligned_num" property="alignedNum"/>
         <result column="timestamp" property="timestamp"/>
+        <result column="config" property="config"/>
     </resultMap>
     <select id="getAllDataset" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
         select * from dataset;
@@ -21,11 +22,11 @@
         select * from dataset where user_id=#{id};
     </select>
     <insert id="insert">
-        insert into dataset (user_id,scene_id,attr_info,dataset_name,aligned_num,timestamp) values
-        (#{dsb.userId},#{dsb.sceneId},#{dsb.attrInfo},#{dsb.datasetName},#{dsb.alignedNum},#{dsb.timestamp});
+        insert into dataset (user_id,scene_id,attr_info,dataset_name,aligned_num,timestamp,config) values
+        (#{dsb.userId},#{dsb.sceneId},#{dsb.attrInfo},#{dsb.datasetName},#{dsb.alignedNum},#{dsb.timestamp},#{dsb.config});
     </insert>
     <update id="update">
-        update dataset set (user_id=#{dsb.userId},scene_id=#{dsb.sceneId},attr_info=#{dsb.attrInfo},dataset_name=#{dsb.datasetName},aligned_num=#{dsb.alignedNum},timestamp=#{dsb.timestamp})
+        update dataset set (user_id=#{dsb.userId},scene_id=#{dsb.sceneId},attr_info=#{dsb.attrInfo},dataset_name=#{dsb.datasetName},aligned_num=#{dsb.alignedNum},timestamp=#{dsb.timestamp},config=#{dsb.config})
         where id=#{dsb.id};
     </update>
     <delete id="delete">

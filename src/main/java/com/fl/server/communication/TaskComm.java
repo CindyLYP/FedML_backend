@@ -90,7 +90,29 @@ public class TaskComm {
         task_request.put("clients", clients);
         return task_request;
     }
+    public boolean TestUtils(){
+        String api = "http://localhost:8888/test";
+        try{
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HashMap<String, Object> req = new HashMap<>();
+            req.put("name","ysc");
+            req.put("age",24);
+            HttpEntity<HashMap<String, Object>> request = new HttpEntity<>(req, headers);
+            ResponseEntity<String> response = restTemplate.postForEntity(api, request, String.class);
+            System.out.println("get response");
+            System.out.println(response.getBody());
 
+
+        }catch (HttpClientErrorException e){
+            System.out.println("http post error!");
+            return false;
+        }
+        finally {
+            return true;
+        }
+    }
     public boolean TrainLaunch(){
         String urlTaskLaunch = "http://127.0.0.1:8380/createTask";
         System.out.println(urlTaskLaunch);

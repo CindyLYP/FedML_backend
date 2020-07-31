@@ -12,6 +12,7 @@ public class Dataset {
     private String datasetName;
     private int alignedNum;
     private String timestamp;
+    private String config;
     private ArrayList<HashMap<String,Object>> dict;
 
     public int getId() {
@@ -70,6 +71,14 @@ public class Dataset {
         this.timestamp = timestamp;
     }
 
+    public String getConfig() {
+        return config;
+    }
+
+    public void setConfig(String config) {
+        this.config = config;
+    }
+
     public ArrayList<HashMap<String, Object>> getDict() {
         return dict;
     }
@@ -93,7 +102,8 @@ public class Dataset {
         this.attrInfo="";
         for (HashMap<String,Object> node:this.dict){
             this.attrInfo += node.get("provider");
-            for(String attr:(String[])node.get("attributes")){
+
+            for(String attr:(ArrayList<String>)node.get("attributes")){
                 this.attrInfo += "|"+attr;
             }
             this.attrInfo +="#";
