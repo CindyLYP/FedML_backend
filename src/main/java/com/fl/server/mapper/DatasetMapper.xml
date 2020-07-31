@@ -18,8 +18,11 @@
     <select id="selectByDatasetName" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
         select * from dataset where dataset_name=#{name};
     </select>
-    <select id="selectByUserName">
+    <select id="selectByUserName" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
         select * from dataset where user_id=#{id};
+    </select>
+    <select id="selectByUserIdAndSceneId" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
+        select * from dataset where user_id=#{userId} and scene_id=#{sceneId};
     </select>
     <insert id="insert">
         insert into dataset (user_id,scene_id,attr_info,dataset_name,aligned_num,timestamp,config) values
