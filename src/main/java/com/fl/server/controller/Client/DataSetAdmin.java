@@ -2,18 +2,17 @@ package com.fl.server.controller.Client;
 
 import com.fl.server.mapper.DataDictMapper;
 import com.fl.server.mapper.DatasetMapper;
+import com.fl.server.mapper.UtilsMapper;
 import com.fl.server.object.tools.Message;
 import com.fl.server.object.tools.TypeFactory;
-import com.fl.server.pojo.Dataset;
-import com.fl.server.pojo.Node;
-import com.fl.server.pojo.Scene;
-import com.fl.server.pojo.User;
+import com.fl.server.pojo.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -23,7 +22,8 @@ import java.util.HashMap;
 public class DataSetAdmin {
     @Autowired
     private DatasetMapper datasetMapper;
-
+    @Autowired
+    private UtilsMapper utilsMapper;
     // 查询数据集
     @PostMapping("/datasetReq")
     @ResponseBody
@@ -104,7 +104,7 @@ public class DataSetAdmin {
     public HashMap<String, Object> DatasetGen(
             @RequestParam("scene") String scene,
             @RequestParam("datasetName") String datasetName,
-            @RequestParam("dict") String dictStr,
+            @RequestParam("dict") String dsStr,
 
             @RequestParam("operator") String operator
     ) {
@@ -117,21 +117,37 @@ public class DataSetAdmin {
             ArrayList<Dataset> reqDatasets = datasetMapper.selectByDatasetName(datasetName);
 
             if (reqDatasets.size() == 0){
-                System.out.println("gogogo----" + dictStr);
                 ArrayList<HashMap<String, Object>> dict = new ArrayList<HashMap<String, Object>>();
-                JSONArray jsonArray = new JSONArray(dictStr);
+                System.out.println("gogogo----" + dsStr);
+                JSONArray jsonArray = new JSONArray(dsStr);
+                System.out.println("gogogo----" + dsStr);
                 for (int i = 0; i < jsonArray.length(); i++)    {
+                    HashMap<String, Object> pair = new HashMap<String, Object>();
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    pair.put("provider", json.getString("provider"));
+                    System.out.println(json.getString("provider"));
+                    JSONArray arr = json.getJSONArray("attributes");
+                    System.out.println(json.getJSONArray("attributes"));
+                    ArrayList<String> attributes = new ArrayList<String>();
+                    for(int j = 0; j < arr.length(); j++){
+                        attributes.add(arr.getString(j));
+                    }
+                    pair.put("attributes", attributes);
 
+                    dict.add(pair);
                 }
-//
-//                if (! datasetMapper.insert(scene)){
-//                    throw new Exception("抛出异常");
-//                }
+                Dataset dataset = new Dataset(utilsMapper.UserAccountToId(operator), utilsMapper.SceneNameToId(scene),
+                        datasetName, -1, (new Date()).toString(), dict);
+                System.out.println("hhhhhh1");
+                dataset.dictToString();
+                System.out.println("hhhhhh2");
+                if (! datasetMapper.insert(dataset)){
+                    throw new Exception("抛出异常");
+                }
                 message.set(true, "场景创建成功");
             }else{
                 message.set(false, "场景名称已存在");
             }
-
 
         }catch (Exception e){
             System.out.println(e.toString());

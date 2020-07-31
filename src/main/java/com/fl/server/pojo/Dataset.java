@@ -7,6 +7,16 @@ import java.util.HashMap;
 public class Dataset {
     private int id;
     private int userId;
+
+    public Dataset(int userId, int sceneId, String datasetName, int alignedNum, String timestamp, ArrayList<HashMap<String, Object>> dict) {
+        this.userId = userId;
+        this.sceneId = sceneId;
+        this.datasetName = datasetName;
+        this.alignedNum = alignedNum;
+        this.timestamp = timestamp;
+        this.dict = dict;
+    }
+
     private int sceneId;
     private String attrInfo;
     private String datasetName;

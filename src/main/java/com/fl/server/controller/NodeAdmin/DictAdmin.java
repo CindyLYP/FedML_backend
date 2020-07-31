@@ -90,6 +90,9 @@ public class DictAdmin {
             @RequestParam("csv") MultipartFile csv,
             @RequestParam("operator") String operator
     ) {
+        // 获取用户
+        User user = userMapper.selectByAccount(operator).get(0);
+
         System.out.println("----- AttributeUpdate");
         // 填充结果
         HashMap<String, Object> output = TypeFactory.GenerateHMSO();
@@ -104,6 +107,9 @@ public class DictAdmin {
                 // File dest = new File("./tmp/" + fileName);
                 // csv.transferTo(dest);
                 // message.set(true, "文件上传成功");
+                if(!dataDictMapper.deleteByProvider(user.getInstitution())){
+                    throw new Exception("抛出异常");
+                }
 
                 Reader reader = null;
                 reader = new InputStreamReader(csv.getInputStream(), "utf-8");

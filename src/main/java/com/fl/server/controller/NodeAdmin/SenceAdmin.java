@@ -1,10 +1,12 @@
 package com.fl.server.controller.NodeAdmin;
 
+import com.fl.server.mapper.DataDictMapper;
 import com.fl.server.mapper.NodeMapper;
 import com.fl.server.mapper.SceneMapper;
 import com.fl.server.mapper.UserMapper;
 import com.fl.server.object.tools.Message;
 import com.fl.server.object.tools.TypeFactory;
+import com.fl.server.pojo.DataDict;
 import com.fl.server.pojo.Node;
 import com.fl.server.pojo.Scene;
 import com.fl.server.pojo.User;
@@ -28,7 +30,8 @@ public class SenceAdmin {
     private UserMapper userMapper;
     @Autowired
     private NodeMapper nodeMapper;
-
+    @Autowired
+    private DataDictMapper dataDictMapper;
     // 查询场景
     @PostMapping("/sceneReq")
     @ResponseBody
@@ -104,24 +107,35 @@ public class SenceAdmin {
             ArrayList<Scene> reqScenes = sceneMapper.selectBySceneName(sceneName);
 
             if (reqScenes.size() == 0){
-                System.out.println("gogogo----" + describeStr);
-                // describeStr = "[{\"value\":\"1\", \"label\":\"2\"}]";
-                ArrayList<HashMap<String, String>> describe = new ArrayList<HashMap<String, String>>();
-                JSONArray jsonArray = new JSONArray(describeStr);
-                for (int i = 0; i < jsonArray.length(); i++)    {
-                    HashMap<String, String> pair = new  HashMap<String, String>();
-                    JSONObject json = jsonArray.getJSONObject(i);
-                    pair.put("value", json.getString("value"));
-                    pair.put("label", json.getString("label"));
-                    describe.add(pair);
+                boolean flag = false;
+                ArrayList<DataDict> reqDataDicts = dataDictMapper.selectByProvider(user.getInstitution());
+                for(DataDict dataDict:reqDataDicts){
+                    if(dataDict.getAttrName().equals(target)){
+                        flag = true;
+                        break;
+                    }
                 }
-
-                Scene scene = new Scene(user.getInstitution(), sceneName, target, describe);
-                scene.dictToString();
-                if (! sceneMapper.insert(scene)){
-                    throw new Exception("抛出异常");
+                if(!flag){
+                    message.set(false, "目标字段不存在数据字典里");
+                }else{
+                    System.out.println("gogogo----" + describeStr);
+                    // describeStr = "[{\"value\":\"1\", \"label\":\"2\"}]";
+                    ArrayList<HashMap<String, String>> describe = new ArrayList<HashMap<String, String>>();
+                    JSONArray jsonArray = new JSONArray(describeStr);
+                    for (int i = 0; i < jsonArray.length(); i++)    {
+                        HashMap<String, String> pair = new  HashMap<String, String>();
+                        JSONObject json = jsonArray.getJSONObject(i);
+                        pair.put("value", json.getString("value"));
+                        pair.put("label", json.getString("label"));
+                        describe.add(pair);
+                    }
+                    Scene scene = new Scene(user.getInstitution(), sceneName, target, describe);
+                    scene.dictToString();
+                    if (! sceneMapper.insert(scene)){
+                        throw new Exception("抛出异常");
+                    }
+                    message.set(true, "场景创建成功");
                 }
-                message.set(true, "场景创建成功");
             }else{
                 message.set(false, "场景名称已存在");
             }
