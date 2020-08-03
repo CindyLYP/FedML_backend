@@ -11,4 +11,5 @@ public interface TaskMapper {
     boolean insert(@Param("task") Task task);
     boolean update(@Param("task") Task task);
     boolean delete(@Param("taskName") String taskName);
+
 }

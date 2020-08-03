@@ -1,6 +1,10 @@
 package com.fl.server.mapper;
 
+import com.fl.server.pojo.Logger;
+import com.fl.server.pojo.Model;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.ArrayList;
 
 public interface UtilsMapper {
     int DatasetNameToId(@Param("name")String name);
@@ -17,4 +21,12 @@ public interface UtilsMapper {
 
     int UserAccountToId(@Param("name")String name);
     String IdToUserAccount(@Param("id") int id);
+
+    ArrayList<Model> getAllModel();
+    ArrayList<Logger> getLogByUserId(@Param("userId") int userId);
+    boolean addLog(@Param("log") Logger log);
+
+
+
+
 }
