@@ -8,13 +8,15 @@ public class Dataset {
     private int id;
     private int userId;
 
-    public Dataset(int userId, int sceneId, String datasetName, int alignedNum, String timestamp, ArrayList<HashMap<String, Object>> dict) {
+    public Dataset(){}
+    public Dataset(int userId, int sceneId, String datasetName, int alignedNum, String timestamp, ArrayList<HashMap<String, Object>> dict, String config) {
         this.userId = userId;
         this.sceneId = sceneId;
         this.datasetName = datasetName;
         this.alignedNum = alignedNum;
         this.timestamp = timestamp;
         this.dict = dict;
+        this.config = config;
     }
 
     private int sceneId;
@@ -112,7 +114,6 @@ public class Dataset {
         this.attrInfo="";
         for (HashMap<String,Object> node:this.dict){
             this.attrInfo += node.get("provider");
-
             for(String attr:(ArrayList<String>)node.get("attributes")){
                 this.attrInfo += "|"+attr;
             }

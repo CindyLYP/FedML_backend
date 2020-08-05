@@ -1,7 +1,6 @@
 package com.fl.server.pojo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Task {
@@ -14,7 +13,7 @@ public class Task {
     private String parameters;
     private String metrics;
     private String trainInfo;
-    private String taskStatus;
+    private boolean taskStatus;
     private ArrayList<HashMap<String,Double>> metricList;
 
 
@@ -93,11 +92,11 @@ public class Task {
         this.trainInfo = trainInfo;
     }
 
-    public String getTaskStatus() {
+    public boolean getTaskStatus() {
         return taskStatus;
     }
 
-    public void setTaskStatus(String taskStatus) {
+    public void setTaskStatus(boolean taskStatus) {
         this.taskStatus = taskStatus;
     }
 

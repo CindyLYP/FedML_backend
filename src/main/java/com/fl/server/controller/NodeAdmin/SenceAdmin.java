@@ -64,7 +64,6 @@ public class SenceAdmin {
                 scene.put("sceneName", reqScene.getSceneName());
                 scene.put("institution", reqScene.getInstitution());
                 scene.put("target", reqScene.getTarget());
-
                 reqScene.StringToDict();
                 scene.put("describe", reqScene.getDescriptionList());
 

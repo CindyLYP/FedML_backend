@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +25,36 @@ public class DataSetAdmin {
     private DatasetMapper datasetMapper;
     @Autowired
     private UtilsMapper utilsMapper;
+
+    @PostMapping("/datasetConfigReq")
+    @ResponseBody
+    public HashMap<String, Object> DatasetConfigReq(
+            @RequestParam("scene") String scene,
+            @RequestParam("datasetName") String datasetName,
+            @RequestParam("operator") String operator
+    ) {
+        System.out.println("----- DatasetConfigReq");
+
+        // 填充结果
+        HashMap<String, Object> output = TypeFactory.GenerateHMSO();
+        Message message = new Message();
+
+        try {
+            // 处理数据库逻辑
+            Dataset reqDataset = datasetMapper.selectByDatasetName(datasetName).get(0);
+            output.put("config", reqDataset.getConfig());
+            message.set(true, "查询成功");
+
+        }catch (Exception e){
+            System.out.println(e.toString());
+            message.set(false, "服务器运行异常");
+        }finally {
+            output.put("message", message);
+        }
+        return output;
+    }
+
+
     // 查询数据集
     @PostMapping("/datasetReq")
     @ResponseBody
@@ -39,7 +70,8 @@ public class DataSetAdmin {
 
         try {
             // 处理数据库逻辑
-            ArrayList<Dataset> reqDatasets = datasetMapper.getAllDataset();
+            ArrayList<Dataset> reqDatasets = datasetMapper.selectByUserIdAndSceneId(utilsMapper.UserAccountToId(operator),
+                    utilsMapper.SceneNameToId(scene));
 
             int datasetsNum = reqDatasets.size();
             output.put("datasetsNum", datasetsNum);
@@ -47,8 +79,9 @@ public class DataSetAdmin {
             ArrayList<Object> datasets = TypeFactory.GenerateALO();
             for (Dataset reqDataset: reqDatasets){
                 HashMap<String, Object> dataset = TypeFactory.GenerateHMSO();
-                dataset.put("datasetName", reqDataset);
-                dataset.put("alignedNum", reqDataset);
+                dataset.put("datasetName", reqDataset.getDatasetName());
+                dataset.put("alignedNum", reqDataset.getAlignedNum());
+
                 reqDataset.StringToDict();
                 dataset.put("providers", reqDataset.getDict());
                 dataset.put("timestamp", reqDataset.getTimestamp());
@@ -60,9 +93,7 @@ public class DataSetAdmin {
 
         }catch (Exception e){
             System.out.println(e.toString());
-
-            message.setState(false);
-            message.setMessage("服务器运行异常");
+            message.set(false, "服务器运行异常");
         }finally {
             output.put("message", message);
         }
@@ -105,6 +136,7 @@ public class DataSetAdmin {
             @RequestParam("scene") String scene,
             @RequestParam("datasetName") String datasetName,
             @RequestParam("dict") String dsStr,
+            @RequestParam("config") String config,
 
             @RequestParam("operator") String operator
     ) {
@@ -118,16 +150,14 @@ public class DataSetAdmin {
 
             if (reqDatasets.size() == 0){
                 ArrayList<HashMap<String, Object>> dict = new ArrayList<HashMap<String, Object>>();
-                System.out.println("gogogo----" + dsStr);
                 JSONArray jsonArray = new JSONArray(dsStr);
-                System.out.println("gogogo----" + dsStr);
                 for (int i = 0; i < jsonArray.length(); i++)    {
                     HashMap<String, Object> pair = new HashMap<String, Object>();
                     JSONObject json = jsonArray.getJSONObject(i);
+
                     pair.put("provider", json.getString("provider"));
-                    System.out.println(json.getString("provider"));
+
                     JSONArray arr = json.getJSONArray("attributes");
-                    System.out.println(json.getJSONArray("attributes"));
                     ArrayList<String> attributes = new ArrayList<String>();
                     for(int j = 0; j < arr.length(); j++){
                         attributes.add(arr.getString(j));
@@ -136,11 +166,10 @@ public class DataSetAdmin {
 
                     dict.add(pair);
                 }
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Dataset dataset = new Dataset(utilsMapper.UserAccountToId(operator), utilsMapper.SceneNameToId(scene),
-                        datasetName, -1, (new Date()).toString(), dict);
-                System.out.println("hhhhhh1");
+                        datasetName, -1, format.format((new Date()).getTime()), dict, config);
                 dataset.dictToString();
-                System.out.println("hhhhhh2");
                 if (! datasetMapper.insert(dataset)){
                     throw new Exception("抛出异常");
                 }
