@@ -1,0 +1,54 @@
+.buttonDiv {
+	width: 60px;
+	cursor: pointer;
+}
+.buttonDiv img {
+	display: block;
+	margin: 0px auto;
+}
+.buttonDiv p {
+	font-size: 12px;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.valuesArr {
+	display: flex;
+	width: 640px;
+	height: 38px;
+	margin: 0px auto;
+}
+.valuesArr > p {
+	text-align: center;
+	flex: 1;
+	height: 100%;
+	line-height: 40px;
+	color: #FFF;
+	font-size: 15px;
+	background:#999;
+	border-right: 1px solid #fff;
+	cursor: pointer;
+}
+.valuesArr > p:last-child {
+	border-right: 0px;
+}
+.valuesArr > p.active {
+	text-align: center;
+	flex: 1;
+	height: 100%;
+	line-height: 40px;
+	color: #fff;
+	font-size: 15px;
+	background:#0065ff;
+	border-right: 1px solid #fff;
+	cursor: pointer;
+}
+#selfChart1 {
+	width: 100%;
+	height: 300px;
+	margin-top: 15px;
+}
+#selfChartProgress {
+	width: 660px;
+	height: 300px;
+}

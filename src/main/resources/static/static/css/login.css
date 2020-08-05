@@ -1,0 +1,123 @@
+.login-container {
+	background:url(../images/background.png) no-repeat;
+	position:relative;
+	background-size:cover;
+}
+#LoginTable {
+	margin-left: 170px;
+}
+.div-out {
+	width:1200px;
+	position: relative;
+	height: 100%;
+}
+.div-inner {
+	position: absolute;
+	left: 0px;
+	top: 28%;
+	text-align: left;
+}
+.logo-img {
+	margin-bottom: 7vh;
+	display: block;
+	margin-top: 0px;
+}
+.login-p1 {
+	font-family: SourceHanSansCN-Medium;
+	font-size: 3rem;
+	color: #fff;
+	letter-spacing: 4.72px;
+	line-height: 3rem;
+}
+.login-p2 {
+	font-family: SourceHanSansCN-Medium;
+	font-size: 2.4rem;
+	color: #fff;
+	letter-spacing: 5.9px;
+	line-height: 2.4rem;
+	margin-bottom: 20px;
+	margin-top: 25px;
+}
+.login-p3 {
+	font-family: SourceHanSansCN-Regular;
+	font-size: 1rem;
+	line-height: 1rem;
+	color: #fff;
+	letter-spacing: 1px;
+	margin-bottom: 55px;
+}
+.login-input {
+	width: 348px;
+	height: 55px;
+	position: relative;
+	min-height: 55px;
+}
+.login-input > div {
+	background: #3074bf;
+	border-radius: 2px;
+	width: 55px;
+	height: 53px;
+	position: absolute;
+	left:2px;
+	top: 2px;
+}
+.login-input > div > img {
+	display: block;
+	margin: 0px auto;
+	margin-top: 14px;
+}
+.login-btn-div {
+	display: -webkit-box;
+	margin-top:50px;
+}
+.username,
+.password {
+	height:53px;
+	width:315px;
+	font-size: 1rem;
+	color: #9f9cbb;
+	letter-spacing: 0;
+	background: transparent;
+	outline: none;
+	border: 1px solid #3074BF;
+	border-radius: 2px;
+	padding-left: 70px;
+}
+.login-input input::-webkit-input-placeholder {
+	/* WebKit browsers */
+	color: #3074bf;
+}
+.login-input input:-moz-placeholder {
+	/* Mozilla Firefox 4 to 18 */
+	color: #3074bf;
+}
+.login-input input::-moz-placeholder {
+	/* Mozilla Firefox 19+ */
+	color: #3074bf;
+}
+.login-input input:-ms-input-placeholder {
+	/* Internet Explorer 10+ */
+	color: #3074bf;
+}
+.login-btn {
+	width:388px;
+	background: #0B42E5 !important;
+	height: 55px;
+	font-size: 18px;
+	border: 0px !important;
+	color: #fff !important;
+	line-height: 55px;
+	text-align: center;
+	padding: 0px;
+	border-radius: 2px !important;
+}
+.login-btn:hover {
+    background: #0B42E5 !important;
+    border-color: #0B42E5 !important;
+    color: #fff !important;
+}
+.login-btn:focus {
+    background: #0B42E5 !important;
+    border-color: #0B42E5 !important;
+    color: #fff !important;
+}

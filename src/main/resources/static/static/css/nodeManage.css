@@ -1,0 +1,53 @@
+.create-node {
+    height: 40px;
+    background: #0065ff !important;
+    border-radius: 3px;
+    outline: none;
+    color: #fff !important;
+    padding: 0px 35px;
+    border:0px !important;
+}
+.create-node:hover{
+    background-color: #0065ff !important;
+    border-color: #0065ff !important;
+    color: #fff !important;
+}
+.create-node:focus{
+    background-color: #0065ff !important;
+    border-color: #0065ff !important;
+    color: #fff !important;
+}
+
+.node-list {
+    background: #fff;
+    border-radius: 0px;
+    min-height: 500px;
+}
+
+#base64Img {
+    display: none;
+    width: 100%;
+}
+#base64Img2 {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.img-div {
+    width: 100px;
+    height: 40px;
+    background: #0065ff;
+    border-radius: 3px;
+    color: #fff;
+    text-align: center;
+    line-height: 40px;
+    position: relative;
+    cursor: pointer;
+}
+.img-div > p {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}

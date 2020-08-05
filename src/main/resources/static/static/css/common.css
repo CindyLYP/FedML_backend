@@ -1,0 +1,441 @@
+body {
+	margin: 0px;
+	height: 100vh;
+	width: 100%;
+	background: #eee;
+	overflow:-moz-scrollbars-none;
+	-moz-user-select:none;/*火狐禁止选中文字*/
+    -webkit-user-select:none;/*webkit浏览器禁止选中文字*/
+    -ms-user-select:none;/*IE10禁止选中文字*/
+    -khtml-user-select:none;/*早期浏览器禁止选中文字*/
+  	user-select:none; /*禁止选中文字*/
+}
+@media screen and (max-width: 1400px) {
+    body {
+        height: 98vh !important;
+    }
+}
+
+.el-cascader-node__postfix {
+	top: 10px !important;
+}
+
+.el-header {
+	height: 80px !important;
+	padding: 0px !important;
+	background: #011e3c;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2001;
+    width: 100%;
+}
+.el-main {
+	text-align: left;
+    margin-top: 80px;
+    margin-left: 260px;
+    background: #eef4fd;
+    padding: 15px;
+}
+
+#app {
+	min-width: 1400px;
+	margin-top: 0px !important;
+	height: 100%;
+}
+.main-common {
+    display: flex !important;
+    height: 100% !important;
+    overflow: hidden !important;
+}
+
+/*初始化p的margin属性*/
+p {
+	margin:0px;
+}
+/*初始化ul,li*/
+ul,
+li {
+	margin: 0px;
+	padding: 0px;
+}
+li {
+	list-style: none;
+}
+
+/*隐藏数字框的上下箭头*/
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+/*个人，企业，商户*/
+.label-factory-block-dir {
+    display: -webkit-box;
+    position: absolute;
+    right: 0px;
+    top: 21px;
+    height: 23px;
+}
+.label-type-dir {
+    height: 23px;
+    margin-right: 40px;
+    color: #666;
+    font-family: SourceHanSansCN-Regular;
+    font-size: 16px;
+    letter-spacing: 0.53px;
+    line-height: 23px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+}
+.label-type-dir img {
+	margin-right: 10px;
+	width: 23px;
+	height: 23px;
+	min-width: 23px;
+	max-width: 23px;
+}
+.label-type-dir.active {
+    height: 23px;
+    margin-right: 40px;
+    color: #666;
+    font-family: SourceHanSansCN-Regular;
+    font-size: 16px;
+    letter-spacing: 0.53px;
+    line-height: 23px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+}
+
+/*右边容器*/
+.container-div {
+	width: 100%;
+}
+.top-main {
+	background: #fff;
+	border: 1px solid #e5e5e5;
+	border-radius: 3px;
+	padding: 0px 30px 24px 30px;
+}
+
+/*容器标题*/
+.page-title {
+	font-family: SourceHanSansCN-Medium;
+	font-weight: bold;
+	font-size: 18px;
+	color: #011e3c;
+	line-height: 63px;
+	letter-spacing: 0.6px;
+	text-align: left;
+}
+.page-top-line {
+	height: 64px;
+	border-bottom: 1px solid #f4f4f6;
+	position: relative;
+}
+
+.screen-input {
+    width: 180px !important;
+    margin-right: 50px !important;
+}
+.short-input {
+	width: 80px !important;
+	margin-right: 15px !important;
+}
+/*单选框*/
+.screen-block .el-radio {
+	height: 40px;
+	line-height: 40px;
+	color: #fff;
+	margin-right: 20px !important;
+}
+.screen-block .el-radio__label {
+	line-height: 40px;
+	color: #666;
+}
+
+/*去除table分割线*/
+.account-list .el-table td,
+.account-list .el-table th.is-leaf,
+.target-screen-main .el-table td,
+.target-screen-main .el-table th.is-leaf,
+.data-monitor-list .el-table td,
+.data-monitor-list .el-table th.is-leaf {
+	border-bottom: 1px solid #F0F1EF;
+}
+
+/*统一table样式*/
+.el-table {
+	color: #777 !important;
+}
+.el-table th {
+    background: #eff3fc !important;
+    color: #2c3640;
+}
+.account-list .el-table__header-wrapper,
+.target-screen-main .el-table__header-wrapper,
+.data-monitor-list .el-table__header-wrapper {
+    border-radius: 0px;
+}
+.el-table--striped .el-table__body tr.el-table__row--striped td,
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+    background: #f5f8ff !important;
+}
+.el-table::before {
+	height: 0px !important;
+}
+
+/*每个页面顶部栏*/
+.screen-block {
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 30px;
+    color: #fff;
+}
+.screen-block > div {
+    flex: auto;
+    text-align: left;
+}
+
+/*操作按钮*/
+.cell {
+	display: -webkit-box;
+}
+.btns {
+	display: flex;
+	line-height: 30px;
+	margin-right: 30px;
+	cursor: pointer;
+}
+.btns:last-child {
+	margin-right: 0px;
+}
+.btns img {
+	width: 25px;
+	height: 25px;
+	display: block;
+	min-width: 25px;
+	max-width: 25px;
+	margin-top: 2.5px;
+}
+.edit-btn p {
+	color: #4877fb;
+	margin-left: 5px;
+}
+.del-btn p {
+	color: #f68f05;
+	margin-left: 5px;
+}
+.sign-btn p {
+	color: #7700ff;
+	margin-left: 5px;
+}
+
+/*外层框*/
+.out-div {
+	margin-top: 15px;
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+}
+
+/*隐藏table expand图标*/
+.el-table__expand-column .cell{
+	/*opacity: 0;*/
+}
+
+/*弹窗样式*/
+.el-dialog .select-cascader,
+.el-dialog .el-select {
+    width: 100%;
+}
+.del-tip-style {
+	width: 77px;
+	height: 77px;
+	display: block;
+	margin: 0px auto;
+}
+.del-tip-p {
+	font-family: SourceHanSansCN-Regular;
+	font-size: 18px;
+	color: #666;
+	letter-spacing: 0.8px;
+	line-height: 18px;
+	margin-top: 30px;
+	text-align: center;
+}
+
+/*按钮样式*/
+.cancle-btn-style {
+	background: #999 !important;
+	border-radius: 3px;
+	font-family: SourceHanSansCN-Medium;
+	font-size: 16px;
+	color: #ededed !important;
+	letter-spacing: 0.53px;
+	padding: 10px 20px !important;
+	border: 0px !important;
+	height: 40px;
+}
+.cancle-btn-style button:hover {
+	background-color: #999 !important;
+    border-color: #999 !important;
+    color: #fff !important;
+}
+.cancle-btn-style button:focus {
+	background-color: #999 !important;
+    border-color: #999 !important;
+    color: #fff !important;
+}
+.submit-btn-style {
+	background: #0065ff !important;
+	border-radius: 3px;
+	font-family: SourceHanSansCN-Medium;
+	font-size: 16px;
+	color: #ededed !important;
+	letter-spacing: 0.53px;
+	padding: 10px 20px !important;
+	border: 0px !important;
+	min-width: 80px;
+	height: 40px;
+}
+.submit-btn-style button:hover {
+	background-color: #0065ff !important;
+    border-color: #0065ff !important;
+    color: #fff !important;
+}
+.submit-btn-style button:focus {
+	background-color: #0065ff !important;
+    border-color: #0065ff !important;
+    color: #fff !important;
+}
+.yellow-btn-style {
+    height: 40px;
+    background: #ef7e54 !important;
+    border-radius: 3px;
+    outline: none;
+    color: #fff !important;
+    padding: 0px 35px !important;
+    border:0px !important;
+}
+.yellow-btn-style button:hover{
+    background-color: #ef7e54 !important;
+    border-color: #ef7e54 !important;
+    color: #fff !important;
+}
+.yellow-btn-style button:focus{
+    background-color: #ef7e54 !important;
+    border-color: #ef7e54 !important;
+    color: #fff !important;
+}
+
+
+/*table无数据*/
+.el-table__empty-block {
+	height:400px !important;
+}
+.el-table__empty-text {
+	width: 135px !important;
+	height: 159.75px !important;
+	color: transparent !important;
+	background: url(/static/images/nodata.png) no-repeat;
+	background-size: contain;
+}
+
+/*分页样式*/
+.el-pagination {
+	text-align: right !important;
+}
+
+/*分页*/
+.page-bar{
+	max-width: 550px;
+}
+.page-bar ul {
+	display: -webkit-box;
+}
+.page-bar li:first-child>a {
+	margin-left: 0px
+}
+.page-bar a {
+	text-decoration: none;
+	position: relative;
+	display: block;
+	padding: 6px 12px;
+	margin-left: -1px;
+	color: #303133;
+	cursor: pointer;
+	margin-right: 5px;
+	font-size: 13px;
+	line-height: 18px;
+}
+.page-bar a.banclick {
+	cursor:not-allowed;
+}
+.page-bar .active a {
+	color: #0093ff;
+	cursor: default;
+}
+.page-bar i {
+	font-style:normal;
+	color: rgb(96, 98, 102);
+	margin: 0px 4px;
+	font-size: 12px;
+}
+.goPage {
+	width: 80px !important;
+}
+.el-menu {
+	border-right:0px !important;
+}
+
+
+.subbtn {
+    display: -webkit-box;
+    height: 42px;
+    margin-bottom: 0px;
+    display: -ms-flexbox;
+    margin: 20px 0px;
+}
+.subbtn::-webkit-scrollbar {
+    height: 0px;
+}
+.subbtn > div {
+    height: 40px;
+    cursor: pointer;
+    background: transparent;
+    color: #999;
+    border: 1px solid #c8c8c8;
+    margin-right: 30px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 3px;
+    font-size: 14px;
+    display: block;
+    width: 100px;
+    padding:0px 4px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.subbtn > div.active {
+    height: 40px;
+    cursor: pointer;
+    background: #0065ff;
+    color: #fff;
+    border: 1px solid #0065ff;
+    border-radius: 3px;
+    margin-right: 30px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+    display: block;
+    width: 100px;
+    padding:0px 4px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

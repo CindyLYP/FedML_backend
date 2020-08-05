@@ -1,0 +1,45 @@
+.start-search {
+    height: 40px;
+    background: #ef7e54 !important;
+    border-radius: 3px;
+    outline: none;
+    color: #fff !important;
+    padding: 0px 35px;
+    border:0px !important;
+}
+.start-search:hover{
+    background-color: #ef7e54 !important;
+    border-color: #ef7e54 !important;
+    color: #fff !important;
+}
+.start-search:focus{
+    background-color: #ef7e54 !important;
+    border-color: #ef7e54 !important;
+    color: #fff !important;
+}
+
+.create-account {
+    height: 40px;
+    background: #0065ff !important;
+    border-radius: 3px;
+    outline: none;
+    color: #fff !important;
+    padding: 0px 35px;
+    border:0px !important;
+}
+.create-account:hover{
+    background-color: #0065ff !important;
+    border-color: #0065ff !important;
+    color: #fff !important;
+}
+.create-account:focus{
+    background-color: #0065ff !important;
+    border-color: #0065ff !important;
+    color: #fff !important;
+}
+
+.account-list {
+    background: #fff;
+    border-radius: 0px;
+    min-height: 500px;
+}

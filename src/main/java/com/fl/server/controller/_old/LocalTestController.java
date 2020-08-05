@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 @Controller
 @CrossOrigin(origins="*",maxAge = 3600)
@@ -43,7 +44,12 @@ public class LocalTestController {
         JSONObject js = new JSONObject(mp);
         String s = js.toString();
         JSONObject tmp = new JSONObject(s);
-        System.out.println(tmp.get("num"));
+        Iterator<String> it = tmp.keys();
+        while (it.hasNext()){
+            String key = it.next();
+            Object value = tmp.getString(key);
+        }
+        System.out.println(tmp.toString());
         return 1;
     }
 

@@ -8,6 +8,8 @@ import com.fl.server.object.tools.Randm;
 import com.fl.server.pojo.Dataset;
 import com.fl.server.pojo.Node;
 import com.fl.server.pojo.Scene;
+import com.fl.server.pojo.Task;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -82,6 +84,7 @@ public class MainServer {
         client.put("client_config",clientConfig);
         clients.add(client);
         data.put("clients",clients);
+        utilsMapper.insertServerMap(dataset.getDatasetName(),new JSONObject(data).toString());
         try{
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
@@ -102,10 +105,21 @@ public class MainServer {
 
     }
 
-    public HashMap<String,String> trainTask(){
+    public JSONObject trainTask(Task task) throws JSONException {
+        Dataset dataset = datasetMapper.selectByDatasetName(utilsMapper.IdToDatasetName(task.getDatasetId())).get(0);
+        JSONObject data = new JSONObject(utilsMapper.selectServerMap(dataset.getDatasetName()));
+        data.put("task_name",task.getTaskName());
+        ArrayList<HashMap<String,Object>> clients = (ArrayList<HashMap<String, Object>>) data.get("clients");
+
+        HashMap<String,Object> mainClient = clients.get(0);
+        HashMap<String,Object> clientConfig = (HashMap<String, Object>) mainClient.get("client_config");
+        clientConfig.put("client_type","shared_nn_main");
 
 
-        return new HashMap<>();
+        for(int i=0;i<clients.size();i++){
+
+        }
+        return new JSONObject();
     }
 
     public JSONObject query(String queryType, HashMap<String,Object> params){
