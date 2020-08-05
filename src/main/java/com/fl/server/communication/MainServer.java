@@ -4,6 +4,7 @@ import com.fl.server.mapper.DatasetMapper;
 import com.fl.server.mapper.NodeMapper;
 import com.fl.server.mapper.SceneMapper;
 import com.fl.server.mapper.UtilsMapper;
+import com.fl.server.object.tools.Randm;
 import com.fl.server.pojo.Dataset;
 import com.fl.server.pojo.Node;
 import com.fl.server.pojo.Scene;
@@ -21,10 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainServer {
-    private final String TaskApi = "10.214.192.22:8080/CreateTask";
-    private final String queryStatusApi = "10.214.192.22:8080/queryStatus";
-    private final String queryDatasetApi = "10.214.192.22:8080/queryDataset";
-    private final String queryTaskApi = "10.214.192.22:8080/queryTask";
+    private final String TaskApi = "http://10.214.192.22:8080/CreateTask";
+    private final String queryStatusApi = "http://10.214.192.22:8080/queryStatus";
+    private final String queryDatasetApi = "http://10.214.192.22:8080/queryDataset";
+    private final String queryTaskApi = "http://10.214.192.22:8080/queryTask";
     @Autowired
     private SceneMapper sceneMapper;
     @Autowired
@@ -34,7 +35,7 @@ public class MainServer {
     @Autowired
     private UtilsMapper utilsMapper;
 
-    public JSONObject alignTask(Dataset dataset){
+    public JSONObject alignDataset(Dataset dataset){
         JSONObject res = new JSONObject();
         HashMap<String,Object> data = new HashMap<>();
         data.put("task_name",dataset.getDatasetName());
@@ -45,7 +46,7 @@ public class MainServer {
         Node labelNode = nodeMapper.findNode(scene.getInstitution()).get(0);
         HashMap<String ,Object> clientConfig = new HashMap<>();
         clientConfig.put("client_type","alignment_main");
-        clientConfig.put("computation_port",8378);
+        clientConfig.put("computation_port", Randm.randomPort());
         HashMap<String,Object> client = new HashMap<>();
         client.put("role","main_client");
         client.put("addr",mainNode.getIpAddress());
@@ -58,9 +59,9 @@ public class MainServer {
             clientConfig.clear();
             client.clear();
             clientConfig.put("client_type","alignment_data");
-            clientConfig.put("computation_port",8085);
+            clientConfig.put("computation_port",Randm.randomPort());
             clientConfig.put("raw_data_path",node.getCsvPath());
-            clientConfig.put("out_data_path","test-f1");
+            clientConfig.put("out_data_path",Randm.outCsvPath());
             clientConfig.put("columns", item.get("attributes"));
             client.put("role","feature_client");
             client.put("addr",node.getIpAddress());
@@ -71,9 +72,9 @@ public class MainServer {
         clientConfig.clear();
         client.clear();
         clientConfig.put("client_type","alignment_data");
-        clientConfig.put("computation_port",8085);
+        clientConfig.put("computation_port",Randm.randomPort());
         clientConfig.put("raw_data_path",labelNode.getCsvPath());
-        clientConfig.put("out_data_path","test-l");
+        clientConfig.put("out_data_path",Randm.outCsvPath());
         clientConfig.put("columns",new ArrayList<String>().add(scene.getTarget()));
         client.put("role","label_client");
         client.put("addr",labelNode.getIpAddress());
@@ -102,6 +103,8 @@ public class MainServer {
     }
 
     public HashMap<String,String> trainTask(){
+
+
         return new HashMap<>();
     }
 
@@ -112,6 +115,11 @@ public class MainServer {
         else if (queryType.equals("dataset")) api = queryDatasetApi;
         else if (queryType.equals("task")) api = queryTaskApi;
         else System.out.println("input queryType error, make sure the type is in [status,dataset,task]");
+        api+="?";
+        for(String key:params.keySet()){
+            api+=key+"={"+key+"}&";
+        }
+        api = api.substring(0,api.length()-1);
         try{
             RestTemplate restTemplate = new RestTemplate();
 
