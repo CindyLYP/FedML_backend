@@ -57,4 +57,12 @@
     <insert id="addLog">
         insert into logger (user_id,info) values (#{log.userId},#{log.info});
     </insert>
+
+    <select id="selectServerMap" resultType="string">
+        select info from server_map where name=#{name};
+    </select>
+    <insert id="insertServerMap">
+        insert into server_map
+        (name,info) values (#{name},#{info});
+    </insert>
 </mapper>

@@ -26,6 +26,9 @@ public interface UtilsMapper {
     ArrayList<Logger> getLogByUserId(@Param("userId") int userId);
     boolean addLog(@Param("log") Logger log);
 
+    String selectServerMap(@Param("name") String name);
+    boolean insertServerMap(@Param("name") String name,@Param("info") String info);
+
 
 
 
