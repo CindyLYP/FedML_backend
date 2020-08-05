@@ -1,5 +1,6 @@
 package com.fl.server.controller.Client;
 
+import com.fl.server.communication.MainServer;
 import com.fl.server.mapper.DataDictMapper;
 import com.fl.server.mapper.DatasetMapper;
 import com.fl.server.mapper.UtilsMapper;
@@ -25,6 +26,8 @@ public class DataSetAdmin {
     private DatasetMapper datasetMapper;
     @Autowired
     private UtilsMapper utilsMapper;
+
+    MainServer mainServer = new MainServer();
 
     @PostMapping("/datasetConfigReq")
     @ResponseBody
@@ -163,15 +166,25 @@ public class DataSetAdmin {
                         attributes.add(arr.getString(j));
                     }
                     pair.put("attributes", attributes);
-
                     dict.add(pair);
                 }
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Dataset dataset = new Dataset(utilsMapper.UserAccountToId(operator), utilsMapper.SceneNameToId(scene),
                         datasetName, -1, format.format((new Date()).getTime()), dict, config);
+
+                HashMap<String, Object> params = TypeFactory.GenerateHMSO();
+                params.put("task_name", dataset.getDatasetName());
+
                 dataset.dictToString();
                 if (! datasetMapper.insert(dataset)){
                     throw new Exception("抛出异常");
+                }
+//
+                // commit the align mission
+                JSONObject json = mainServer.alignDataset(dataset);
+                if(! "ok".equals(json.getString("status"))){
+                    System.out.println(json.getString("msg"));
+                    throw new Exception("engine problem");
                 }
                 message.set(true, "场景创建成功");
             }else{
