@@ -107,7 +107,9 @@ public class DictAdmin {
                 // File dest = new File("./tmp/" + fileName);
                 // csv.transferTo(dest);
                 // message.set(true, "文件上传成功");
-                if(!dataDictMapper.deleteByProvider(user.getInstitution())){
+
+                if(dataDictMapper.selectByProvider(user.getInstitution()).size() > 0
+                && !dataDictMapper.deleteByProvider(user.getInstitution())){
                     throw new Exception("抛出异常");
                 }
 

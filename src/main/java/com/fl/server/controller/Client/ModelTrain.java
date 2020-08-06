@@ -59,7 +59,7 @@ public class ModelTrain {
                 task.put("modelName", reqTask.getModelName());
                 task.put("parameters", reqTask.getParameters());
                 task.put("status", reqTask.getTaskStatus());
-                if (reqTask.getTaskStatus()){
+                if ("已完成".equals(reqTask.getTaskStatus())){
                     reqTask.StringToMetric();
                     task.put("metrics", reqTask.getMetrics());
                 }
@@ -159,13 +159,13 @@ public class ModelTrain {
 
             if (reqTasks.size() == 0){
                 Task task = new Task(utilsMapper.UserAccountToId(operator), utilsMapper.SceneNameToId(scene),
-                        utilsMapper.DatasetNameToId(datasetName), taskName, modelName, parameters, false) ;
+                        utilsMapper.DatasetNameToId(datasetName), taskName, modelName, parameters, "等待运行") ;
 
                 if (! taskMapper.insert(task)){
                     throw new Exception("task 抛出异常");
                 }
 
-                // commit the align mission
+// commit the align mission
 //                JSONObject json = mainServer.alignDataset(dataset);
 //                if(! "ok".equals(json.getString("status"))){
 //                    System.out.println(json.getString("msg"));
