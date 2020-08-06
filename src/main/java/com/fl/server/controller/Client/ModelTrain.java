@@ -62,7 +62,11 @@ public class ModelTrain {
                 if ("已完成".equals(reqTask.getTaskStatus())){
                     reqTask.StringToMetric();
                     task.put("metrics", reqTask.getMetrics());
+                }else{
+                    task.put("ks",0.7);
+                    task.put("auc",0.65);
                 }
+
                 tasks.add(task);
             }
             output.put("tasks", tasks);
@@ -318,16 +322,16 @@ public class ModelTrain {
 
         try {
             output.put("status", "仅用于测试: 训练成功");
-            HashMap<String, Object> round = TypeFactory.GenerateHMSO();
-            round.put("accuracy", 0.61);
-            round.put("F1", 2*0.7*0.5/(0.7+0.5));
-            round.put("precision", 0.7);
-            round.put("recall", 0.5);
-            round.put("FBeta", 0.53);
-            round.put("logLoss", 10.2333);
-            round.put("Roc", 0.65);
+            HashMap<String, Object> result = TypeFactory.GenerateHMSO();
+            result.put("accuracy", 0.61);
+            result.put("F1", 2*0.7*0.5/(0.7+0.5));
+            result.put("precision", 0.7);
+            result.put("recall", 0.5);
+            result.put("FBeta", 0.53);
+            result.put("logLoss", 10.2333);
+            result.put("Roc", 0.65);
 
-
+            output.put("result", result);
             message.setState(true);
             message.setMessage("训练效果查询成功");
         }catch (Exception e){
