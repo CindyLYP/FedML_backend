@@ -34,6 +34,8 @@ public class MainServer {
     private NodeMapper nodeMapper;
     @Autowired
     private UtilsMapper utilsMapper;
+    @Autowired
+    private QueryServer queryServer;
 
     public JSONObject alignDataset(Dataset dataset){
         JSONObject res = new JSONObject();
@@ -90,8 +92,8 @@ public class MainServer {
             HttpEntity<HashMap<String, Object>> request = new HttpEntity<>(data, headers);
             ResponseEntity<JSONObject> response = restTemplate.postForEntity(TaskApi, request, JSONObject.class);
             res = response.getBody();
-            System.out.println("get response");
-            System.out.println(response.getBody());
+            System.out.println("get align response from server");
+            System.out.println(res);
 
 
         }catch (HttpClientErrorException e){
@@ -104,13 +106,14 @@ public class MainServer {
     }
 
     public JSONObject trainTask(Task task) throws JSONException {
+        JSONObject res = new JSONObject();
         Dataset dataset = datasetMapper.selectByDatasetName(utilsMapper.IdToDatasetName(task.getDatasetId())).get(0);
         JSONObject data = new JSONObject(utilsMapper.selectServerMap(dataset.getDatasetName()));
         data.put("task_name",task.getTaskName());
-        ArrayList<HashMap<String,Object>> clients = (ArrayList<HashMap<String, Object>>) data.get("clients");
+        ArrayList<JSONObject> clients = (ArrayList<JSONObject>) data.get("clients");
 
-        HashMap<String,Object> mainClient = clients.get(0);
-        HashMap<String,Object> clientConfig = (HashMap<String, Object>) mainClient.get("client_config");
+        JSONObject mainClient = clients.get(0);
+        JSONObject clientConfig = (JSONObject) mainClient.get("client_config");
         clientConfig.put("client_type","shared_nn_main");
         clientConfig.put("in_dim",64);
         clientConfig.put("out_dim",1);
@@ -120,11 +123,11 @@ public class MainServer {
         mainClient.put("client_config",clientConfig);
         clients.set(0,mainClient);
 
-        HashMap<String,Object> crypto_client = new HashMap<>();
+        JSONObject crypto_client = new JSONObject();
         crypto_client.put("role","crypto_producer");
         crypto_client.put("addr",mainClient.get("addr"));
         crypto_client.put("http_port",6666);
-        HashMap<String,Object> config = new HashMap<>();
+        JSONObject config = new JSONObject();
         config.put("client_type","triplet_producer");
         config.put("computation_port",Randm.randomPort());
         ArrayList<Integer> a = new ArrayList<>();
@@ -134,16 +137,46 @@ public class MainServer {
         config.put("listen_clients",a);
         crypto_client.put("client_config",config);
         clients.add(1,crypto_client);
-        for(int i=1;i<clients.size()-1;i++){
-            HashMap<String,Object> client=clients.get(i);
-            config = (HashMap<String, Object>) client.get("client_config");
+        int i=1;
+        for(;i<clients.size()-1;i++){
+            JSONObject client=clients.get(i);
+            config = (JSONObject) client.get("client_config");
             config.put("client_type","shared_nn_feature");
             config.put("data_path",config.get("out_data_path"));
             config.remove("raw_data_path");
             config.remove("out_data_path");
             config.remove("columns");
+            client.put("client_config",config);
+            clients.set(i,client);
         }
-        return new JSONObject();
+        JSONObject client=clients.get(i);
+        config = (JSONObject) client.get("client_config");
+        config.put("client_type","shared_nn_label");
+        config.put("data_path",config.get("out_data_path"));
+        config.put("loss","mse");
+        config.put("metric","auc_ks");
+        config.remove("raw_data_path");
+        config.remove("out_data_path");
+        config.remove("columns");
+        client.put("client_config",config);
+        clients.set(i,client);
+        data.put("clients",clients);
+        try{
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<JSONObject> request = new HttpEntity<>(data, headers);
+            ResponseEntity<JSONObject> response = restTemplate.postForEntity(TaskApi, request, JSONObject.class);
+            res = response.getBody();
+            System.out.println("get response");
+            System.out.println(response.getBody());
+
+        }catch (HttpClientErrorException e){
+            System.out.println("http post error!");
+        }
+        finally {
+            return res;
+        }
     }
 
 

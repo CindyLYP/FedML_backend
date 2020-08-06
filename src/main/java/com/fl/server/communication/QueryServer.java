@@ -1,6 +1,12 @@
 package com.fl.server.communication;
 
+import com.fl.server.mapper.DatasetMapper;
+import com.fl.server.mapper.NodeMapper;
+import com.fl.server.mapper.SceneMapper;
+import com.fl.server.mapper.UtilsMapper;
+import com.fl.server.pojo.Dataset;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -14,23 +20,46 @@ public class QueryServer {
     private final String queryDatasetApi = "http://10.214.192.22:8080/queryDataset";
     private final String queryTaskApi = "http://10.214.192.22:8080/queryTask";
 
-    @Async
-    public JSONObject query(String queryType, HashMap<String,Object> params){
-        JSONObject res=new JSONObject();
-        String api = new String();
-        if (queryType.equals("status")) api= queryStatusApi;
-        else if (queryType.equals("dataset")) api = queryDatasetApi;
-        else if (queryType.equals("task")) api = queryTaskApi;
-        else System.out.println("input queryType error, make sure the type is in [status,dataset,task]");
-        api+="?";
-        for(String key:params.keySet()){
-            api+=key+"={"+key+"}&";
-        }
-        api = api.substring(0,api.length()-1);
+    @Autowired
+    private SceneMapper sceneMapper;
+    @Autowired
+    private DatasetMapper datasetMapper;
+    @Autowired
+    private NodeMapper nodeMapper;
+    @Autowired
+    private UtilsMapper utilsMapper;
+
+    public String queryStatus(String name){
+        String api = queryStatusApi+"?name="+name;
+        String res = new String();
         try{
             RestTemplate restTemplate = new RestTemplate();
 
-            ResponseEntity<JSONObject> response = restTemplate.getForEntity(api, JSONObject.class,params);
+            ResponseEntity<JSONObject> response = restTemplate.getForEntity(api, JSONObject.class);
+            JSONObject data = response.getBody();
+            res = (String) data.get("msg");
+
+        }catch (HttpClientErrorException e){
+            System.out.println("queryStatusApi http post error!");
+        }
+        finally {
+            return res;
+        }
+    }
+
+    @Async
+    public JSONObject queryDataset(Dataset dataset) throws InterruptedException {
+        JSONObject res=new JSONObject();
+        String api = queryDatasetApi+"?task_name="+dataset.getDatasetName();
+        while(true){
+            Thread.currentThread().sleep(10000);
+
+        }
+
+        try{
+            RestTemplate restTemplate = new RestTemplate();
+
+            ResponseEntity<JSONObject> response = restTemplate.getForEntity(api, JSONObject.class);
             res = response.getBody();
             System.out.println("get response");
             System.out.println(response.getBody());
