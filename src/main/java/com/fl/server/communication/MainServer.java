@@ -25,9 +25,7 @@ import java.util.Map;
 
 public class MainServer {
     private final String TaskApi = "http://10.214.192.22:8080/CreateTask";
-    private final String queryStatusApi = "http://10.214.192.22:8080/queryStatus";
-    private final String queryDatasetApi = "http://10.214.192.22:8080/queryDataset";
-    private final String queryTaskApi = "http://10.214.192.22:8080/queryTask";
+
     @Autowired
     private SceneMapper sceneMapper;
     @Autowired
@@ -114,41 +112,39 @@ public class MainServer {
         HashMap<String,Object> mainClient = clients.get(0);
         HashMap<String,Object> clientConfig = (HashMap<String, Object>) mainClient.get("client_config");
         clientConfig.put("client_type","shared_nn_main");
+        clientConfig.put("in_dim",64);
+        clientConfig.put("out_dim",1);
+        clientConfig.put("layers",new ArrayList<Integer>().add(1));
+        clientConfig.put("test_per_batches",101);
+        clientConfig.put("max_iter",12345);
+        mainClient.put("client_config",clientConfig);
+        clients.set(0,mainClient);
 
-
-        for(int i=0;i<clients.size();i++){
-
+        HashMap<String,Object> crypto_client = new HashMap<>();
+        crypto_client.put("role","crypto_producer");
+        crypto_client.put("addr",mainClient.get("addr"));
+        crypto_client.put("http_port",6666);
+        HashMap<String,Object> config = new HashMap<>();
+        config.put("client_type","triplet_producer");
+        config.put("computation_port",Randm.randomPort());
+        ArrayList<Integer> a = new ArrayList<>();
+        for(int i=1;i<clients.size()-1;i++){
+            a.add(i+1);
+        }
+        config.put("listen_clients",a);
+        crypto_client.put("client_config",config);
+        clients.add(1,crypto_client);
+        for(int i=1;i<clients.size()-1;i++){
+            HashMap<String,Object> client=clients.get(i);
+            config = (HashMap<String, Object>) client.get("client_config");
+            config.put("client_type","shared_nn_feature");
+            config.put("data_path",config.get("out_data_path"));
+            config.remove("raw_data_path");
+            config.remove("out_data_path");
+            config.remove("columns");
         }
         return new JSONObject();
     }
 
-    public JSONObject query(String queryType, HashMap<String,Object> params){
-        JSONObject res=new JSONObject();
-        String api = new String();
-        if (queryType.equals("status")) api= queryStatusApi;
-        else if (queryType.equals("dataset")) api = queryDatasetApi;
-        else if (queryType.equals("task")) api = queryTaskApi;
-        else System.out.println("input queryType error, make sure the type is in [status,dataset,task]");
-        api+="?";
-        for(String key:params.keySet()){
-            api+=key+"={"+key+"}&";
-        }
-        api = api.substring(0,api.length()-1);
-        try{
-            RestTemplate restTemplate = new RestTemplate();
-
-            ResponseEntity<JSONObject> response = restTemplate.getForEntity(api, JSONObject.class,params);
-            res = response.getBody();
-            System.out.println("get response");
-            System.out.println(response.getBody());
-
-
-        }catch (HttpClientErrorException e){
-            System.out.println("http post error!");
-        }
-        finally {
-            return res;
-        }
-    }
 
 }

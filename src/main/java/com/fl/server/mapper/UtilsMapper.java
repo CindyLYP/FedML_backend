@@ -23,6 +23,7 @@ public interface UtilsMapper {
     String IdToUserAccount(@Param("id") int id);
 
     ArrayList<Model> getAllModel();
+    Model getModelByName(@Param("name")String name);
     ArrayList<Logger> getLogByUserId(@Param("userId") int userId);
     boolean addLog(@Param("log") Logger log);
 

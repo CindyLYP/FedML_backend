@@ -8,6 +8,7 @@ import com.fl.server.mapper.UtilsMapper;
 import com.fl.server.object.old.Feature;
 import com.fl.server.object.old.User;
 
+import org.assertj.core.internal.IterableElementComparisonStrategy;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,21 @@ public class LocalTestController {
 
     @Autowired
     private UtilsMapper utilsMapper;
+    @Autowired
+    private TestComm testComm;
 
     @CrossOrigin
     @PostMapping(value = "api/login")
     @ResponseBody
-    public int login(@RequestBody User ResponseUser) throws JSONException {
+    public int login(@RequestBody User ResponseUser) throws JSONException, InterruptedException {
         String name = ResponseUser.getUsername();
         String pwd = ResponseUser.getPassword();
         System.out.println("receive json from frontend");
         TestComm test = new TestComm();
-        test.send();
-
+        testComm.send2();
+        testComm.send2();
+        String str = test.send();
+        System.out.println(str);
         HashMap<String,Object> mp=new HashMap<>();
         HashMap<String,Integer> ts=new HashMap<>();
         ts.put("age",25);

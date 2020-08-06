@@ -51,6 +51,9 @@
     <select id="getAllModel">
         select * from model;
     </select>
+    <select id="getModelByName">
+        translate * from model where name=#{name};
+    </select>
     <select id="getLogByUserId">
         select * from logger where user_id=#{userId};
     </select>
