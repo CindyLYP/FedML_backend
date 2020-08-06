@@ -1,6 +1,7 @@
 package com.fl.server.pojo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Model {
@@ -42,7 +43,6 @@ public class Model {
     }
 
     public void stringToList(){
-        for(String s:this.params.split("#"))
-            this.params_list.add(s);
+        this.params_list = new ArrayList<>(Arrays.asList(this.params.split("#")));
     }
 }

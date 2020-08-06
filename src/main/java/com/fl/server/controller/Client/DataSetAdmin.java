@@ -186,9 +186,9 @@ public class DataSetAdmin {
                     System.out.println(json.getString("msg"));
                     throw new Exception("engine problem");
                 }
-                message.set(true, "场景创建成功");
+                message.set(true, "dataset创建成功");
             }else{
-                message.set(false, "场景名称已存在");
+                message.set(false, "dataset名称已存在");
             }
 
         }catch (Exception e){
