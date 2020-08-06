@@ -1,9 +1,6 @@
 package com.fl.server.communication;
 
-import com.fl.server.mapper.DatasetMapper;
-import com.fl.server.mapper.NodeMapper;
-import com.fl.server.mapper.SceneMapper;
-import com.fl.server.mapper.UtilsMapper;
+import com.fl.server.mapper.*;
 import com.fl.server.pojo.Dataset;
 import com.fl.server.pojo.Task;
 import org.json.JSONObject;
@@ -23,13 +20,10 @@ public class QueryServer {
     private final String queryTaskApi = "http://10.214.192.22:8080/queryTask";
 
     @Autowired
-    private SceneMapper sceneMapper;
+    private TaskMapper taskMapper;
     @Autowired
     private DatasetMapper datasetMapper;
-    @Autowired
-    private NodeMapper nodeMapper;
-    @Autowired
-    private UtilsMapper utilsMapper;
+
 
     public String queryStatus(String name){
         String api = queryStatusApi+"?name="+name;
@@ -104,7 +98,15 @@ public class QueryServer {
             ResponseEntity<JSONObject> response = restTemplate.getForEntity(api, JSONObject.class);
             res = response.getBody();
             System.out.println("get query train response from server");
-            ArrayList<ArrayList<Double>> msg = (ArrayList<ArrayList<Double>>) res.get("msg");
+            ArrayList<ArrayList<Object>> msg = (ArrayList<ArrayList<Object>>) res.get("msg");
+            String trainInfo = new String();
+            for (int i=0;i<msg.size();i++){
+                for (int j=0;j<msg.get(i).size();j++)
+                    trainInfo+=msg.get(i).get(j)+"|";
+                trainInfo = trainInfo.substring(0,trainInfo.length()-1)+"#";
+            }
+            task.setTrainInfo(trainInfo.substring(0,trainInfo.length()-1));
+            taskMapper.update(task);
         }catch (HttpClientErrorException e){
             System.out.println("http post error!");
         }
