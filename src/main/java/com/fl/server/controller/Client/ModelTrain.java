@@ -1,5 +1,7 @@
 package com.fl.server.controller.Client;
 
+import com.fl.server.communication.MainServer;
+import com.fl.server.communication.QueryServer;
 import com.fl.server.mapper.DatasetMapper;
 import com.fl.server.mapper.TaskMapper;
 import com.fl.server.mapper.UtilsMapper;
@@ -29,6 +31,11 @@ public class ModelTrain {
     private TaskMapper taskMapper;
     @Autowired
     private UtilsMapper utilsMapper;
+
+
+    MainServer mainServer = new MainServer();
+    QueryServer queryServer = new QueryServer();
+
 
     // 任务查询
     @PostMapping("/taskReq")
@@ -169,6 +176,12 @@ public class ModelTrain {
                     throw new Exception("task 抛出异常");
                 }
 
+                JSONObject json = mainServer.trainTask(task);
+                if(! "ok".equals(json.getString("status"))){
+                    System.out.println(json.getString("msg"));
+                    throw new Exception("engine problem");
+                }
+
 // commit the align mission
 //                JSONObject json = mainServer.alignDataset(dataset);
 //                if(! "ok".equals(json.getString("status"))){
@@ -255,8 +268,13 @@ public class ModelTrain {
         Message message = new Message();
 
         try {
+            String status = queryServer.queryStatus(taskName);
+            if("ok".equals(status)){
+                output.put("status", "训练完成");
+            }else{
+                output.put("status", "训练中");
+            }
             // output.put("status", "等待训练");
-            output.put("status", "仅用于测试: 训练成功");
             message.set(true, "查询成功");
         }catch (Exception e){
             System.out.println(e.toString());
@@ -283,15 +301,28 @@ public class ModelTrain {
 
 
         try {
-            output.put("status", "仅用于测试: 训练成功");
-            output.put("roundNum", 5);
+            Task task = taskMapper.selectByTaskName(taskName);
 
+            String status = queryServer.queryStatus(taskName);
+            if("ok".equals(status)){
+                output.put("status", "训练完成");
+            }else{
+                output.put("status", "训练中");
+            }
+            queryServer.queryTask(task);
+            task.TrainInfoToDict();
+
+
+            ArrayList<HashMap<String, Object>> infoList = task.getTrainInfoList();
+            int roundNum = infoList.size();
+            output.put("roundNum", roundNum);
             ArrayList<Object> roundInfo = TypeFactory.GenerateALO();
-            for (int i = 0; i < 5; ++i) {
+            for (int i = 0; i < roundNum; ++i) {
                 HashMap<String, Object> round = TypeFactory.GenerateHMSO();
                 round.put("round", i + 1);
-                round.put("auc", Math.sqrt(i * 10) / Math.sqrt(5.7 * 10));
-                round.put("ks", 1.0 / (1.0 + Math.exp(i - 2)));
+                round.put("auc", infoList.get(i).get("auc"));
+                round.put("ks", infoList.get(i).get("ks"));
+
                 roundInfo.add(round);
             }
             output.put("roundInfo", roundInfo);

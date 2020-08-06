@@ -178,12 +178,12 @@ public class DataSetAdmin {
                     throw new Exception("抛出异常");
                 }
 
-                // commit the align mission
-//                JSONObject json = mainServer.alignDataset(dataset);
-//                if(! "ok".equals(json.getString("status"))){
-//                    System.out.println(json.getString("msg"));
-//                    throw new Exception("engine problem");
-//                }
+//                 commit the align mission
+                JSONObject json = mainServer.alignDataset(dataset);
+                if(! "ok".equals(json.getString("status"))){
+                    System.out.println(json.getString("msg"));
+                    throw new Exception("engine problem");
+                }
                 message.set(true, "dataset创建成功");
             }else{
                 message.set(false, "dataset名称已存在");
