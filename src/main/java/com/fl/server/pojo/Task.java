@@ -10,18 +10,15 @@ public class Task {
     private int sceneId;
     private int datasetId;
     private String taskName;
-
-
-
     private String modelName;
     private String parameters;
     private String metrics;
     private String trainInfo;
-    private boolean taskStatus;
+    private String taskStatus;
     private ArrayList<HashMap<String,Double>> metricList;
     private ArrayList<HashMap<String,Object>> trainInfoList;
 
-    public Task(int userId, int sceneId, int datasetId, String taskName, String modelName, String parameters, boolean taskStatus) {
+    public Task(int userId, int sceneId, int datasetId, String taskName, String modelName, String parameters, String taskStatus) {
         this.userId = userId;
         this.sceneId = sceneId;
         this.datasetId = datasetId;
@@ -31,6 +28,8 @@ public class Task {
         this.taskStatus = taskStatus;
     }
     public Task(){}
+
+
 
 
     public int getId() {
@@ -105,16 +104,12 @@ public class Task {
         this.trainInfo = trainInfo;
     }
 
-    public boolean getTaskStatus() {
+    public String getTaskStatus() {
         return taskStatus;
     }
 
-    public void setTaskStatus(boolean taskStatus) {
+    public void setTaskStatus(String taskStatus) {
         this.taskStatus = taskStatus;
-    }
-
-    public boolean isTaskStatus() {
-        return taskStatus;
     }
 
     public ArrayList<HashMap<String, Double>> getMetricList() {

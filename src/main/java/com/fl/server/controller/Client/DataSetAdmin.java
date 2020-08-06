@@ -150,7 +150,6 @@ public class DataSetAdmin {
         try {
             // 查询是否名字已经存在
             ArrayList<Dataset> reqDatasets = datasetMapper.selectByDatasetName(datasetName);
-
             if (reqDatasets.size() == 0){
                 ArrayList<HashMap<String, Object>> dict = new ArrayList<HashMap<String, Object>>();
                 JSONArray jsonArray = new JSONArray(dsStr);
@@ -174,18 +173,17 @@ public class DataSetAdmin {
 
                 HashMap<String, Object> params = TypeFactory.GenerateHMSO();
                 params.put("task_name", dataset.getDatasetName());
-
                 dataset.dictToString();
                 if (! datasetMapper.insert(dataset)){
                     throw new Exception("抛出异常");
                 }
-//
+
                 // commit the align mission
-                JSONObject json = mainServer.alignDataset(dataset);
-                if(! "ok".equals(json.getString("status"))){
-                    System.out.println(json.getString("msg"));
-                    throw new Exception("engine problem");
-                }
+//                JSONObject json = mainServer.alignDataset(dataset);
+//                if(! "ok".equals(json.getString("status"))){
+//                    System.out.println(json.getString("msg"));
+//                    throw new Exception("engine problem");
+//                }
                 message.set(true, "dataset创建成功");
             }else{
                 message.set(false, "dataset名称已存在");
