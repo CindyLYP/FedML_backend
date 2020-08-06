@@ -53,7 +53,8 @@ public class QueryServer {
         String api = queryDatasetApi+"?task_name="+dataset.getDatasetName();
         while(true){
             Thread.currentThread().sleep(10000);
-
+            String status = queryStatus(dataset.getDatasetName());
+            if(status.equals("Finished")) break;
         }
 
         try{

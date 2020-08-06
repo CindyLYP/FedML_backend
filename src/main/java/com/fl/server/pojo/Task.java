@@ -111,6 +111,18 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
+    public boolean isTaskStatus() {
+        return taskStatus;
+    }
+
+    public ArrayList<HashMap<String, Double>> getMetricList() {
+        return metricList;
+    }
+
+    public void setMetricList(ArrayList<HashMap<String, Double>> metricList) {
+        this.metricList = metricList;
+    }
+
     public void StringToMetric(){
         this.metricList = new ArrayList<>();
         for(String items:this.metrics.split("#")){
