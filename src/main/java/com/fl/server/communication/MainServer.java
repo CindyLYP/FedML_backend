@@ -94,6 +94,9 @@ public class MainServer {
             res = response.getBody();
             System.out.println("get align response from server");
             System.out.println(res);
+            System.out.println("-----------");
+            System.out.println("backend start to query align status");
+            queryServer.queryDataset(dataset);
 
 
         }catch (HttpClientErrorException e){
@@ -168,8 +171,11 @@ public class MainServer {
             HttpEntity<JSONObject> request = new HttpEntity<>(data, headers);
             ResponseEntity<JSONObject> response = restTemplate.postForEntity(TaskApi, request, JSONObject.class);
             res = response.getBody();
-            System.out.println("get response");
-            System.out.println(response.getBody());
+            System.out.println("get create task response from server");
+            System.out.println(res);
+            System.out.println("-----------");
+            System.out.println("backend start to query create status");
+            queryServer.queryTask(task);
 
         }catch (HttpClientErrorException e){
             System.out.println("http post error!");

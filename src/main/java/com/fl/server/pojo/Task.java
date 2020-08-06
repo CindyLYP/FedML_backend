@@ -1,5 +1,6 @@
 package com.fl.server.pojo;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ public class Task {
     private String trainInfo;
     private boolean taskStatus;
     private ArrayList<HashMap<String,Double>> metricList;
+    private ArrayList<HashMap<String,Object>> trainInfoList;
 
     public Task(int userId, int sceneId, int datasetId, String taskName, String modelName, String parameters, boolean taskStatus) {
         this.userId = userId;
@@ -123,6 +125,14 @@ public class Task {
         this.metricList = metricList;
     }
 
+    public ArrayList<HashMap<String, Object>> getTrainInfoList() {
+        return trainInfoList;
+    }
+
+    public void setTrainInfoList(ArrayList<HashMap<String, Object>> trainInfoList) {
+        this.trainInfoList = trainInfoList;
+    }
+
     public void StringToMetric(){
         this.metricList = new ArrayList<>();
         for(String items:this.metrics.split("#")){
@@ -140,6 +150,30 @@ public class Task {
             this.metrics += String.valueOf(node.get("name"))+"|"+String.valueOf(node.get("value"))+"#";
         }
         this.metrics = this.metrics.substring(0,this.metrics.length()-1);
+    }
+
+    public void TrainInfoToDict(){
+        this.trainInfoList = new ArrayList<>();
+        for(String items:this.trainInfo.split("#")){
+            String[] item = items.split("\\|");
+            HashMap<String,Object> node = new HashMap<>();
+            node.put("time",item[0]);
+            node.put("epoch",Integer.valueOf(item[1]));
+            node.put("loss",Double.valueOf(item[2]));
+            node.put("auc",Double.valueOf(item[3]));
+            node.put("ks",Double.valueOf(item[4]));
+            this.trainInfoList.add(node);
+        }
+    }
+
+    public void DictToTrainInfo(){
+        this.trainInfo = "";
+        for(HashMap<String,Object> node:this.trainInfoList){
+            this.trainInfo += String.valueOf(node.get("time"))+"|"+String.valueOf(node.get("epoch"))+"|"+
+                    String.valueOf(node.get("loss"))+"|"+String.valueOf(node.get("auc"))+"|"+
+                    String.valueOf(node.get("ks"))+"#";
+        }
+        this.trainInfo = this.trainInfo.substring(0,this.trainInfo.length()-1);
     }
 
 }
