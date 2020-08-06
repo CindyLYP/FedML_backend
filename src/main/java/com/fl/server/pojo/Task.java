@@ -9,6 +9,9 @@ public class Task {
     private int sceneId;
     private int datasetId;
     private String taskName;
+
+
+
     private String modelName;
     private String parameters;
     private String metrics;
@@ -16,7 +19,15 @@ public class Task {
     private boolean taskStatus;
     private ArrayList<HashMap<String,Double>> metricList;
 
-
+    public Task(int userId, int sceneId, int datasetId, String taskName, String modelName, String parameters, boolean taskStatus) {
+        this.userId = userId;
+        this.sceneId = sceneId;
+        this.datasetId = datasetId;
+        this.taskName = taskName;
+        this.modelName = modelName;
+        this.parameters = parameters;
+        this.taskStatus = taskStatus;
+    }
     public Task(){}
 
 

@@ -48,11 +48,11 @@
     <select id="IdToUserAccount" resultType="string">
         select user_account from user where id=#{id};
     </select>
-    <select id="getAllModel">
+    <select id="getAllModel" resultMap="Model" resultType="com.fl.server.pojo.Model">
         select * from model;
     </select>
-    <select id="getModelByName">
-        translate * from model where name=#{name};
+    <select id="getModelByName" resultMap="Model" resultType="com.fl.server.pojo.Model">
+        select * from model where name=#{name};
     </select>
     <select id="getLogByUserId">
         select * from logger where user_id=#{userId};
