@@ -105,8 +105,6 @@ public class QueryServer {
             res = response.getBody();
             System.out.println("get query train response from server");
             ArrayList<ArrayList<Double>> msg = (ArrayList<ArrayList<Double>>) res.get("msg");
-            dataset.setAlignedNum(alignNum.get(0));
-            datasetMapper.update(dataset);
         }catch (HttpClientErrorException e){
             System.out.println("http post error!");
         }
