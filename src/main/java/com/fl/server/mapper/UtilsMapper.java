@@ -3,9 +3,10 @@ package com.fl.server.mapper;
 import com.fl.server.pojo.Logger;
 import com.fl.server.pojo.Model;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-
+@Service
 public interface UtilsMapper {
     int DatasetNameToId(@Param("name")String name);
     String IdToDatasetName(@Param("id") int id);

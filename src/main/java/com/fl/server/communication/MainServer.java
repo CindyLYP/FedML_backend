@@ -16,15 +16,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
+@Service
 public class MainServer {
-    private final String TaskApi = "http://10.214.192.22:8080/CreateTask";
+    private final String TaskApi = "http://10.214.192.22:8380/createTask";
+    private final String StartApi = "http://10.214.192.22:8380/startTask";
 
     @Autowired
     private SceneMapper sceneMapper;
@@ -37,8 +39,27 @@ public class MainServer {
     @Autowired
     private QueryServer queryServer;
 
-    public JSONObject alignDataset(Dataset dataset){
-        JSONObject res = new JSONObject();
+    public void startTask(String name){
+        String api = StartApi+"?task_name="+name;
+        try{
+            RestTemplate restTemplate = new RestTemplate();
+
+            ResponseEntity<HashMap> response = restTemplate.getForEntity(api, HashMap.class);
+            HashMap data = response.getBody();
+            if ("ok".equals(data.get("status"))){
+                System.out.println(data.get("msg"));
+            }
+
+        }catch (HttpClientErrorException e){
+            System.out.println("queryStatusApi http post error!");
+        }
+        finally {
+            System.out.println("start task successfully");
+        }
+    }
+
+    public HashMap alignDataset(Dataset dataset){
+        HashMap res = new HashMap();
         HashMap<String,Object> data = new HashMap<>();
         data.put("task_name",dataset.getDatasetName());
         ArrayList<HashMap<String,Object>> clients = new ArrayList<>();
@@ -52,14 +73,14 @@ public class MainServer {
         HashMap<String,Object> client = new HashMap<>();
         client.put("role","main_client");
         client.put("addr",mainNode.getIpAddress());
-        client.put("http_port",mainNode.getPort());
+        client.put("http_port",Integer.parseInt(mainNode.getPort()));
         client.put("client_config",clientConfig);
         clients.add(client);
 
         for(HashMap<String,Object> item:dataset.getDict()){
             Node node = nodeMapper.findNode((String)item.get("provider")).get(0);
-            clientConfig.clear();
-            client.clear();
+            clientConfig = new HashMap<>();;
+            client = new HashMap<>();;
             clientConfig.put("client_type","alignment_data");
             clientConfig.put("computation_port",Randm.randomPort());
             clientConfig.put("raw_data_path",node.getCsvPath());
@@ -67,20 +88,22 @@ public class MainServer {
             clientConfig.put("columns", item.get("attributes"));
             client.put("role","feature_client");
             client.put("addr",node.getIpAddress());
-            client.put("http_port",node.getPort());
+            client.put("http_port",Integer.parseInt(node.getPort()));
             client.put("client_config",clientConfig);
             clients.add(client);
         }
-        clientConfig.clear();
-        client.clear();
+        clientConfig = new HashMap<>();;
+        client = new HashMap<>();;
         clientConfig.put("client_type","alignment_data");
         clientConfig.put("computation_port",Randm.randomPort());
         clientConfig.put("raw_data_path",labelNode.getCsvPath());
         clientConfig.put("out_data_path",Randm.outCsvPath());
-        clientConfig.put("columns",new ArrayList<String>().add(scene.getTarget()));
+        ArrayList<String> col = new ArrayList<>();
+        col.add(scene.getTarget());
+        clientConfig.put("columns",col);
         client.put("role","label_client");
         client.put("addr",labelNode.getIpAddress());
-        client.put("http_port",labelNode.getPort());
+        client.put("http_port",Integer.parseInt(labelNode.getPort()));
         client.put("client_config",clientConfig);
         clients.add(client);
         data.put("clients",clients);
@@ -90,12 +113,13 @@ public class MainServer {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<HashMap<String, Object>> request = new HttpEntity<>(data, headers);
-            ResponseEntity<JSONObject> response = restTemplate.postForEntity(TaskApi, request, JSONObject.class);
-            res = response.getBody();
-            System.out.println("get align response from server");
+            ResponseEntity<HashMap> response = restTemplate.postForEntity(TaskApi, request,HashMap.class);
+            res= response.getBody();
+            System.out.print("create align task: ");
             System.out.println(res);
-            System.out.println("-----------");
-            System.out.println("backend start to query align status");
+            startTask((String) data.get("task_name"));
+            System.out.println("-----------------------------------------");
+            System.out.println("start a thread to listen align task");
             queryServer.queryDataset(dataset);
 
 
@@ -109,7 +133,7 @@ public class MainServer {
     }
 
     public JSONObject trainTask(Task task) throws JSONException {
-        JSONObject res = new JSONObject();
+        HashMap res = new HashMap();
         Dataset dataset = datasetMapper.selectByDatasetName(utilsMapper.IdToDatasetName(task.getDatasetId())).get(0);
         JSONObject data = new JSONObject(utilsMapper.selectServerMap(dataset.getDatasetName()));
         data.put("task_name",task.getTaskName());
@@ -120,7 +144,9 @@ public class MainServer {
         clientConfig.put("client_type","shared_nn_main");
         clientConfig.put("in_dim",64);
         clientConfig.put("out_dim",1);
-        clientConfig.put("layers",new ArrayList<Integer>().add(1));
+        ArrayList<Integer> l = new ArrayList<>();
+        l.add(1);
+        clientConfig.put("layers",l);
         clientConfig.put("test_per_batches",101);
         clientConfig.put("max_iter",12345);
         mainClient.put("client_config",clientConfig);
@@ -169,7 +195,7 @@ public class MainServer {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<JSONObject> request = new HttpEntity<>(data, headers);
-            ResponseEntity<JSONObject> response = restTemplate.postForEntity(TaskApi, request, JSONObject.class);
+            ResponseEntity<HashMap> response = restTemplate.postForEntity(TaskApi, request, HashMap.class);
             res = response.getBody();
             System.out.println("get create task response from server");
             System.out.println(res);
@@ -181,7 +207,7 @@ public class MainServer {
             System.out.println("http post error!");
         }
         finally {
-            return res;
+            return new JSONObject(res);
         }
     }
 

@@ -18,7 +18,7 @@
     <select id="selectByDatasetName" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
         select * from dataset where dataset_name=#{name};
     </select>
-    <select id="selectByUserName" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
+    <select id="selectByUserId" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
         select * from dataset where user_id=#{id};
     </select>
     <select id="selectByUserIdAndSceneId" resultMap="Dataset" resultType="com.fl.server.pojo.Dataset">
@@ -29,7 +29,7 @@
         (#{dsb.userId},#{dsb.sceneId},#{dsb.attrInfo},#{dsb.datasetName},#{dsb.alignedNum},#{dsb.timestamp},#{dsb.config});
     </insert>
     <update id="update">
-        update dataset set (user_id=#{dsb.userId},scene_id=#{dsb.sceneId},attr_info=#{dsb.attrInfo},dataset_name=#{dsb.datasetName},aligned_num=#{dsb.alignedNum},timestamp=#{dsb.timestamp},config=#{dsb.config})
+        update dataset set user_id=#{dsb.userId},scene_id=#{dsb.sceneId},attr_info=#{dsb.attrInfo},dataset_name=#{dsb.datasetName},aligned_num=#{dsb.alignedNum},timestamp=#{dsb.timestamp},config=#{dsb.config}
         where id=#{dsb.id};
     </update>
     <delete id="delete">

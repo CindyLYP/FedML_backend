@@ -25,7 +25,7 @@
         (#{task.userId},#{task.sceneId},#{task.datasetId},#{task.taskName},#{task.modelName},#{task.parameters},#{task.metrics},#{task.trainInfo},#{task.taskStatus});
     </insert>
     <update id="update">
-        update task set (user_id=#{task.userId},dataset_id=#{task.sceneId},dataset_id=#{task.datasetId},task_name=#{task.taskName},model_name=#{task.modelName},parameters=#{task.parameters},metrics=#{task.metrics},train_info=#{task.trainInfo},task_status=#{task.taskStatus})
+        update task set user_id=#{task.userId},dataset_id=#{task.sceneId},dataset_id=#{task.datasetId},task_name=#{task.taskName},model_name=#{task.modelName},parameters=#{task.parameters},metrics=#{task.metrics},train_info=#{task.trainInfo},task_status=#{task.taskStatus}
         where id=#{task.id};
     </update>
     <delete id="delete">

@@ -16,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
-
 // 普通用户-数据管理页
 @RestController
 @CrossOrigin(origins="*",maxAge = 3600)
@@ -26,8 +24,8 @@ public class DataSetAdmin {
     private DatasetMapper datasetMapper;
     @Autowired
     private UtilsMapper utilsMapper;
-
-    MainServer mainServer = new MainServer();
+    @Autowired
+    private MainServer mainServer;
 
     @PostMapping("/datasetConfigReq")
     @ResponseBody
@@ -178,10 +176,11 @@ public class DataSetAdmin {
                     throw new Exception("抛出异常");
                 }
 
-//                 commit the align mission
-                JSONObject json = mainServer.alignDataset(dataset);
-                if(! "ok".equals(json.getString("status"))){
-                    System.out.println(json.getString("msg"));
+//                 commit the align missionnode_name
+                HashMap json = mainServer.alignDataset(dataset);
+
+                if(! "ok".equals(json.get("status"))){
+                    System.out.println(json.get("msg"));
                     throw new Exception("engine problem");
                 }
                 message.set(true, "dataset创建成功");

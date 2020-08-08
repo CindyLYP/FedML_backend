@@ -3,11 +3,13 @@ package com.fl.server.controller._old;
 
 import com.fl.server.communication.TaskComm;
 import com.fl.server.communication.TestComm;
+import com.fl.server.mapper.DatasetMapper;
 import com.fl.server.mapper.NodeMapper;
 import com.fl.server.mapper.UtilsMapper;
 import com.fl.server.object.old.Feature;
 import com.fl.server.object.old.User;
 
+import com.fl.server.pojo.Dataset;
 import org.assertj.core.internal.IterableElementComparisonStrategy;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +29,8 @@ public class LocalTestController {
     private UtilsMapper utilsMapper;
     @Autowired
     private TestComm testComm;
+    @Autowired
+    private DatasetMapper datasetMapper;
 
     @CrossOrigin
     @PostMapping(value = "api/login")
@@ -35,26 +39,11 @@ public class LocalTestController {
         String name = ResponseUser.getUsername();
         String pwd = ResponseUser.getPassword();
         System.out.println("receive json from frontend");
-        TestComm test = new TestComm();
-        testComm.send2();
-        testComm.send2();
-        String str = test.send();
-        System.out.println(str);
-        HashMap<String,Object> mp=new HashMap<>();
-        HashMap<String,Integer> ts=new HashMap<>();
-        ts.put("age",25);
-        ts.put("study",18);
-        mp.put("name","ysc");
-        mp.put("num",ts);
-        JSONObject js = new JSONObject(mp);
-        String s = js.toString();
-        JSONObject tmp = new JSONObject(s);
-        Iterator<String> it = tmp.keys();
-        while (it.hasNext()){
-            String key = it.next();
-            Object value = tmp.getString(key);
-        }
-        System.out.println(tmp.toString());
+
+        Dataset ad = datasetMapper.selectByUserId(21).get(0);
+        System.out.println(ad.getDatasetName());
+        ad.setAlignedNum(999);
+        datasetMapper.update(ad);
         return 1;
     }
 
