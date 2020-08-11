@@ -5,12 +5,15 @@ import com.fl.server.communication.TaskComm;
 import com.fl.server.communication.TestComm;
 import com.fl.server.mapper.DatasetMapper;
 import com.fl.server.mapper.NodeMapper;
+import com.fl.server.mapper.TaskMapper;
 import com.fl.server.mapper.UtilsMapper;
 import com.fl.server.object.old.Feature;
 import com.fl.server.object.old.User;
 
 import com.fl.server.pojo.Dataset;
+import com.fl.server.pojo.Task;
 import org.assertj.core.internal.IterableElementComparisonStrategy;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class LocalTestController {
     @Autowired
     private TestComm testComm;
     @Autowired
+    private TaskMapper taskMapper;
+    @Autowired
     private DatasetMapper datasetMapper;
 
     @CrossOrigin
@@ -39,20 +44,20 @@ public class LocalTestController {
         String name = ResponseUser.getUsername();
         String pwd = ResponseUser.getPassword();
         System.out.println("receive json from frontend");
+        HashMap res = new HashMap();
+        Task task = taskMapper.selectByTaskName("t4").get(0);
+        task.setTaskStatus("gggg");
+        taskMapper.update(task);
 
-        Dataset ad = datasetMapper.selectByUserId(21).get(0);
-        System.out.println(ad.getDatasetName());
-        ad.setAlignedNum(999);
-        datasetMapper.update(ad);
         return 1;
     }
 
     @CrossOrigin
-    @GetMapping(value = "/testComm")
+    @PostMapping(value = "/testComm")
     @ResponseBody
-    public String test(@RequestParam("name")String name,@RequestParam("pwd") String pwd){
+    public String test(@RequestBody HashMap x){
         System.out.println("backend receive json from server");
-        System.out.println(name);
+        System.out.println(x.toString());
         return "to server";
     }
 

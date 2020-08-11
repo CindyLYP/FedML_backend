@@ -4,8 +4,12 @@ import com.fl.server.mapper.UserMapper;
 import com.fl.server.mapper.UtilsMapper;
 import com.fl.server.pojo.Logger;
 import com.fl.server.pojo.User;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -19,14 +23,16 @@ public class TestComm {
     @Autowired
     private UtilsMapper utilsMapper;
 
-    public String send(){
-        String url = "http://localhost:8888/testComm?name={name}&pwd={pwd}";
-
+    public String send() throws JSONException {
+        String url = "http://localhost:8888/testComm";
+        JSONObject jd = new JSONObject();
+        jd.put("name","cindy");
+        jd.put("pwd",123);
         RestTemplate restTemplate = new RestTemplate();
-        HashMap<String,String> d=new HashMap<>();
-        d.put("name","ysc");
-        d.put("pwd","1234");
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class,d);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(jd.toString(), headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(url,request, String.class);
         return response.getBody();
     }
     @Async

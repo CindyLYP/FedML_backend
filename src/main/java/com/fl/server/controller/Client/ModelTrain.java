@@ -31,10 +31,11 @@ public class ModelTrain {
     private TaskMapper taskMapper;
     @Autowired
     private UtilsMapper utilsMapper;
+    @Autowired
+    private MainServer mainServer;
+    @Autowired
+    private QueryServer queryServer;
 
-
-    MainServer mainServer = new MainServer();
-    QueryServer queryServer = new QueryServer();
 
 
     // 任务查询
@@ -166,7 +167,7 @@ public class ModelTrain {
         try {
             // 查询是否名字已经存在
             ArrayList<Task> reqTasks = taskMapper
-                    .selectByUserAndScene(utilsMapper.UserAccountToId(operator), utilsMapper.SceneNameToId(scene));
+                    .selectByTaskName(taskName);
 
             if (reqTasks.size() == 0){
                 Task task = new Task(utilsMapper.UserAccountToId(operator), utilsMapper.SceneNameToId(scene),
@@ -301,7 +302,7 @@ public class ModelTrain {
 
 
         try {
-            Task task = taskMapper.selectByTaskName(taskName);
+            Task task = taskMapper.selectByTaskName(taskName).get(0);
 
             String status = queryServer.queryStatus(taskName);
             if("ok".equals(status)){

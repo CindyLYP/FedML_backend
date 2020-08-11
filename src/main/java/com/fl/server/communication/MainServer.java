@@ -9,9 +9,11 @@ import com.fl.server.pojo.Dataset;
 import com.fl.server.pojo.Node;
 import com.fl.server.pojo.Scene;
 import com.fl.server.pojo.Task;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,12 +23,17 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class MainServer {
-    private final String TaskApi = "http://10.214.192.22:8380/createTask";
-    private final String StartApi = "http://10.214.192.22:8380/startTask";
+    @Value("${model_server.url}")
+    private String url;
+
+    private final String TaskApi = "/createTask";
+    private final String StartApi = "/startTask";
 
     @Autowired
     private SceneMapper sceneMapper;
@@ -44,7 +51,7 @@ public class MainServer {
         try{
             RestTemplate restTemplate = new RestTemplate();
 
-            ResponseEntity<HashMap> response = restTemplate.getForEntity(api, HashMap.class);
+            ResponseEntity<HashMap> response = restTemplate.getForEntity(url+api, HashMap.class);
             HashMap data = response.getBody();
             if ("ok".equals(data.get("status"))){
                 System.out.println(data.get("msg"));
@@ -113,7 +120,7 @@ public class MainServer {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<HashMap<String, Object>> request = new HttpEntity<>(data, headers);
-            ResponseEntity<HashMap> response = restTemplate.postForEntity(TaskApi, request,HashMap.class);
+            ResponseEntity<HashMap> response = restTemplate.postForEntity(url+TaskApi, request,HashMap.class);
             res= response.getBody();
             System.out.print("create align task: ");
             System.out.println(res);
@@ -137,20 +144,19 @@ public class MainServer {
         Dataset dataset = datasetMapper.selectByDatasetName(utilsMapper.IdToDatasetName(task.getDatasetId())).get(0);
         JSONObject data = new JSONObject(utilsMapper.selectServerMap(dataset.getDatasetName()));
         data.put("task_name",task.getTaskName());
-        ArrayList<JSONObject> clients = (ArrayList<JSONObject>) data.get("clients");
+        JSONArray clients = (JSONArray) data.get("clients");
+        JSONArray newClients = new JSONArray();
 
-        JSONObject mainClient = clients.get(0);
+        JSONObject mainClient = (JSONObject) clients.get(0);
         JSONObject clientConfig = (JSONObject) mainClient.get("client_config");
         clientConfig.put("client_type","shared_nn_main");
         clientConfig.put("in_dim",64);
         clientConfig.put("out_dim",1);
-        ArrayList<Integer> l = new ArrayList<>();
-        l.add(1);
-        clientConfig.put("layers",l);
+        clientConfig.put("layers",new JSONArray().put(1));
         clientConfig.put("test_per_batches",101);
         clientConfig.put("max_iter",12345);
         mainClient.put("client_config",clientConfig);
-        clients.set(0,mainClient);
+        newClients.put(mainClient);
 
         JSONObject crypto_client = new JSONObject();
         crypto_client.put("role","crypto_producer");
@@ -159,16 +165,16 @@ public class MainServer {
         JSONObject config = new JSONObject();
         config.put("client_type","triplet_producer");
         config.put("computation_port",Randm.randomPort());
-        ArrayList<Integer> a = new ArrayList<>();
-        for(int i=1;i<clients.size()-1;i++){
-            a.add(i+1);
+        JSONArray listen_clients = new JSONArray();
+        for(int i=1;i<clients.length()-1;i++){
+            listen_clients.put(i+1);
         }
-        config.put("listen_clients",a);
+        config.put("listen_clients",listen_clients);
         crypto_client.put("client_config",config);
-        clients.add(1,crypto_client);
+        newClients.put(crypto_client);
         int i=1;
-        for(;i<clients.size()-1;i++){
-            JSONObject client=clients.get(i);
+        for(;i<clients.length()-1;i++){
+            JSONObject client= (JSONObject) clients.get(i);
             config = (JSONObject) client.get("client_config");
             config.put("client_type","shared_nn_feature");
             config.put("data_path",config.get("out_data_path"));
@@ -176,9 +182,9 @@ public class MainServer {
             config.remove("out_data_path");
             config.remove("columns");
             client.put("client_config",config);
-            clients.set(i,client);
+            newClients.put(client);
         }
-        JSONObject client=clients.get(i);
+        JSONObject client= (JSONObject) clients.get(i);
         config = (JSONObject) client.get("client_config");
         config.put("client_type","shared_nn_label");
         config.put("data_path",config.get("out_data_path"));
@@ -188,19 +194,21 @@ public class MainServer {
         config.remove("out_data_path");
         config.remove("columns");
         client.put("client_config",config);
-        clients.set(i,client);
-        data.put("clients",clients);
+        newClients.put(client);
+        data.put("clients",newClients);
         try{
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<JSONObject> request = new HttpEntity<>(data, headers);
-            ResponseEntity<HashMap> response = restTemplate.postForEntity(TaskApi, request, HashMap.class);
+            HttpEntity<String> request = new HttpEntity<>(data.toString(), headers);
+            ResponseEntity<HashMap> response = restTemplate.postForEntity(url+TaskApi, request, HashMap.class);
             res = response.getBody();
-            System.out.println("get create task response from server");
+            System.out.print("create train task: ");
             System.out.println(res);
-            System.out.println("-----------");
-            System.out.println("backend start to query create status");
+            startTask((String) data.get("task_name"));
+            System.out.println("-----------------------------------------");
+            System.out.println("start a thread to listen train task");
+
             queryServer.queryTask(task);
 
         }catch (HttpClientErrorException e){
