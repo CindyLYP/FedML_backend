@@ -13,12 +13,13 @@
 	height: 68px;
 }
 .sence-nodeinfo > img {
-	width: 68px;
-	height: 68px;
+	width: 58px;
+	height: 58px;
 	display: block;
 	margin-right: 20px;
-	min-width: 68px;
-	max-width: 68px;
+	min-width: 58px;
+	max-width: 58px;
+	padding: 5px;
 }
 .nodename {
 	font-family: SourceHanSansCN-Medium;
