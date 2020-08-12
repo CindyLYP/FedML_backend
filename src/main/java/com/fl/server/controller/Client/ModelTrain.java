@@ -68,7 +68,7 @@ public class ModelTrain {
                 task.put("parameters", reqTask.getParameters());
                 task.put("status", reqTask.getTaskStatus());
 
-                System.out.println("test1");
+                //System.out.println("test1");
                 if ("训练完成".equals(reqTask.getTaskStatus())){
                     reqTask.TrainInfoToDict();
                     task.put("metrics", reqTask.getTrainInfoList().get(reqTask.getTrainInfoList().size()-1));
@@ -76,7 +76,7 @@ public class ModelTrain {
                     task.put("ks",-1);
                     task.put("auc",-1);
                 }
-                System.out.println("test2");
+                //System.out.println("test2");
 
                 tasks.add(task);
             }
