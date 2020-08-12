@@ -66,12 +66,22 @@ public class ModelTrain {
                 task.put("datasetName", utilsMapper.IdToDatasetName(reqTask.getDatasetId()));
                 task.put("modelName", reqTask.getModelName());
                 task.put("parameters", reqTask.getParameters());
-                task.put("status", reqTask.getTaskStatus());
+
+
+                if("正在训练".equals(reqTask.getTaskStatus())){
+                    task.put("status", "训练中");
+                }else{
+                    task.put("status", reqTask.getTaskStatus());
+                }
+
 
                 //System.out.println("test1");
                 if ("训练完成".equals(reqTask.getTaskStatus())){
+                    System.out.println(reqTask.getTaskName());
                     reqTask.TrainInfoToDict();
-                    task.put("metrics", reqTask.getTrainInfoList().get(reqTask.getTrainInfoList().size()-1));
+                    HashMap<String, Object> result = reqTask.getTrainInfoList().get(reqTask.getTrainInfoList().size()-1);
+                    task.put("ks", result.get("ks"));
+                    task.put("auc", result.get("auc"));
                 }else{
                     task.put("ks",-1);
                     task.put("auc",-1);
