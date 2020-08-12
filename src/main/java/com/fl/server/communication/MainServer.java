@@ -143,6 +143,7 @@ public class MainServer {
         HashMap res = new HashMap();
         Dataset dataset = datasetMapper.selectByDatasetName(utilsMapper.IdToDatasetName(task.getDatasetId())).get(0);
         JSONObject data = new JSONObject(utilsMapper.selectServerMap(dataset.getDatasetName()));
+        JSONArray paramsList = new JSONArray(task.getParameters());
         data.put("task_name",task.getTaskName());
         JSONArray clients = (JSONArray) data.get("clients");
         JSONArray newClients = new JSONArray();
@@ -150,11 +151,11 @@ public class MainServer {
         JSONObject mainClient = (JSONObject) clients.get(0);
         JSONObject clientConfig = (JSONObject) mainClient.get("client_config");
         clientConfig.put("client_type","shared_nn_main");
-        clientConfig.put("in_dim",64);
+        clientConfig.put("in_dim",paramsList.getJSONObject(0).get("隐层参数"));
         clientConfig.put("out_dim",1);
         clientConfig.put("layers",new JSONArray().put(1));
         clientConfig.put("test_per_batches",101);
-        clientConfig.put("max_iter",1234);
+        clientConfig.put("max_iter",paramsList.getJSONObject(2).get("训练轮数"));
         mainClient.put("client_config",clientConfig);
         newClients.put(mainClient);
 

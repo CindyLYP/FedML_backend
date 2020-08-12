@@ -45,9 +45,10 @@ public class LocalTestController {
         String pwd = ResponseUser.getPassword();
         System.out.println("receive json from frontend");
         HashMap res = new HashMap();
-        Task task = taskMapper.selectByTaskName("t4").get(0);
-        task.setTaskStatus("gggg");
-        taskMapper.update(task);
+        Task task = taskMapper.selectByTaskName("v1").get(0);
+        JSONArray js = new JSONArray(task.getParameters());
+        JSONObject rd = (JSONObject) js.get(1);
+        System.out.println(rd.get("学习率"));
 
         return 1;
     }

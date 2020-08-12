@@ -67,10 +67,11 @@ public class ModelTrain {
                 task.put("modelName", reqTask.getModelName());
                 task.put("parameters", reqTask.getParameters());
                 task.put("status", reqTask.getTaskStatus());
-                if ("已完成".equals(reqTask.getTaskStatus())){
+                if ("训练完成".equals(reqTask.getTaskStatus())){
                     reqTask.StringToMetric();
                     task.put("metrics", reqTask.getMetrics());
                 }else{
+
                     task.put("ks",0.7);
                     task.put("auc",0.65);
                 }
@@ -267,13 +268,12 @@ public class ModelTrain {
         // 填充结果
         HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
-
         try {
-            String status = queryServer.queryStatus(taskName);
-            if("ok".equals(status)){
+            String status = taskMapper.selectByTaskName(taskName).get(0).getTaskStatus();
+            if("训练完成".equals(status)){
                 output.put("status", "训练完成");
             }else{
-                output.put("status", "训练中");
+                output.put("status", "正在训练");
             }
             // output.put("status", "等待训练");
             message.set(true, "查询成功");
@@ -304,16 +304,16 @@ public class ModelTrain {
         try {
             Task task = taskMapper.selectByTaskName(taskName).get(0);
 
-            String status = queryServer.queryStatus(taskName);
-            if("ok".equals(status)){
+            String status = task.getTaskStatus();
+            if("训练完成".equals(status)){
                 output.put("status", "训练完成");
-            }else{
+            }else if("训练失败".equals(status)){
+                output.put("status", "训练失败");
+            }
+            else {
                 output.put("status", "训练中");
             }
-            queryServer.queryTask(task);
             task.TrainInfoToDict();
-
-
             ArrayList<HashMap<String, Object>> infoList = task.getTrainInfoList();
             int roundNum = infoList.size();
             output.put("roundNum", roundNum);

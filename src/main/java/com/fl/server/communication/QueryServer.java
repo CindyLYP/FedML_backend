@@ -64,8 +64,8 @@ public class QueryServer {
             String trainInfo = new String();
             for (int i=0;i<msg.size();i++){
                 for (int j=0;j<msg.get(i).size();j++){
-                    String tmp = new String();
-                    if (j==1)
+                    String tmp = String.valueOf(msg.get(i).get(j));
+                    if (tmp.length()<=5)
                         tmp = String.valueOf(msg.get(i).get(j));
                     else
                         tmp = String.valueOf(msg.get(i).get(j)).substring(0,5);
