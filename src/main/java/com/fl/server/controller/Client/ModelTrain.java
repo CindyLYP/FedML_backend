@@ -67,13 +67,13 @@ public class ModelTrain {
                 task.put("modelName", reqTask.getModelName());
                 task.put("parameters", reqTask.getParameters());
                 task.put("status", reqTask.getTaskStatus());
+
                 if ("训练完成".equals(reqTask.getTaskStatus())){
                     reqTask.StringToMetric();
-                    task.put("metrics", reqTask.getMetrics());
+                    task.put("metrics", reqTask.getMetricList().get(reqTask.getMetricList().size()-1));
                 }else{
-
-                    task.put("ks",0.7);
-                    task.put("auc",0.65);
+                    task.put("ks",-1);
+                    task.put("auc",-1);
                 }
 
                 tasks.add(task);
@@ -299,7 +299,6 @@ public class ModelTrain {
         // 填充结果
         HashMap<String, Object> output = TypeFactory.GenerateHMSO();
         Message message = new Message();
-
 
         try {
             Task task = taskMapper.selectByTaskName(taskName).get(0);
