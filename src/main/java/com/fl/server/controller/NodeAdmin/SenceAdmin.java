@@ -59,7 +59,9 @@ public class SenceAdmin {
             int scenesNum = reqScenes.size();
             output.put("scenesNum", scenesNum);
             ArrayList<Object> scenes = TypeFactory.GenerateALO();
-            for (Scene reqScene: reqScenes){
+
+            for (int i = reqScenes.size()-1; i >=0; i--){
+                Scene reqScene = reqScenes.get(i);
                 HashMap<String, Object> scene = TypeFactory.GenerateHMSO();
                 scene.put("sceneName", reqScene.getSceneName());
                 scene.put("institution", reqScene.getInstitution());
@@ -72,6 +74,8 @@ public class SenceAdmin {
 
                 scenes.add(scene);
             }
+
+
             output.put("scenes", scenes);
             message.set(true, "场景查询成功");
         }catch (Exception e){

@@ -101,7 +101,7 @@ public class QueryServer {
         }
 
         try{
-            Thread.sleep(2000);
+            Thread.sleep(6000);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<HashMap> response = restTemplate.getForEntity(url+api, HashMap.class);
             res = response.getBody();
