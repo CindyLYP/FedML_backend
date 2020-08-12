@@ -43,3 +43,38 @@
     border-radius: 0px;
     min-height: 500px;
 }
+
+#monitor .el-dialog__body {
+    padding: 0px !important;
+}
+#monitor .el-dialog__header {
+    padding: 0px !important;
+}
+.nodes {
+    display: flex;
+    height: 35px;
+}
+.nodes > div.active {
+    padding: 0px 15px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background: #272b30;
+    margin-right: 2px;
+    line-height: 35px;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+}
+.nodes > div {
+    padding: 0px 15px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background: #373b40;
+    color: #878b90;
+    margin-right: 2px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+}
