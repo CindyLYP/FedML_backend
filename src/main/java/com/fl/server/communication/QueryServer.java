@@ -25,11 +25,14 @@ public class QueryServer {
     private final String queryStatusApi = "/queryStatus";
     private final String queryDatasetApi = "/queryDataset";
     private final String queryTaskApi = "/queryTask";
+    private static int newline = 0;
 
     @Autowired
     private TaskMapper taskMapper;
     @Autowired
     private DatasetMapper datasetMapper;
+    @Autowired
+    private UtilsMapper utilsMapper;
 
 
     public String queryStatus(String name){
@@ -51,13 +54,13 @@ public class QueryServer {
     }
     public void queryTaskMetrics(Task task){
         String api = queryTaskApi+"?task_name="+task.getTaskName()+"&query=record&client=-1";
-
+        HashMap res = new HashMap();
         try{
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<HashMap> response = restTemplate.getForEntity(url+api, HashMap.class);
-            HashMap res = response.getBody();
-            System.out.println("get train info response from server");
+            res = response.getBody();
             ArrayList<ArrayList<Object>> msg = (ArrayList<ArrayList<Object>>) res.get("msg");
+            if (msg.size()==0 && res.get("status").equals("ok")) return;
             String trainInfo = new String();
             for (int i=0;i<msg.size();i++){
                 for (int j=0;j<msg.get(i).size();j++){
@@ -72,12 +75,10 @@ public class QueryServer {
                 trainInfo = trainInfo.substring(0,trainInfo.length()-1)+"#";
             }
             task.setTrainInfo(trainInfo.substring(0,trainInfo.length()-1));
-            taskMapper.delete(task.getTaskName());
-            taskMapper.insert(task);
-            System.out.println("update database done");
-
-        }catch (HttpClientErrorException e){
+            taskMapper.update(task);
+        }catch (HttpClientErrorException |ClassCastException e){
             System.out.println("http post error!");
+            System.out.println(res.toString());
         }
     }
 
@@ -113,13 +114,6 @@ public class QueryServer {
             System.out.println("update database done");
             System.out.println("Thread is finished");
             System.out.println("-----------------------------------------");
-            /*
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Dataset> request = new HttpEntity<>(dataset, headers);
-            ResponseEntity<String> resFromDB = restTemplate.postForEntity(updateDatasetApi, request,String.class);
-            System.out.println(resFromDB.getBody());
-             */
 
         }catch (HttpClientErrorException e){
             System.out.println("http post error!");
@@ -131,28 +125,34 @@ public class QueryServer {
 
     @Async
     public void queryTask(Task task) throws InterruptedException {
+
+        task.setId(taskMapper.selectByTaskName(task.getTaskName()).get(0).getId());
+        task.setTaskStatus("正在训练");
+        System.out.println("train task status is running update task metric in database");
+        Thread.currentThread().sleep(4000);
         while(true){
-            Thread.currentThread().sleep(2000);
+            Thread.currentThread().sleep(6000);
             String status = queryStatus(task.getTaskName());
-            System.out.println("task status: "+status);
             if(status.equals("Finished")){
-                System.out.println("train task finish,update database");
+                System.out.println("\ntrain task finish,update database");
                 task.setTaskStatus("训练完成");
-                queryTaskMetrics(task);
+                taskMapper.updateTaskStatus(task.getId(),"训练完成");
                 System.out.println("Thread is finished");
                 System.out.println("-----------------------------------------");
                 break;
             }
-
             if(status.equals("Running")) {
-                System.out.println("train task status: "+status+" update task metric in database");
-                task.setTaskStatus("正在训练");
+                newline++;
+                if (newline++%60==0){
+                    newline=0;
+                    System.out.println("\n");
+                }
+                System.out.print("#");
                 queryTaskMetrics(task);
             }
-
-
             if(status.equals("Failed")) {
-                System.out.println("train task failed");
+                taskMapper.updateTaskStatus(task.getId(),"训练失败");
+                System.out.println("\ntrain task failed");
                 return ;
             }
         }

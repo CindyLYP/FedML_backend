@@ -10,6 +10,7 @@ public interface TaskMapper {
     ArrayList<Task> selectByTaskName(@Param("taskName") String taskName);
     boolean insert(@Param("task") Task task);
     boolean update(@Param("task") Task task);
+    boolean updateTaskStatus(@Param("id")int id,@Param("status")String status);
     boolean delete(@Param("taskName") String taskName);
 
 }

@@ -154,7 +154,7 @@ public class MainServer {
         clientConfig.put("out_dim",1);
         clientConfig.put("layers",new JSONArray().put(1));
         clientConfig.put("test_per_batches",101);
-        clientConfig.put("max_iter",12345);
+        clientConfig.put("max_iter",1234);
         mainClient.put("client_config",clientConfig);
         newClients.put(mainClient);
 

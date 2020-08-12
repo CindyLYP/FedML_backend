@@ -28,6 +28,10 @@
         update task set user_id=#{task.userId},dataset_id=#{task.sceneId},dataset_id=#{task.datasetId},task_name=#{task.taskName},model_name=#{task.modelName},parameters=#{task.parameters},metrics=#{task.metrics},train_info=#{task.trainInfo},task_status=#{task.taskStatus}
         where id=#{task.id};
     </update>
+    <update id="updateTaskStatus" >
+        update task set task_status=#{status}
+        where id=#{id};
+    </update>
     <delete id="delete">
         delete from task where task_name=#{taskName};
     </delete>
