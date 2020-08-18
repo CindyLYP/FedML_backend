@@ -53,10 +53,8 @@ public class MainServer {
 
             ResponseEntity<HashMap> response = restTemplate.getForEntity(url+api, HashMap.class);
             HashMap data = response.getBody();
-            if ("ok".equals(data.get("status"))){
-                System.out.println(data.get("msg"));
-            }
-
+            System.out.println("start task res from server");
+            System.out.println(data.toString());
         }catch (HttpClientErrorException e){
             System.out.println("queryStatusApi http post error!");
         }

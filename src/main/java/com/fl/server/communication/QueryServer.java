@@ -25,6 +25,7 @@ public class QueryServer {
     private final String queryStatusApi = "/queryStatus";
     private final String queryDatasetApi = "/queryDataset";
     private final String queryTaskApi = "/queryTask";
+    private final String queryRecord = "/queryRecord";
     private static int newline = 0;
 
     @Autowired
